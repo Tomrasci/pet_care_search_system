@@ -6,130 +6,150 @@ import AdapterDateFns from "@mui/lab/AdapterDateFns";
 import LocalizationProvider from "@mui/lab/LocalizationProvider";
 import DatePicker from "@mui/lab/DatePicker";
 import TimePicker from "@mui/lab/TimePicker";
-import { UseFormRegisterReturn } from "react-hook-form";
+import { useFormContext, UseFormRegisterReturn } from "react-hook-form";
+import { DateRangePicker } from "@mui/lab";
+import { Box } from "@mui/material";
+import { DateRange } from "@mui/lab/DateRangePicker/RangeTypes";
+import { Controller } from "react-hook-form";
+import { lt } from "date-fns/locale";
 
-interface Props {
-  startDate: Date | null;
-  registerStartDate: UseFormRegisterReturn;
-  startDateError: { message: string };
-  endDate: Date | null;
-  registerEndDate: UseFormRegisterReturn;
-  endDateError: { message: string };
-  startTime: Date | null;
-  registerStartTime: UseFormRegisterReturn;
-  startTimeError: { message: string };
-  endTime: Date | null;
-  registerEndTime: UseFormRegisterReturn;
-  endTimeError: { message: string };
-  dayPrice: number;
-  registerDayPrice: UseFormRegisterReturn;
-  dayPriceError: { message: string };
-  setDateStart: (e: React.SetStateAction<Date | null>) => void;
-  setDateEnd: (e: React.SetStateAction<Date | null>) => void;
-  setTimeStart: (e: React.SetStateAction<Date | null>) => void;
-  setTimeEnd: (e: React.SetStateAction<Date | null>) => void;
-  handlePriceValues: (e: React.ChangeEvent<HTMLInputElement>) => void;
-}
-export default function PriceandDates({
-  startDate,
-  endDate,
-  startTime,
-  endTime,
-  dayPrice,
-  setDateStart,
-  setDateEnd,
-  setTimeStart,
-  setTimeEnd,
-  registerStartDate,
-  startDateError,
-  registerEndDate,
-  endDateError,
-  registerStartTime,
-  startTimeError,
-  registerEndTime,
-  endTimeError,
-  registerDayPrice,
-  dayPriceError,
-  handlePriceValues,
-}: Props) {
+export default function PriceandDates() {
+  const {
+    control,
+    formState: { errors },
+  } = useFormContext();
+
   return (
     <React.Fragment>
       <Typography variant="h6" gutterBottom>
         Schedule and price
       </Typography>
-      <Grid container spacing={3} maxWidth="md">
-        <Grid item xs={12} md={6}>
-          <LocalizationProvider dateAdapter={AdapterDateFns}>
-            <DatePicker
-              {...registerStartDate}
-              className={`form-control ${startDateError ? "is-invalid" : ""}`}
-              label="Start date"
-              value={startDate}
-              onChange={(newValue) => {
-                console.log(newValue);
-                setDateStart(newValue);
-              }}
-              renderInput={(params) => (
-                <TextField {...params} fullWidth name="startDate" />
+      <LocalizationProvider dateAdapter={AdapterDateFns} locale={lt}>
+        <Grid container spacing={3} maxWidth="md">
+          <Grid item xs={12} md={6}>
+            <Controller
+              name="startDate"
+              control={control}
+              render={({ field }) => (
+                <DatePicker
+                  {...field}
+                  mask="____-__-__"
+                  label="Start date"
+                  onChange={(e) => field.onChange(e)}
+                  renderInput={(params) => (
+                    <TextField
+                      fullWidth
+                      {...params}
+                      error={!!errors.startDate}
+                      helperText={
+                        errors.startDate
+                          ? "Start date is required and must be valid"
+                          : ""
+                      }
+                    />
+                  )}
+                />
               )}
             />
-          </LocalizationProvider>
-          <Typography color="red">{startDateError?.message}</Typography>
-        </Grid>
-        <Grid item xs={12} md={6}>
-          <LocalizationProvider dateAdapter={AdapterDateFns}>
-            <DatePicker
-              label="End date"
-              value={endDate}
-              onChange={(newValue) => {
-                setDateEnd(newValue);
-              }}
-              renderInput={(params) => <TextField {...params} fullWidth />}
+          </Grid>
+          <Grid item xs={12} md={6}>
+            <Controller
+              name="endDate"
+              control={control}
+              render={({ field }) => (
+                <DatePicker
+                  {...field}
+                  mask="____-__-__"
+                  label="End date"
+                  onChange={(e) => field.onChange(e)}
+                  renderInput={(params) => (
+                    <TextField
+                      fullWidth
+                      {...params}
+                      error={!!errors.endDate}
+                      helperText={
+                        errors.endDate
+                          ? "End date is required and must be valid"
+                          : ""
+                      }
+                    />
+                  )}
+                />
+              )}
             />
-          </LocalizationProvider>
-        </Grid>
-        <Grid item xs={12} md={6}>
-          <LocalizationProvider dateAdapter={AdapterDateFns}>
-            <TimePicker
-              label="Start time"
-              value={startTime}
-              onChange={(newValue) => {
-                setTimeStart(newValue);
-              }}
-              renderInput={(params) => <TextField {...params} fullWidth />}
+          </Grid>
+          <Grid item xs={12} md={6}>
+            <Controller
+              name="startTime"
+              control={control}
+              render={({ field }) => (
+                <TimePicker
+                  {...field}
+                  label="Start time"
+                  onChange={(e) => field.onChange(e)}
+                  renderInput={(params) => (
+                    <TextField
+                      fullWidth
+                      {...params}
+                      error={!!errors.startTime}
+                      helperText={
+                        errors.startTime ? errors.startTime?.message : ""
+                      }
+                    />
+                  )}
+                />
+              )}
             />
-          </LocalizationProvider>
-        </Grid>
-        <Grid item xs={12} md={6}>
-          <LocalizationProvider dateAdapter={AdapterDateFns}>
-            <TimePicker
-              label="End time"
-              value={endTime}
-              onChange={(newValue) => {
-                setTimeEnd(newValue);
-              }}
-              renderInput={(params) => <TextField {...params} fullWidth />}
+          </Grid>
+          <Grid item xs={12} md={6}>
+            <Controller
+              name="endTime"
+              control={control}
+              render={({ field }) => (
+                <TimePicker
+                  {...field}
+                  label="End time"
+                  onChange={(e) => field.onChange(e)}
+                  renderInput={(params) => (
+                    <TextField
+                      fullWidth
+                      {...params}
+                      error={!!errors.endTime}
+                      helperText={errors.endTime ? errors.endTime?.message : ""}
+                    />
+                  )}
+                />
+              )}
             />
-          </LocalizationProvider>
+            {/* "End time is required and must be valid" */}
+          </Grid>
+          <Grid item xs={6} md={3}>
+            <Controller
+              name="price"
+              control={control}
+              render={({ field }) => (
+                <TextField
+                  {...field}
+                  id="price"
+                  name="price"
+                  label="Price"
+                  type="number"
+                  fullWidth
+                  autoComplete="family-name"
+                  variant="standard"
+                  error={!!errors.price}
+                  helperText={
+                    errors.price ? "Price is required and must be a number" : ""
+                  }
+                />
+              )}
+            />
+          </Grid>
+          <Grid item xs={2} md={1}>
+            <p>Eur</p>
+          </Grid>
         </Grid>
-        <Grid item xs={6} md={3}>
-          <TextField
-            type="number"
-            inputProps={{ inputMode: "numeric", pattern: "[0-9]*" }}
-            required
-            id="price"
-            value={dayPrice}
-            onChange={handlePriceValues}
-            label="Day price"
-            fullWidth
-            autoComplete="day-price"
-            variant="outlined"
-          />
-        </Grid>
-        <Grid item xs={2} md={1}>
-          <p>Eur</p>
-        </Grid>
-      </Grid>
+      </LocalizationProvider>
     </React.Fragment>
   );
 }

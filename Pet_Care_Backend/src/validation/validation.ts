@@ -28,7 +28,11 @@ const validateCaretakerAdvert = (caretakerAdvert: ICaretakerAdvertCreate) => {
     description: Joi.string().required(),
     extra_information: Joi.string(),
     title: Joi.string().required(),
-    languages: Joi.array().items(Joi.string())
+    languages: Joi.array().items(Joi.string()),
+    startDate: Joi.date().required(),
+    endDate: Joi.date().required(),
+    startTime: Joi.date().required(),
+    endTime: Joi.date().required()
   });
   return schema.validate(caretakerAdvert);
 };

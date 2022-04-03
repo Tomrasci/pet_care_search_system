@@ -46,7 +46,6 @@ const Register = () => {
   return (
     <div>
       <form onSubmit={handleSubmit(registerUser)}>
-        {/* <Box alignItems="center" justifyContent="center"> */}
         <RegistrationBody
           registerUsername={register("username")}
           usernameError={errors.username}
@@ -74,7 +73,6 @@ const Register = () => {
           surname={values.surname}
           handleChange={handleChange}
         />
-        {/* </Box> */}
       </form>
     </div>
   );

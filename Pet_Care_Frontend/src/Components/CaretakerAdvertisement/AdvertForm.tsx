@@ -1,24 +1,14 @@
 import * as React from "react";
 import Typography from "@mui/material/Typography";
-import List from "@mui/material/List";
-import ListItem from "@mui/material/ListItem";
-import ListItemText from "@mui/material/ListItemText";
 import Grid from "@mui/material/Grid";
 import { TextField } from "@mui/material";
+import { Controller, useFormContext } from "react-hook-form";
 
-interface Props {
-  title: string;
-  description: string;
-  extra_information: string;
-  handleAdvertValues: (e: React.ChangeEvent<HTMLInputElement>) => void;
-}
-
-export default function AdvertForm({
-  title,
-  description,
-  extra_information,
-  handleAdvertValues,
-}: Props) {
+export default function AdvertForm() {
+  const {
+    control,
+    formState: { errors },
+  } = useFormContext();
   return (
     <React.Fragment>
       <Typography variant="h6" gutterBottom>
@@ -26,45 +16,70 @@ export default function AdvertForm({
       </Typography>
       <Grid container spacing={7} maxWidth="md">
         <Grid item xs={12}>
-          <TextField
-            required
-            id="title"
+          <Controller
             name="title"
-            value={title}
-            onChange={handleAdvertValues}
-            label="Title"
-            fullWidth
-            autoComplete="title"
-            variant="outlined"
+            control={control}
+            render={({ field }) => (
+              <TextField
+                {...field}
+                id="title"
+                name="title"
+                label="Title"
+                fullWidth
+                autoComplete="title"
+                variant="outlined"
+                error={!!errors.title}
+                helperText={errors.title ? errors.title?.message : ""}
+              />
+            )}
           />
         </Grid>
         <Grid item xs={12}>
-          <TextField
-            required
-            id="description"
+          <Controller
             name="description"
-            value={description}
-            onChange={handleAdvertValues}
-            label="Description"
-            fullWidth
-            multiline
-            rows="6"
-            autoComplete="description"
-            variant="outlined"
+            control={control}
+            render={({ field }) => (
+              <TextField
+                {...field}
+                id="description"
+                name="description"
+                label="Description"
+                fullWidth
+                multiline
+                rows="6"
+                autoComplete="description"
+                variant="outlined"
+                error={!!errors.description}
+                helperText={
+                  errors.description ? errors.description?.message : ""
+                }
+              />
+            )}
           />
         </Grid>
         <Grid item xs={12}>
-          <TextField
-            id="extraInfo"
-            name="extraInformation"
-            value={extra_information}
-            onChange={handleAdvertValues}
-            label="Extra information"
-            fullWidth
-            multiline
-            rows="2"
-            autoComplete="extraInformation"
-            variant="outlined"
+          <Controller
+            name="extra_information"
+            control={control}
+            render={({ field }) => (
+              <TextField
+                {...field}
+                id="extra_information"
+                name="extra_information"
+                label="Extra information"
+                fullWidth
+                multiline
+                rows="2"
+                autoComplete="extra_info"
+                variant="outlined"
+                error={!!errors.extra_information}
+                helperText={
+                  errors.extra_information
+                    ? errors.title?.extra_information
+                    : ""
+                }
+              />
+            )}
           />
         </Grid>
       </Grid>

@@ -18,7 +18,10 @@ import { ICaretakerAdvertCreate } from "../../Interfaces/Caretaker/ICaretakerAdv
 import caretakerAdvertisementApi from "../../Api/caretakerAdvertisementApi";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import { useForm } from "react-hook-form";
+import { useForm, FormProvider } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import * as yup from "yup";
+import moment from "moment";
 
 const steps = [
   "Personal information",
@@ -28,69 +31,110 @@ const steps = [
 
 const theme = createTheme();
 
+// function formatDate(date) {
+//   var d = new Date(date),
+//     month = "" + (d.getMonth() + 1),
+//     day = "" + d.getDate(),
+//     year = d.getFullYear();
+
+//   if (month.length < 2) month = "0" + month;
+//   if (day.length < 2) day = "0" + day;
+
+//   return [year, month, day].join("-");
+// }
+
 export default function AdvertiseBase() {
   const navigate = useNavigate();
-
-  const [dateStart, setDateStart] = React.useState<Date | null>(null);
-  const [dateEnd, setDateEnd] = React.useState<Date | null>(null);
-  const [timeStart, setTimeStart] = React.useState<Date | null>(null);
-  const [timeEnd, setTimeEnd] = React.useState<Date | null>(null);
 
   const [priceValues, handlePriceValues] = useFormHook({
     dayPrice: null,
   });
 
-  const { register, handleSubmit, trigger, formState } = useForm();
-
-  const { errors } = formState;
-
-  const required = {
-    value: true,
-    message: "This field is required",
-  };
-
-  const [personalValues, handlePersonalValues, resetPersonalValues] =
-    useFormHook({
-      firstName: "",
-      lastName: "",
-      address: "",
-      phone: "",
-      age: null,
-      work_activities: "",
-      experience: "",
-    });
-
-  const [advertValues, handleAdvertValues, resetAdvertValues] = useFormHook({
+  const defaultValues = {
+    firstName: "",
+    lastName: "",
+    address: "",
+    phone: "",
+    age: "",
+    work_activities: "",
+    experience: "",
+    startDate: "",
+    endDate: "",
+    startTime: "",
+    endTime: "",
+    price: "",
     title: "",
     description: "",
     extra_information: "",
-  });
+  };
+
+  const validationSchema = [
+    yup.object({
+      firstName: yup.string().required("First name is required"),
+      lastName: yup.string().required("Last name is required"),
+      address: yup.string().required("Address is required"),
+      phone: yup.string().required("Phone is required"),
+      age: yup.number().required("Age is required"),
+      work_activities: yup.string().required("Work or activity is required"),
+      experience: yup.string().required("Experience is required"),
+    }),
+    yup.object({
+      startDate: yup.date().required("Start date is required"),
+      endDate: yup.date().required("End date is required"),
+      startTime: yup.string().required("Start time is required"),
+      endTime: yup
+        .string()
+        .required("End time is required")
+        .test("is-greater", "end time should be greater", function (value) {
+          const { startTime } = this.parent;
+          return moment(value, "HH:mm").isSameOrAfter(
+            moment(startTime, "HH:mm")
+          );
+        }),
+      price: yup.number().required("Price is required"),
+    }),
+    yup.object({
+      title: yup.string().required("Title is required"),
+      description: yup.string().required("Description is required"),
+    }),
+  ];
+
   const [activeStep, setActiveStep] = React.useState(0);
 
+  const currentValidationSchema = validationSchema[activeStep];
+  const methods = useForm({
+    shouldUnregister: false,
+    defaultValues,
+    resolver: yupResolver(currentValidationSchema),
+    mode: "onChange",
+  });
+  const { handleSubmit, reset, trigger, getValues } = methods;
+
   const handleNext = async () => {
-    let isValid = false;
+    // let isValid = false;
 
-    switch (activeStep) {
-      case 0:
-        isValid = await trigger(["firstName"], { shouldFocus: true });
-        console.log(`first one ${isValid}`);
-        if (isValid) {
-          setActiveStep(activeStep + 1);
-        }
-        break;
-      case 1:
-        isValid = await trigger(["startDate"], { shouldFocus: true });
-        console.log(`second one ${isValid}`);
-        if (isValid) {
-          console.log("its valid");
-          setActiveStep(activeStep + 1);
-        }
-        break;
-
-      case 2:
-        setActiveStep(activeStep + 1);
-        break;
+    // switch (activeStep) {
+    //   case 0:
+    console.log(`start time is ${getValues("startTime")}`);
+    console.log(`end time is ${getValues("endTime")}`);
+    const isValid = await trigger();
+    if (isValid) {
+      setActiveStep(activeStep + 1);
     }
+    // break;
+    // case 1:
+    //   isValid = await trigger();
+    //   if (isValid) {
+    //     setActiveStep(activeStep + 1);
+    //   }
+    //   break;
+
+    // case 2:
+    //   isValid = await trigger();
+    //   if (isValid) {
+    //     setActiveStep(activeStep + 1);
+    //   }
+    //   break;
   };
 
   const handleBack = () => {
@@ -99,21 +143,21 @@ export default function AdvertiseBase() {
 
   const createAdvertisement = async () => {
     const newAdvert: ICaretakerAdvertCreate = {
-      name: personalValues.firstName,
-      surname: personalValues.lastName,
-      address: personalValues.address,
-      phone: personalValues.phone,
-      age: personalValues.age,
-      activity: personalValues.work_activities,
-      experience: personalValues.experience,
-      title: personalValues.title,
-      description: personalValues.description,
-      extra_information: personalValues.extra_information,
-      startDate: personalValues.dateStart,
-      endDate: personalValues.dateEnd,
-      startTime: personalValues.timeStart,
-      endTime: personalValues.timeEnd,
-      day_price: priceValues.dayPrice,
+      name: getValues("firstName"),
+      surname: getValues("lastName"),
+      address: getValues("address"),
+      phone: getValues("phone"),
+      age: Number(getValues("age")),
+      activity: getValues("work_activities"),
+      experience: getValues("experience"),
+      title: getValues("title"),
+      description: getValues("description"),
+      extra_information: getValues("extra_information"),
+      startDate: new Date(getValues("startDate")),
+      endDate: new Date(getValues("endDate")),
+      startTime: new Date(getValues("startTime")),
+      endTime: new Date(getValues("endTime")),
+      day_price: Number(getValues("price")),
     };
     const result = await caretakerAdvertisementApi.createCaretakerAdvertisement(
       newAdvert
@@ -126,55 +170,12 @@ export default function AdvertiseBase() {
   function getStepContent(step: number) {
     switch (step) {
       case 0:
-        return (
-          <PersInformation
-            firstName={personalValues.firstName}
-            registerFirstName={register("firstName", { required })}
-            firstNameError={errors.firstName}
-            lastName={personalValues.lastName}
-            address={personalValues.address}
-            phone={personalValues.phone}
-            age={personalValues.age}
-            work_activities={personalValues.work_activities}
-            experience={personalValues.experience}
-            handlePersonalValues={handlePersonalValues}
-          />
-        );
+        return <PersInformation />;
       case 1:
-        return (
-          <PriceandDates
-            startDate={dateStart}
-            registerStartDate={register("startDate", { required })}
-            startDateError={errors.startDate}
-            endDate={dateEnd}
-            registerEndDate={register("endDate")}
-            endDateError={errors.endDate}
-            startTime={timeStart}
-            registerStartTime={register("startTime")}
-            startTimeError={errors.startTime}
-            endTime={timeEnd}
-            registerEndTime={register("endTime")}
-            endTimeError={errors.endTime}
-            dayPrice={priceValues.dayPrice}
-            registerDayPrice={register("dayPrice")}
-            dayPriceError={errors.dayPrice}
-            setDateStart={setDateStart}
-            setDateEnd={setDateEnd}
-            setTimeStart={setTimeStart}
-            setTimeEnd={setTimeEnd}
-            handlePriceValues={handlePriceValues}
-          />
-        );
+        return <PriceandDates />;
 
       case 2:
-        return (
-          <AdvertForm
-            title={advertValues.title}
-            description={advertValues.description}
-            extra_information={advertValues.title}
-            handleAdvertValues={handleAdvertValues}
-          />
-        );
+        return <AdvertForm />;
       default:
         throw new Error("Unknown step");
     }
@@ -183,48 +184,70 @@ export default function AdvertiseBase() {
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
-      <form>
-        <Container component="main" maxWidth="sm" sx={{ mb: 4 }}>
-          <Paper
-            variant="outlined"
-            sx={{ my: { xs: 3, md: 6 }, p: { xs: 2, md: 3 } }}
-          >
-            <Typography component="h1" variant="h4" align="center">
-              Advertisement creation
-            </Typography>
-            <Stepper activeStep={activeStep} sx={{ pt: 3, pb: 5 }}>
-              {steps.map((label) => (
-                <Step key={label}>
-                  <StepLabel>{label}</StepLabel>
-                </Step>
-              ))}
-            </Stepper>
-            <React.Fragment>
-              {activeStep === steps.length ? (
-                createAdvertisement()
-              ) : (
-                <React.Fragment>
-                  {getStepContent(activeStep)}
-                  <Box sx={{ display: "flex", justifyContent: "flex-end" }}>
-                    {activeStep !== 0 && (
-                      <Button onClick={handleBack} sx={{ mt: 3, ml: 1 }}>
-                        Back
-                      </Button>
-                    )}
-                    <Button
-                      variant="contained"
-                      onClick={handleNext}
-                      sx={{ mt: 3, ml: 1 }}
-                    >
-                      {activeStep === steps.length - 1 ? "Create" : "Next"}
-                    </Button>
-                  </Box>
-                </React.Fragment>
-              )}
-            </React.Fragment>
-          </Paper>
-        </Container>
-      </form>
+      <FormProvider {...methods}>
+        <form action="/">
+          <Container component="main" maxWidth="md" sx={{ mb: 4 }}>
+            <Paper
+              variant="outlined"
+              sx={{ my: { xs: 3, md: 6 }, p: { xs: 2, md: 3 } }}
+            >
+              <Typography component="h1" variant="h4" align="center">
+                Advertisement creation
+              </Typography>
+              <Stepper activeStep={activeStep} sx={{ pt: 6, pb: 5 }}>
+                {steps.map((label) => (
+                  <Step key={label}>
+                    <StepLabel>{label}</StepLabel>
+                  </Step>
+                ))}
+              </Stepper>
+              <React.Fragment>
+                {activeStep === steps.length ? (
+                  createAdvertisement()
+                ) : (
+                  <React.Fragment>
+                    {getStepContent(activeStep)}
+                    <Box sx={{ display: "flex", justifyContent: "flex-end" }}>
+                      {activeStep !== 0 && (
+                        <Button onClick={handleBack} sx={{ mt: 3, ml: 1 }}>
+                          Back
+                        </Button>
+                      )}
+                      {activeStep === steps.length - 1 ? (
+                        <Button
+                          variant="contained"
+                          onClick={createAdvertisement}
+                          sx={{ mt: 3, ml: 1 }}
+                        >
+                          Submit
+                        </Button>
+                      ) : (
+                        <Button
+                          variant="contained"
+                          onClick={handleNext}
+                          sx={{ mt: 3, ml: 1 }}
+                        >
+                          Next
+                        </Button>
+                      )}
+                    </Box>
+                  </React.Fragment>
+                )}
+              </React.Fragment>
+            </Paper>
+          </Container>
+        </form>
+      </FormProvider>
     </ThemeProvider>
   );
+}
+
+{
+  /* <Button
+variant="contained"
+onClick={handleNext}
+sx={{ mt: 3, ml: 1 }}
+>
+{activeStep === steps.length - 1 ? "Create" : "Next"}
+</Button> */
 }

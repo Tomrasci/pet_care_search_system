@@ -4,33 +4,18 @@ import Typography from "@mui/material/Typography";
 import TextField from "@mui/material/TextField";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Checkbox from "@mui/material/Checkbox";
-import { UseFormRegisterReturn } from "react-hook-form";
+import {
+  Controller,
+  useFormContext,
+  UseFormRegisterReturn,
+} from "react-hook-form";
 
-interface Props {
-  firstName: string;
-  registerFirstName: UseFormRegisterReturn;
-  firstNameError: { message: string };
-  lastName: string;
-  address: string;
-  phone: string;
-  age: number;
-  work_activities: string;
-  experience: string;
-  handlePersonalValues: (e: React.ChangeEvent<HTMLInputElement>) => void;
-}
+export default function PersInformation({}) {
+  const {
+    control,
+    formState: { errors },
+  } = useFormContext();
 
-export default function PersInformation({
-  firstName,
-  lastName,
-  address,
-  phone,
-  age,
-  work_activities,
-  experience,
-  registerFirstName,
-  firstNameError,
-  handlePersonalValues,
-}: Props) {
   return (
     <React.Fragment>
       <Typography variant="h6" gutterBottom>
@@ -38,95 +23,148 @@ export default function PersInformation({
       </Typography>
       <Grid container spacing={3} maxWidth="md">
         <Grid item xs={12} sm={6}>
-          <TextField
-            {...registerFirstName}
-            className={`form-control ${firstNameError ? "is-invalid" : ""}`}
-            id="firstName"
-            value={firstName}
+          <Controller
             name="firstName"
-            label="First name"
-            fullWidth
-            autoComplete="given-name"
-            variant="standard"
-            onChange={handlePersonalValues}
+            defaultValue={""}
+            control={control}
+            render={({ field }) => (
+              <TextField
+                {...field}
+                id="firstName"
+                name="firstName"
+                label="First name"
+                fullWidth
+                autoComplete="given-name"
+                variant="standard"
+                error={!!errors.firstName}
+                helperText={errors.firstName ? errors.firstName?.message : ""}
+              />
+            )}
           />
-          <Typography color="red">{firstNameError?.message}</Typography>
         </Grid>
         <Grid item xs={12} sm={6}>
-          <TextField
-            required
-            id="lastName"
-            value={lastName}
+          <Controller
             name="lastName"
-            label="Last name"
-            fullWidth
-            autoComplete="family-name"
-            variant="standard"
-            onChange={handlePersonalValues}
+            control={control}
+            render={({ field }) => (
+              <TextField
+                {...field}
+                required
+                id="lastName"
+                name="lastName"
+                label="Last name"
+                fullWidth
+                autoComplete="family-name"
+                variant="standard"
+                error={!!errors.lastName}
+                helperText={errors.lastName ? errors.lastName?.message : ""}
+              />
+            )}
           />
         </Grid>
         <Grid item xs={12} sm={6}>
-          <TextField
-            required
-            value={address}
-            id="address"
+          <Controller
             name="address"
-            label="Address"
-            fullWidth
-            autoComplete="Address"
-            variant="standard"
-            onChange={handlePersonalValues}
+            control={control}
+            render={({ field }) => (
+              <TextField
+                {...field}
+                required
+                id="address"
+                name="address"
+                label="Address"
+                fullWidth
+                autoComplete="family-name"
+                variant="standard"
+                error={!!errors.address}
+                helperText={errors.address ? errors.address?.message : ""}
+              />
+            )}
           />
         </Grid>
         <Grid item xs={12} sm={6}>
-          <TextField
-            required
-            value={phone}
-            id="phone"
+          <Controller
             name="phone"
-            label="Phone number"
-            fullWidth
-            autoComplete="phone number"
-            variant="standard"
-            onChange={handlePersonalValues}
+            control={control}
+            render={({ field }) => (
+              <TextField
+                {...field}
+                required
+                id="phone"
+                name="phone"
+                label="Phone"
+                fullWidth
+                autoComplete="family-name"
+                variant="standard"
+                error={!!errors.phone}
+                helperText={errors.phone ? errors.phone?.message : ""}
+              />
+            )}
           />
         </Grid>
         <Grid item xs={12} sm={6}>
-          <TextField
-            required
-            value={age}
-            id="age"
+          <Controller
             name="age"
-            label="Age"
-            fullWidth
-            autoComplete="age"
-            variant="standard"
-            onChange={handlePersonalValues}
+            control={control}
+            render={({ field }) => (
+              <TextField
+                {...field}
+                required
+                id="age"
+                name="age"
+                label="Age"
+                type="number"
+                fullWidth
+                autoComplete="family-name"
+                variant="standard"
+                error={!!errors.age}
+                helperText={
+                  errors.age ? "Age is required and must be a number" : ""
+                }
+              />
+            )}
           />
         </Grid>
         <Grid item xs={12} sm={6}>
-          <TextField
-            required
-            value={work_activities}
-            id="work_activities"
+          <Controller
             name="work_activities"
-            label="Work/activities"
-            fullWidth
-            autoComplete="work-activities"
-            variant="standard"
-            onChange={handlePersonalValues}
+            control={control}
+            render={({ field }) => (
+              <TextField
+                {...field}
+                required
+                id="work_activities"
+                name="work_activities"
+                label="Work/Activities"
+                fullWidth
+                autoComplete="family-name"
+                variant="standard"
+                error={!!errors.work_activities}
+                helperText={
+                  errors.work_activities ? errors.work_activities?.message : ""
+                }
+              />
+            )}
           />
         </Grid>
         <Grid item xs={12}>
-          <TextField
-            required
-            value={experience}
-            id="experience"
+          <Controller
             name="experience"
-            label="Experience"
-            fullWidth
-            variant="standard"
-            onChange={handlePersonalValues}
+            control={control}
+            render={({ field }) => (
+              <TextField
+                {...field}
+                required
+                id="experience"
+                name="experience"
+                label="Experience"
+                fullWidth
+                autoComplete="family-name"
+                variant="standard"
+                error={!!errors.experience}
+                helperText={errors.experience ? errors.experience?.message : ""}
+              />
+            )}
           />
         </Grid>
       </Grid>
