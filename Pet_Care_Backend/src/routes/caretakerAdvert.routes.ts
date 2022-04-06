@@ -8,4 +8,21 @@ router.post(
   caretakerAdvertController.createCaretakerAdvertisement
 );
 
+router.get('/caretakerAdverts', caretakerAdvertController.getCareTakerAdverts);
+
+router.get(
+  '/caretakerAdverts/:id',
+  caretakerAdvertController.getCareTakerAdvert
+);
+
+router.put(
+  '/caretakerAdverts/:id',
+  caretakerAdvertController.updateCareTakerAdvert
+);
+
+router.delete(
+  '/caretakerAdverts/:id',
+  caretakerAdvertController.deleteCareTakerAdvert
+);
+
 export default router;

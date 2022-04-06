@@ -12,12 +12,30 @@ import { Box } from "@mui/material";
 import { DateRange } from "@mui/lab/DateRangePicker/RangeTypes";
 import { Controller } from "react-hook-form";
 import { lt } from "date-fns/locale";
+import { useState, useEffect } from "react";
+import serviceTypeApi from "../../Api/serviceTypeApi";
+import petTypeApi from "../../Api/petTypeApi";
+import { IServiceType } from "../../Interfaces/Caretaker/IServiceType";
+import { IPetType } from "../../Interfaces/IPetType";
 
 export default function PriceandDates() {
+  const [petTypes, setPetTypes] = React.useState<IPetType[]>([]);
+  const [serviceTypes, setServiceTypes] = useState<IServiceType[]>([]);
+
   const {
     control,
     formState: { errors },
   } = useFormContext();
+
+  useEffect(() => {
+    async function getTypes() {
+      const petTypesGet = await petTypeApi.getPetTypes();
+      setPetTypes(petTypesGet);
+      const serviceTypesGet = await serviceTypeApi.getServiceTypes();
+      setServiceTypes(serviceTypesGet);
+    }
+    getTypes();
+  }, []);
 
   return (
     <React.Fragment>
@@ -25,7 +43,7 @@ export default function PriceandDates() {
         Schedule and price
       </Typography>
       <LocalizationProvider dateAdapter={AdapterDateFns} locale={lt}>
-        <Grid container spacing={3} maxWidth="md">
+        <Grid container spacing={3} maxWidth="sm">
           <Grid item xs={12} md={6}>
             <Controller
               name="startDate"
@@ -148,6 +166,7 @@ export default function PriceandDates() {
           <Grid item xs={2} md={1}>
             <p>Eur</p>
           </Grid>
+          <Grid item xs={4}></Grid>
         </Grid>
       </LocalizationProvider>
     </React.Fragment>

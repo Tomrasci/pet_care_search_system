@@ -3,6 +3,8 @@ import { Request, Response } from 'express';
 import cors from 'cors';
 import apiErrorHandler from './error/apiErrorHandler';
 import caretakerAdvertisements from './src/routes/caretakerAdvert.routes';
+import petTypes from './src/routes/petType.routes';
+import serviceTypes from './src/routes/serviceType.routes';
 require('dotenv').config();
 
 const app = express();
@@ -17,6 +19,8 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(router);
 app.use(caretakerAdvertisements);
+app.use(petTypes);
+app.use(serviceTypes);
 app.use(apiErrorHandler);
 
 app.get('/', (req: Request, res: Response) => {

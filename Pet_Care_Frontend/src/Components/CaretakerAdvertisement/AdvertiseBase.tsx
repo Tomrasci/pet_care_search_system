@@ -1,27 +1,26 @@
-import * as React from "react";
-import CssBaseline from "@mui/material/CssBaseline";
+import { yupResolver } from "@hookform/resolvers/yup";
 import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
 import Container from "@mui/material/Container";
+import CssBaseline from "@mui/material/CssBaseline";
 import Paper from "@mui/material/Paper";
-import Stepper from "@mui/material/Stepper";
 import Step from "@mui/material/Step";
 import StepLabel from "@mui/material/StepLabel";
-import Button from "@mui/material/Button";
-import Link from "@mui/material/Link";
-import Typography from "@mui/material/Typography";
+import Stepper from "@mui/material/Stepper";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-import PersInformation from "./PersInformation";
-import PriceandDates from "./PriceandDates";
-import AdvertForm from "./AdvertForm";
-import { useFormHook } from "../../Utils/useFormHook";
-import { ICaretakerAdvertCreate } from "../../Interfaces/Caretaker/ICaretakerAdvertCreate";
-import caretakerAdvertisementApi from "../../Api/caretakerAdvertisementApi";
+import Typography from "@mui/material/Typography";
+import moment from "moment";
+import * as React from "react";
+import { FormProvider, useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import { useForm, FormProvider } from "react-hook-form";
-import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
-import moment from "moment";
+import caretakerAdvertisementApi from "../../Api/caretakerAdvertisementApi";
+import { ICaretakerAdvertCreate } from "../../Interfaces/Caretaker/ICaretakerAdvertCreate";
+import { useFormHook } from "../../Utils/useFormHook";
+import AdvertForm from "./AdvertForm";
+import PersInformation from "./PersInformation";
+import PriceandDates from "./PriceandDates";
 
 const steps = [
   "Personal information",
@@ -31,20 +30,9 @@ const steps = [
 
 const theme = createTheme();
 
-// function formatDate(date) {
-//   var d = new Date(date),
-//     month = "" + (d.getMonth() + 1),
-//     day = "" + d.getDate(),
-//     year = d.getFullYear();
-
-//   if (month.length < 2) month = "0" + month;
-//   if (day.length < 2) day = "0" + day;
-
-//   return [year, month, day].join("-");
-// }
-
 export default function AdvertiseBase() {
   const navigate = useNavigate();
+  moment.locale("lt");
 
   const [priceValues, handlePriceValues] = useFormHook({
     dayPrice: null,
@@ -81,16 +69,11 @@ export default function AdvertiseBase() {
     yup.object({
       startDate: yup.date().required("Start date is required"),
       endDate: yup.date().required("End date is required"),
-      startTime: yup.string().required("Start time is required"),
+      startTime: yup.date().required("Start time is required"),
       endTime: yup
-        .string()
+        .date()
         .required("End time is required")
-        .test("is-greater", "end time should be greater", function (value) {
-          const { startTime } = this.parent;
-          return moment(value, "HH:mm").isSameOrAfter(
-            moment(startTime, "HH:mm")
-          );
-        }),
+        .min(yup.ref("startTime"), "End time must be later than start time"),
       price: yup.number().required("Price is required"),
     }),
     yup.object({
@@ -111,30 +94,10 @@ export default function AdvertiseBase() {
   const { handleSubmit, reset, trigger, getValues } = methods;
 
   const handleNext = async () => {
-    // let isValid = false;
-
-    // switch (activeStep) {
-    //   case 0:
-    console.log(`start time is ${getValues("startTime")}`);
-    console.log(`end time is ${getValues("endTime")}`);
     const isValid = await trigger();
     if (isValid) {
       setActiveStep(activeStep + 1);
     }
-    // break;
-    // case 1:
-    //   isValid = await trigger();
-    //   if (isValid) {
-    //     setActiveStep(activeStep + 1);
-    //   }
-    //   break;
-
-    // case 2:
-    //   isValid = await trigger();
-    //   if (isValid) {
-    //     setActiveStep(activeStep + 1);
-    //   }
-    //   break;
   };
 
   const handleBack = () => {
@@ -162,7 +125,6 @@ export default function AdvertiseBase() {
     const result = await caretakerAdvertisementApi.createCaretakerAdvertisement(
       newAdvert
     );
-    console.log(result);
     toast.success("Advertisement creation successful");
     navigate("/");
   };
@@ -240,14 +202,4 @@ export default function AdvertiseBase() {
       </FormProvider>
     </ThemeProvider>
   );
-}
-
-{
-  /* <Button
-variant="contained"
-onClick={handleNext}
-sx={{ mt: 3, ml: 1 }}
->
-{activeStep === steps.length - 1 ? "Create" : "Next"}
-</Button> */
 }

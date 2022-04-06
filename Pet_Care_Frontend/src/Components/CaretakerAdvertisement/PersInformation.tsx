@@ -10,6 +10,15 @@ import {
   UseFormRegisterReturn,
 } from "react-hook-form";
 
+const languages = [
+  "Lithuanian",
+  "English",
+  "French",
+  "German",
+  "Russian",
+  "Spanish",
+];
+
 export default function PersInformation({}) {
   const {
     control,

@@ -14,7 +14,7 @@ export default function AdvertForm() {
       <Typography variant="h6" gutterBottom>
         Advertisement details
       </Typography>
-      <Grid container spacing={7} maxWidth="md">
+      <Grid container spacing={7} maxWidth="sm">
         <Grid item xs={12}>
           <Controller
             name="title"

@@ -4,7 +4,7 @@ import http from "../Utils/httpRequestBody";
 const createCaretakerAdvertisement = async (
   caretakerAdvert: ICaretakerAdvertCreate
 ) => {
-  return http.post("./caretakerAdverts", caretakerAdvert);
+  return http.post("/caretakerAdverts", caretakerAdvert);
 };
 
 export default { createCaretakerAdvertisement };

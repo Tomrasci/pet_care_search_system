@@ -7,7 +7,7 @@ import ApiError from '../../error/ApiError';
 import isEmpty from '../utils/Empty';
 import { ResponseCodes } from '../utils/responseCodes';
 
-var jwt = require('jsonwebtoken');
+const jwt = require('jsonwebtoken');
 
 const register = async (req: Request, res: Response, next: NextFunction) => {
   const { error } = validation.validateUser(req.body);
