@@ -15,7 +15,39 @@ const getPetTypes = async (req: Request, res: Response, next: NextFunction) => {
   return res.status(ResponseCodes.OK).json(petTypes);
 };
 
+const getCaretakerPets = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  const caretakerPets = await petTypeService.getCaretakerPets(
+    req.body.pid,
+    req.body.aid
+  );
+  logger.info(
+    `Caretaker pets have been retrieved  ${JSON.stringify(caretakerPets)}`
+  );
+  return res.status(ResponseCodes.OK).json(caretakerPets);
+};
+
+const insertCaretakerPets = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    await petTypeService.insertCaretakerPets(req.body.pets);
+    logger.info(
+      `Caretaker pets have been inserted  ${JSON.stringify(req.body.pets)}`
+    );
+    return res.status(ResponseCodes.OK).json(req.body.pets);
+  } catch (err) {
+    console.log(err);
+  }
+};
 export default {
   getPetType,
-  getPetTypes
+  getPetTypes,
+  getCaretakerPets,
+  insertCaretakerPets
 };

@@ -93,7 +93,7 @@ const Navbar = ({ loadUsers, currentUser }: any) => {
               <Tabs
                 indicatorColor="secondary"
                 textColor="inherit"
-                value={value}
+                value={0}
                 onChange={(e, val) => setValue(val)}
               >
                 {guestLinksArray.map((link: any, index: any) => (

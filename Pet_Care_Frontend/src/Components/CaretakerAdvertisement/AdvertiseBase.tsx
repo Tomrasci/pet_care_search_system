@@ -21,6 +21,7 @@ import { useFormHook } from "../../Utils/useFormHook";
 import AdvertForm from "./AdvertForm";
 import PersInformation from "./PersInformation";
 import PriceandDates from "./PriceandDates";
+import useState from "react";
 
 const steps = [
   "Personal information",
@@ -33,10 +34,6 @@ const theme = createTheme();
 export default function AdvertiseBase() {
   const navigate = useNavigate();
   moment.locale("lt");
-
-  const [priceValues, handlePriceValues] = useFormHook({
-    dayPrice: null,
-  });
 
   const defaultValues = {
     firstName: "",
@@ -54,7 +51,28 @@ export default function AdvertiseBase() {
     title: "",
     description: "",
     extra_information: "",
+    languages: [],
   };
+
+  const [state, setState] = React.useState({
+    Lithuanian: false,
+    English: false,
+    French: false,
+    German: false,
+    Russian: false,
+  });
+
+  const [clicked, setClicked] = React.useState(false);
+  const [error, setError] = React.useState(false);
+
+  const languageArray = [
+    { id: 1, value: "Lithuanian" },
+    { id: 2, value: "English" },
+    { id: 3, value: "French" },
+    { id: 4, value: "German" },
+    { id: 5, value: "Russian" },
+    { id: 6, value: "Spanish" },
+  ];
 
   const validationSchema = [
     yup.object({
@@ -65,6 +83,7 @@ export default function AdvertiseBase() {
       age: yup.number().required("Age is required"),
       work_activities: yup.string().required("Work or activity is required"),
       experience: yup.string().required("Experience is required"),
+      languages: yup.array().min(1, "Atleast one language is required"),
     }),
     yup.object({
       startDate: yup.date().required("Start date is required"),
@@ -93,9 +112,13 @@ export default function AdvertiseBase() {
   });
   const { handleSubmit, reset, trigger, getValues } = methods;
 
+  const sendError = (error: boolean) => {
+    setError(error);
+  };
+
   const handleNext = async () => {
     const isValid = await trigger();
-    if (isValid) {
+    if (isValid && !error) {
       setActiveStep(activeStep + 1);
     }
   };
@@ -132,7 +155,7 @@ export default function AdvertiseBase() {
   function getStepContent(step: number) {
     switch (step) {
       case 0:
-        return <PersInformation />;
+        return <PersInformation sendError={sendError} />;
       case 1:
         return <PriceandDates />;
 

@@ -7,4 +7,11 @@ router.get('/serviceTypes', serviceTypeController.getServiceTypes);
 
 router.get('/serviceTypes/:id', serviceTypeController.getServiceType);
 
+router.get('/caretakerServices', serviceTypeController.getCaretakerServices);
+
+router.post(
+  '/caretakerServices',
+  serviceTypeController.insertCaretakerServices
+);
+
 export default router;
