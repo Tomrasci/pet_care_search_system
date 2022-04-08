@@ -4,6 +4,7 @@ import Typography from "@mui/material/Typography";
 import TextField from "@mui/material/TextField";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Checkbox from "@mui/material/Checkbox";
+import { useEffect } from "react";
 import {
   Controller,
   useFormContext,
@@ -12,46 +13,54 @@ import {
 
 interface Props {
   sendError: (e: boolean) => void;
+  clicked: boolean;
+  setSelected: any;
+  languages: any;
+  checkedState: {
+    value: string;
+    checked: boolean;
+  }[];
+  setCheckedState: any;
 }
 
-const languages = [
-  { id: 1, value: "Lithuanian" },
-  { id: 2, value: "English" },
-  { id: 3, value: "French" },
-  { id: 4, value: "German" },
-  { id: 5, value: "Russian" },
-  { id: 6, value: "Spanish" },
-];
-
-export default function PersInformation({ sendError }: Props) {
+export default function PersInformation({
+  sendError,
+  clicked,
+  setSelected,
+  languages,
+  checkedState,
+  setCheckedState,
+}: Props) {
   const {
     control,
     formState: { errors },
   } = useFormContext();
 
-  const [state, setState] = React.useState({
-    Lithuanian: false,
-    English: false,
-    French: false,
-    German: false,
-    Russian: false,
-    Spanish: false,
-  });
+  let error = false;
 
-  function handleCheckbox(event: React.ChangeEvent<HTMLInputElement>) {
-    setState({
-      ...state,
-      [event.target.name]: event.target.checked,
-    });
-  }
+  function handleCheckbox(position: number) {
+    const updatedCheckedState = checkedState.map((item: any, index: number) =>
+      index === position
+        ? { value: item.value, checked: !item.checked }
+        : { value: item.value, checked: item.checked }
+    );
 
-  const { Lithuanian, English, French, German, Russian, Spanish } = state;
-  const error =
-    [Lithuanian, English, French, German, Russian, Spanish].filter((v) => v)
-      .length < 1;
-  if (error) {
-    sendError(true);
+    setCheckedState(updatedCheckedState);
   }
+  useEffect(() => {
+    const selectedLanguages = checkedState.filter(
+      (language) => language.checked === true
+    );
+    // console.log(`selected languages are ${JSON.stringify(selectedLanguages)}`);
+    setSelected(selectedLanguages);
+
+    error = checkedState.filter((x) => x.checked === true).length < 1;
+    if (error) {
+      sendError(true);
+    } else {
+      sendError(false);
+    }
+  }, [checkedState]);
 
   return (
     <React.Fragment>
@@ -203,28 +212,35 @@ export default function PersInformation({ sendError }: Props) {
             )}
           />
         </Grid>
-        {languages.map((language, index) => {
+        <Grid item xs={12} sx={{ mt: 3 }}>
+          <Typography>Languages</Typography>
+        </Grid>
+        {languages.map((language: any, index: number) => {
           return (
             <Grid item xs={2}>
               <FormControlLabel
                 control={
                   <Checkbox
-                    onChange={handleCheckbox}
-                    name="languages"
-                    key={language.id}
-                    id={language.value}
-                    value={language.value}
+                    onChange={() => handleCheckbox(index)}
+                    name={language}
+                    key={index}
+                    id={language}
+                    value={language}
+                    checked={checkedState[index].checked}
                   />
                 }
-                label={language.value}
+                key={index}
+                label={language}
               />
             </Grid>
           );
         })}
-        {error && (
-          <Typography color="red">
-            Atleast one language must be selected
-          </Typography>
+        {clicked && error && (
+          <Grid item xs={12}>
+            <Typography color="red">
+              Atleast one language must be selected
+            </Typography>
+          </Grid>
         )}
       </Grid>
     </React.Fragment>

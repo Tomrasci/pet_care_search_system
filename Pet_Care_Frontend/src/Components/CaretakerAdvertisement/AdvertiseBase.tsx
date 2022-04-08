@@ -22,6 +22,10 @@ import AdvertForm from "./AdvertForm";
 import PersInformation from "./PersInformation";
 import PriceandDates from "./PriceandDates";
 import useState from "react";
+import { IPetType } from "../../Interfaces/IPetType";
+import { IServiceType } from "../../Interfaces/Caretaker/IServiceType";
+import petTypeApi from "../../Api/petTypeApi";
+import serviceTypeApi from "../../Api/serviceTypeApi";
 
 const steps = [
   "Personal information",
@@ -51,29 +55,88 @@ export default function AdvertiseBase() {
     title: "",
     description: "",
     extra_information: "",
-    languages: [],
   };
 
-  const [state, setState] = React.useState({
-    Lithuanian: false,
-    English: false,
-    French: false,
-    German: false,
-    Russian: false,
+  const languages = [
+    "Lithuanian",
+    "English",
+    "French",
+    "German",
+    "Russian",
+    "Spanish",
+  ];
+
+  const languageArray = languages.map((language) => {
+    return { value: language, checked: false };
   });
+
+  const [petTypes, setPetTypes] = React.useState<IPetType[]>([]);
+  const [serviceTypes, setServiceTypes] = React.useState<IServiceType[]>([]);
+
+  const [clickedPet, setClickedPet] = React.useState(false);
+  const [errorPet, setErrorPet] = React.useState(false);
+  const [checkedStatePet, setCheckedStatePet] =
+    React.useState<{ value: string; checked: boolean }[]>();
+  const [selectedPet, setSelectedPet] = React.useState([]);
+
+  React.useEffect(() => {
+    console.log("Getting types");
+    async function getTypes() {
+      const petTypesGet = await petTypeApi.getPetTypes();
+      setPetTypes(petTypesGet);
+      const serviceTypesGet = await serviceTypeApi.getServiceTypes();
+      setServiceTypes(serviceTypesGet);
+      const petArray = petTypes.map((pet) => {
+        return { value: pet.name, checked: false };
+      });
+      setCheckedStatePet(petArray);
+    }
+    getTypes();
+  }, []);
+
+  // console.log(`pet array is ${JSON.stringify(petArray)}`);
+  // console.log(`language array is ${JSON.stringify(languageArray)}`);
+
+  // console.log(`language array is ${JSON.stringify(languageArray)}`);
+
+  // console.log(`pet array first is ${JSON.stringify(petArray[0])}`);
+  // console.log(
+  //   `pet array first checked is ${JSON.stringify(petArray[0].checked)}`
+  // );
+
+  const serviceArray = serviceTypes.map((service) => {
+    return { value: service, checked: false };
+  });
+
+  // console.log(`INITIAL selectedPET ${JSON.stringify(selectedPet)}`);
+
+  console.log(`INITIAL CHECKEDSTATEPET ${JSON.stringify(checkedStatePet)}`);
+
+  const [clickedService, setClickedService] = React.useState(false);
+  const [errorService, setErrorService] = React.useState(false);
+  const [checkedStateService, setCheckedStateService] =
+    React.useState(serviceArray);
+  const [selectedService, setSelectedService] = React.useState(serviceArray);
 
   const [clicked, setClicked] = React.useState(false);
   const [error, setError] = React.useState(false);
+  const [checkedState, setCheckedState] = React.useState(languageArray);
+  const [selected, setSelected] = React.useState(languageArray);
 
-  const languageArray = [
-    { id: 1, value: "Lithuanian" },
-    { id: 2, value: "English" },
-    { id: 3, value: "French" },
-    { id: 4, value: "German" },
-    { id: 5, value: "Russian" },
-    { id: 6, value: "Spanish" },
-  ];
+  console.log(`pet array IN is ${JSON.stringify(checkedStatePet)}`);
+  console.log(`language IN array is ${JSON.stringify(checkedState)}`);
 
+  const sendError = (error: boolean) => {
+    setError(error);
+  };
+
+  const sendErrorPet = (petError: boolean) => {
+    setErrorPet(petError);
+  };
+
+  const sendErrorService = (serviceError: boolean) => {
+    setErrorService(serviceError);
+  };
   const validationSchema = [
     yup.object({
       firstName: yup.string().required("First name is required"),
@@ -83,7 +146,6 @@ export default function AdvertiseBase() {
       age: yup.number().required("Age is required"),
       work_activities: yup.string().required("Work or activity is required"),
       experience: yup.string().required("Experience is required"),
-      languages: yup.array().min(1, "Atleast one language is required"),
     }),
     yup.object({
       startDate: yup.date().required("Start date is required"),
@@ -112,12 +174,17 @@ export default function AdvertiseBase() {
   });
   const { handleSubmit, reset, trigger, getValues } = methods;
 
-  const sendError = (error: boolean) => {
-    setError(error);
-  };
-
   const handleNext = async () => {
+    if (activeStep === 0) {
+      setClicked(true);
+      console.log("first step is 0");
+    } else if (activeStep === 1) {
+      setClickedPet(true);
+      console.log("second step is 1");
+    }
     const isValid = await trigger();
+    console.log(`isValid value is ${isValid}`);
+    console.log(`error value is ${error}`);
     if (isValid && !error) {
       setActiveStep(activeStep + 1);
     }
@@ -128,6 +195,8 @@ export default function AdvertiseBase() {
   };
 
   const createAdvertisement = async () => {
+    const checkedLanguages = selected.map((language) => language.value);
+    // console.log(`checked languages are ${JSON.stringify(checkedLanguages)}`);
     const newAdvert: ICaretakerAdvertCreate = {
       name: getValues("firstName"),
       surname: getValues("lastName"),
@@ -148,16 +217,50 @@ export default function AdvertiseBase() {
     const result = await caretakerAdvertisementApi.createCaretakerAdvertisement(
       newAdvert
     );
-    toast.success("Advertisement creation successful");
-    navigate("/");
+    if (result.status !== 201) {
+      toast.error("Advertisement creation failed");
+    } else {
+      toast.success("Advertisement creation successful");
+      navigate("/");
+    }
   };
+
+  const checkedLanguages = selected.map((language) => language.value);
+  // console.log(`checked languages are ${JSON.stringify(checkedLanguages)}`);
 
   function getStepContent(step: number) {
     switch (step) {
       case 0:
-        return <PersInformation sendError={sendError} />;
+        return (
+          <PersInformation
+            sendError={sendError}
+            clicked={clicked}
+            setSelected={setSelected}
+            languages={languages}
+            checkedState={checkedState}
+            setCheckedState={setCheckedState}
+          />
+        );
       case 1:
-        return <PriceandDates />;
+        console.log(
+          `before sending checkedPets ${JSON.stringify(checkedStatePet)}`
+        );
+        return (
+          <PriceandDates
+            sendErrorPet={sendErrorPet}
+            clickedPet={clickedPet}
+            setSelectedPet={setSelectedPet}
+            checkedStatePet={checkedStatePet}
+            setCheckedStatePet={setCheckedStatePet}
+            petTypes={petTypes}
+            sendErrorService={sendErrorService}
+            clickedService={clickedService}
+            setSelectedService={setSelectedService}
+            checkedStateService={checkedStateService}
+            setCheckedStateService={setCheckedStateService}
+            serviceTypes={serviceTypes}
+          />
+        );
 
       case 2:
         return <AdvertForm />;
@@ -170,7 +273,7 @@ export default function AdvertiseBase() {
     <ThemeProvider theme={theme}>
       <CssBaseline />
       <FormProvider {...methods}>
-        <form action="/">
+        <form>
           <Container component="main" maxWidth="md" sx={{ mb: 4 }}>
             <Paper
               variant="outlined"

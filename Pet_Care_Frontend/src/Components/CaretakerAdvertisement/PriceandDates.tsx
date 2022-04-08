@@ -8,7 +8,7 @@ import DatePicker from "@mui/lab/DatePicker";
 import TimePicker from "@mui/lab/TimePicker";
 import { useFormContext, UseFormRegisterReturn } from "react-hook-form";
 import { DateRangePicker } from "@mui/lab";
-import { Box } from "@mui/material";
+import { Box, Checkbox, FormControlLabel } from "@mui/material";
 import { DateRange } from "@mui/lab/DateRangePicker/RangeTypes";
 import { Controller } from "react-hook-form";
 import { lt } from "date-fns/locale";
@@ -17,25 +17,72 @@ import serviceTypeApi from "../../Api/serviceTypeApi";
 import petTypeApi from "../../Api/petTypeApi";
 import { IServiceType } from "../../Interfaces/Caretaker/IServiceType";
 import { IPetType } from "../../Interfaces/IPetType";
+import { string } from "yup/lib/locale";
 
-export default function PriceandDates() {
-  const [petTypes, setPetTypes] = React.useState<IPetType[]>([]);
-  const [serviceTypes, setServiceTypes] = useState<IServiceType[]>([]);
+interface Props {
+  sendErrorPet: (e: boolean) => void;
+  clickedPet: boolean;
+  setSelectedPet: any;
+  checkedStatePet: { value: IPetType; checked: boolean }[];
+  setCheckedStatePet: any;
+  petTypes: any;
+  sendErrorService: (e: boolean) => void;
+  clickedService: boolean;
+  setSelectedService: any;
+  checkedStateService: { value: IServiceType; checked: boolean }[];
+  setCheckedStateService: any;
+  serviceTypes: any;
+}
 
+export default function PriceandDates({
+  sendErrorPet,
+  clickedPet,
+  setSelectedPet,
+  checkedStatePet,
+  setCheckedStatePet,
+  petTypes,
+  sendErrorService,
+  clickedService,
+  setSelectedService,
+  checkedStateService,
+  setCheckedStateService,
+  serviceTypes,
+}: Props) {
   const {
     control,
     formState: { errors },
   } = useFormContext();
 
+  console.log(`checked state pet ${JSON.stringify(checkedStatePet)}`);
+  console.log(
+    `checked state pet first is  ${JSON.stringify(checkedStatePet[0])}`
+  );
+
+  let error = false;
+
+  function handleCheckbox(position: number) {
+    const updatedCheckedState = checkedStatePet.map(
+      (item: any, index: number) =>
+        index === position
+          ? { value: item.value, checked: !item.checked }
+          : { value: item.value, checked: item.checked }
+    );
+
+    setCheckedStatePet(updatedCheckedState);
+  }
+
   useEffect(() => {
-    async function getTypes() {
-      const petTypesGet = await petTypeApi.getPetTypes();
-      setPetTypes(petTypesGet);
-      const serviceTypesGet = await serviceTypeApi.getServiceTypes();
-      setServiceTypes(serviceTypesGet);
+    const selectedPets = checkedStatePet.filter((pet) => pet.checked === true);
+    // console.log(`selected languages are ${JSON.stringify(selectedLanguages)}`);
+    setSelectedPet(selectedPets);
+
+    error = checkedStatePet.filter((x) => x.checked === true).length < 1;
+    if (error) {
+      sendErrorPet(true);
+    } else {
+      sendErrorPet(false);
     }
-    getTypes();
-  }, []);
+  }, [checkedStatePet]);
 
   return (
     <React.Fragment>
@@ -167,6 +214,36 @@ export default function PriceandDates() {
             <p>Eur</p>
           </Grid>
           <Grid item xs={4}></Grid>
+          <Grid item xs={12} sx={{ mt: 3 }}>
+            <Typography>Accepted pets</Typography>
+          </Grid>
+          {petTypes.map((pet: any, index: number) => {
+            return (
+              <Grid item xs={2}>
+                <FormControlLabel
+                  control={
+                    <Checkbox
+                      onChange={() => handleCheckbox(index)}
+                      name={pet.value.name}
+                      key={index}
+                      id={pet.value.name}
+                      value={pet.value.name}
+                      checked={checkedStatePet[index].checked}
+                    />
+                  }
+                  key={index}
+                  label={pet.value.name}
+                />
+              </Grid>
+            );
+          })}
+          {clickedPet && error && (
+            <Grid item xs={12}>
+              <Typography color="red">
+                Atleast one language must be selected
+              </Typography>
+            </Grid>
+          )}
         </Grid>
       </LocalizationProvider>
     </React.Fragment>

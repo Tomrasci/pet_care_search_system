@@ -11,7 +11,7 @@ export interface ICaretakerAdvert {
   description: string;
   extra_information: string;
   title: string;
-  // languages: string[];
+  languages: string[];
   photo_link: string;
   created_at: Date;
   updated_at: Date;
