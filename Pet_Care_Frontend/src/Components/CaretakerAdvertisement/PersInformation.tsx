@@ -64,162 +64,166 @@ export default function PersInformation({
   }, [checkedState]);
 
   return (
-    <React.Fragment>
-      <Typography variant="h6" gutterBottom>
-        Personal information
-      </Typography>
-      <Grid container spacing={3} maxWidth="md">
-        <Grid item xs={12} sm={6}>
-          <Controller
-            name="firstName"
-            control={control}
-            render={({ field }) => (
-              <TextField
-                {...field}
-                id="firstName"
-                name="firstName"
-                label="First name"
-                fullWidth
-                autoComplete="given-name"
-                variant="standard"
-                error={!!errors.firstName}
-                helperText={errors.firstName ? errors.firstName?.message : ""}
-              />
-            )}
-          />
-        </Grid>
-        <Grid item xs={12} sm={6}>
-          <Controller
-            name="lastName"
-            control={control}
-            render={({ field }) => (
-              <TextField
-                {...field}
-                required
-                id="lastName"
-                name="lastName"
-                label="Last name"
-                fullWidth
-                autoComplete="family-name"
-                variant="standard"
-                error={!!errors.lastName}
-                helperText={errors.lastName ? errors.lastName?.message : ""}
-              />
-            )}
-          />
-        </Grid>
-        <Grid item xs={12} sm={6}>
-          <Controller
-            name="address"
-            control={control}
-            render={({ field }) => (
-              <TextField
-                {...field}
-                required
-                id="address"
-                name="address"
-                label="Address"
-                fullWidth
-                autoComplete="family-name"
-                variant="standard"
-                error={!!errors.address}
-                helperText={errors.address ? errors.address?.message : ""}
-              />
-            )}
-          />
-        </Grid>
-        <Grid item xs={12} sm={6}>
-          <Controller
-            name="phone"
-            control={control}
-            render={({ field }) => (
-              <TextField
-                {...field}
-                required
-                id="phone"
-                name="phone"
-                label="Phone"
-                fullWidth
-                autoComplete="family-name"
-                variant="standard"
-                error={!!errors.phone}
-                helperText={errors.phone ? errors.phone?.message : ""}
-              />
-            )}
-          />
-        </Grid>
-        <Grid item xs={12} sm={6}>
-          <Controller
-            name="age"
-            control={control}
-            render={({ field }) => (
-              <TextField
-                {...field}
-                required
-                id="age"
-                name="age"
-                label="Age"
-                type="number"
-                fullWidth
-                autoComplete="family-name"
-                variant="standard"
-                error={!!errors.age}
-                helperText={
-                  errors.age ? "Age is required and must be a number" : ""
-                }
-              />
-            )}
-          />
-        </Grid>
-        <Grid item xs={12} sm={6}>
-          <Controller
-            name="work_activities"
-            control={control}
-            render={({ field }) => (
-              <TextField
-                {...field}
-                required
-                id="work_activities"
-                name="work_activities"
-                label="Work/Activities"
-                fullWidth
-                autoComplete="family-name"
-                variant="standard"
-                error={!!errors.work_activities}
-                helperText={
-                  errors.work_activities ? errors.work_activities?.message : ""
-                }
-              />
-            )}
-          />
-        </Grid>
-        <Grid item xs={12}>
-          <Controller
-            name="experience"
-            control={control}
-            render={({ field }) => (
-              <TextField
-                {...field}
-                required
-                id="experience"
-                name="experience"
-                label="Experience"
-                fullWidth
-                autoComplete="family-name"
-                variant="standard"
-                error={!!errors.experience}
-                helperText={errors.experience ? errors.experience?.message : ""}
-              />
-            )}
-          />
-        </Grid>
-        <Grid item xs={12} sx={{ mt: 3 }}>
-          <Typography>Languages</Typography>
-        </Grid>
-        {languages &&
-          checkedState &&
-          !isEmpty(checkedState) &&
-          languages.map((language: ILanguageType, index: number) => {
+    languages &&
+    checkedState &&
+    !isEmpty(checkedState) && (
+      <React.Fragment>
+        <Typography variant="h6" gutterBottom>
+          Personal information
+        </Typography>
+        <Grid container spacing={3} maxWidth="md">
+          <Grid item xs={12} sm={6}>
+            <Controller
+              name="firstName"
+              control={control}
+              render={({ field }) => (
+                <TextField
+                  {...field}
+                  id="firstName"
+                  name="firstName"
+                  label="First name"
+                  fullWidth
+                  autoComplete="given-name"
+                  variant="standard"
+                  error={!!errors.firstName}
+                  helperText={errors.firstName ? errors.firstName?.message : ""}
+                />
+              )}
+            />
+          </Grid>
+          <Grid item xs={12} sm={6}>
+            <Controller
+              name="lastName"
+              control={control}
+              render={({ field }) => (
+                <TextField
+                  {...field}
+                  required
+                  id="lastName"
+                  name="lastName"
+                  label="Last name"
+                  fullWidth
+                  autoComplete="family-name"
+                  variant="standard"
+                  error={!!errors.lastName}
+                  helperText={errors.lastName ? errors.lastName?.message : ""}
+                />
+              )}
+            />
+          </Grid>
+          <Grid item xs={12} sm={6}>
+            <Controller
+              name="address"
+              control={control}
+              render={({ field }) => (
+                <TextField
+                  {...field}
+                  required
+                  id="address"
+                  name="address"
+                  label="Address"
+                  fullWidth
+                  autoComplete="family-name"
+                  variant="standard"
+                  error={!!errors.address}
+                  helperText={errors.address ? errors.address?.message : ""}
+                />
+              )}
+            />
+          </Grid>
+          <Grid item xs={12} sm={6}>
+            <Controller
+              name="phone"
+              control={control}
+              render={({ field }) => (
+                <TextField
+                  {...field}
+                  required
+                  id="phone"
+                  name="phone"
+                  label="Phone"
+                  fullWidth
+                  autoComplete="family-name"
+                  variant="standard"
+                  error={!!errors.phone}
+                  helperText={errors.phone ? errors.phone?.message : ""}
+                />
+              )}
+            />
+          </Grid>
+          <Grid item xs={12} sm={6}>
+            <Controller
+              name="age"
+              control={control}
+              render={({ field }) => (
+                <TextField
+                  {...field}
+                  required
+                  id="age"
+                  name="age"
+                  label="Age"
+                  type="number"
+                  fullWidth
+                  autoComplete="family-name"
+                  variant="standard"
+                  error={!!errors.age}
+                  helperText={
+                    errors.age ? "Age is required and must be a number" : ""
+                  }
+                />
+              )}
+            />
+          </Grid>
+          <Grid item xs={12} sm={6}>
+            <Controller
+              name="work_activities"
+              control={control}
+              render={({ field }) => (
+                <TextField
+                  {...field}
+                  required
+                  id="work_activities"
+                  name="work_activities"
+                  label="Work/Activities"
+                  fullWidth
+                  autoComplete="family-name"
+                  variant="standard"
+                  error={!!errors.work_activities}
+                  helperText={
+                    errors.work_activities
+                      ? errors.work_activities?.message
+                      : ""
+                  }
+                />
+              )}
+            />
+          </Grid>
+          <Grid item xs={12}>
+            <Controller
+              name="experience"
+              control={control}
+              render={({ field }) => (
+                <TextField
+                  {...field}
+                  required
+                  id="experience"
+                  name="experience"
+                  label="Experience"
+                  fullWidth
+                  autoComplete="family-name"
+                  variant="standard"
+                  error={!!errors.experience}
+                  helperText={
+                    errors.experience ? errors.experience?.message : ""
+                  }
+                />
+              )}
+            />
+          </Grid>
+          <Grid item xs={12} sx={{ mt: 3 }}>
+            <Typography>Languages</Typography>
+          </Grid>
+          {languages.map((language: ILanguageType, index: number) => {
             console.log(checkedState);
             return (
               <Grid item xs={2}>
@@ -240,14 +244,15 @@ export default function PersInformation({
               </Grid>
             );
           })}
-        {clicked && error && (
-          <Grid item xs={12}>
-            <Typography color="red">
-              Atleast one language must be selected
-            </Typography>
-          </Grid>
-        )}
-      </Grid>
-    </React.Fragment>
+          {clicked && error && (
+            <Grid item xs={12}>
+              <Typography color="red">
+                Atleast one language must be selected
+              </Typography>
+            </Grid>
+          )}
+        </Grid>
+      </React.Fragment>
+    )
   );
 }

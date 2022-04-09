@@ -25,7 +25,6 @@ const getCaretakerPets = async (
   try {
     return await database('caretaker_pets')
       .where({
-        pet_type_id: pid,
         advertisement_id: aid
       })
       .first()
