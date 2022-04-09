@@ -50,7 +50,7 @@ const insertCaretakerServices = async (
   next: NextFunction
 ) => {
   try {
-    await serviceTypeService.insertCaretakerPets(req.body.services);
+    await serviceTypeService.insertCaretakerServices(req.body.services);
     logger.info(
       `Caretaker services have been inserted  ${JSON.stringify(
         req.body.services

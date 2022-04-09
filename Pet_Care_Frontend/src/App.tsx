@@ -15,8 +15,6 @@ import PersInformation from "./Components/CaretakerAdvertisement/PersInformation
 import PriceandDates from "./Components/CaretakerAdvertisement/PriceandDates";
 import AdvertForm from "./Components/CaretakerAdvertisement/AdvertForm";
 import AdvertiseBase from "./Components/CaretakerAdvertisement/AdvertiseBase";
-import NewDateComponent from "./Components/CaretakerAdvertisement/newDateComponent";
-import DateReactSimple from "./Components/CaretakerAdvertisement/DateReactSimple";
 
 const guestLinksArray = [
   {
@@ -30,14 +28,6 @@ const guestLinksArray = [
   {
     path: "/PriceandDates",
     component: <AdvertiseBase />,
-  },
-  {
-    path: "/NewDateComponent",
-    component: <NewDateComponent />,
-  },
-  {
-    path: "/DateReactSimple",
-    component: <DateReactSimple />,
   },
 ];
 

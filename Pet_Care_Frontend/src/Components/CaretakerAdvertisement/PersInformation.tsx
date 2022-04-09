@@ -5,11 +5,13 @@ import TextField from "@mui/material/TextField";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Checkbox from "@mui/material/Checkbox";
 import { useEffect } from "react";
+import { ILanguageType } from "../../Interfaces/Caretaker/ILanguageType";
 import {
   Controller,
   useFormContext,
   UseFormRegisterReturn,
 } from "react-hook-form";
+import isEmpty from "../../Utils/Empty";
 
 interface Props {
   sendError: (e: boolean) => void;
@@ -17,7 +19,7 @@ interface Props {
   setSelected: any;
   languages: any;
   checkedState: {
-    value: string;
+    value: ILanguageType;
     checked: boolean;
   }[];
   setCheckedState: any;
@@ -36,7 +38,7 @@ export default function PersInformation({
     formState: { errors },
   } = useFormContext();
 
-  let error = false;
+  let error = true;
 
   function handleCheckbox(position: number) {
     const updatedCheckedState = checkedState.map((item: any, index: number) =>
@@ -51,7 +53,6 @@ export default function PersInformation({
     const selectedLanguages = checkedState.filter(
       (language) => language.checked === true
     );
-    // console.log(`selected languages are ${JSON.stringify(selectedLanguages)}`);
     setSelected(selectedLanguages);
 
     error = checkedState.filter((x) => x.checked === true).length < 1;
@@ -215,26 +216,30 @@ export default function PersInformation({
         <Grid item xs={12} sx={{ mt: 3 }}>
           <Typography>Languages</Typography>
         </Grid>
-        {languages.map((language: any, index: number) => {
-          return (
-            <Grid item xs={2}>
-              <FormControlLabel
-                control={
-                  <Checkbox
-                    onChange={() => handleCheckbox(index)}
-                    name={language}
-                    key={index}
-                    id={language}
-                    value={language}
-                    checked={checkedState[index].checked}
-                  />
-                }
-                key={index}
-                label={language}
-              />
-            </Grid>
-          );
-        })}
+        {languages &&
+          checkedState &&
+          !isEmpty(checkedState) &&
+          languages.map((language: ILanguageType, index: number) => {
+            console.log(checkedState);
+            return (
+              <Grid item xs={2}>
+                <FormControlLabel
+                  control={
+                    <Checkbox
+                      onChange={() => handleCheckbox(index)}
+                      name={language.name}
+                      key={index}
+                      id={language.name}
+                      value={language.name}
+                      checked={checkedState[index].checked}
+                    />
+                  }
+                  key={index}
+                  label={language.name}
+                />
+              </Grid>
+            );
+          })}
         {clicked && error && (
           <Grid item xs={12}>
             <Typography color="red">

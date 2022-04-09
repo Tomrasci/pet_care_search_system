@@ -5,13 +5,37 @@ import validation from '../validation/validation';
 import ApiError from '../../error/ApiError';
 import { ResponseCodes } from '../utils/responseCodes';
 import isEmpty from '../utils/Empty';
+import { ICaretakerAdvertCreate } from '../models/interfaces/ICaretakerAdvertCreate';
+import { ICaretakerPet } from '../models/interfaces/ICaretakerPet';
+import petTypeService from '../services/petType.service';
+import { ICaretakerService } from '../models/interfaces/ICaretakerService';
+import serviceTypeService from '../services/serviceType.service';
+import { ICaretakerLanguage } from '../models/interfaces/ICaretakerLanguage';
+import languageService from '../services/language.service';
 
 const createCaretakerAdvertisement = async (
   req: Request,
   res: Response,
   next: NextFunction
 ) => {
-  const { error } = validation.validateCaretakerAdvert(req.body);
+  const caretakerAdvert: ICaretakerAdvertCreate = {
+    name: req.body.name,
+    surname: req.body.surname,
+    address: req.body.address,
+    phone: req.body.phone,
+    age: req.body.age,
+    activity: req.body.activity,
+    experience: req.body.experience,
+    title: req.body.title,
+    description: req.body.description,
+    extra_information: req.body.extra_information,
+    startDate: req.body.startDate,
+    endDate: req.body.endDate,
+    startTime: req.body.startTime,
+    endTime: req.body.endTime,
+    day_price: req.body.day_price
+  };
+  const { error } = validation.validateCaretakerAdvert(caretakerAdvert);
   if (error) {
     logger.error(`Body validation failed ${error.message}`);
     return next(
@@ -20,9 +44,62 @@ const createCaretakerAdvertisement = async (
   }
 
   const insertedCaretakerAdvertisement =
-    await caretakerAdvertService.createCaretakerAdvert(req.body);
+    await caretakerAdvertService.createCaretakerAdvert(caretakerAdvert);
 
   logger.info(`Caretaker advertisement created`);
+
+  const cAdvertId = insertedCaretakerAdvertisement.id;
+  const petTypesArray = req.body.pets;
+  const caretakerPets: ICaretakerPet[] = petTypesArray.map((pet: number) => ({
+    pet_type_id: pet,
+    advertisement_id: cAdvertId
+  }));
+
+  try {
+    await petTypeService.insertCaretakerPets(caretakerPets);
+    logger.info(
+      `Caretaker pets have been inserted  ${JSON.stringify(caretakerPets)}`
+    );
+  } catch (err) {
+    console.log(err);
+  }
+
+  const serviceTypesArray = req.body.services;
+  const caretakerServices: ICaretakerService[] = serviceTypesArray.map(
+    (service: number) => ({
+      service_type_id: service,
+      advertisement_id: cAdvertId
+    })
+  );
+
+  try {
+    await serviceTypeService.insertCaretakerServices(caretakerServices);
+    logger.info(
+      `Caretaker services have been inserted  ${JSON.stringify(
+        caretakerServices
+      )}`
+    );
+  } catch (err) {
+    console.log(err);
+  }
+  const languagesArray = req.body.languages;
+  const caretakerLanguages: ICaretakerLanguage[] = languagesArray.map(
+    (language: number) => ({
+      language_id: language,
+      advertisement_id: cAdvertId
+    })
+  );
+
+  try {
+    await languageService.insertCaretakerLanguages(caretakerLanguages);
+    logger.info(
+      `Caretaker languages have been inserted  ${JSON.stringify(
+        caretakerLanguages
+      )}`
+    );
+  } catch (err) {
+    console.log(err);
+  }
 
   return res.status(ResponseCodes.CREATED).send(insertedCaretakerAdvertisement);
 };

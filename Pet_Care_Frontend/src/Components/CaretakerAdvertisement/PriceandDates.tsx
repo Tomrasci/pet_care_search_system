@@ -16,7 +16,7 @@ import { useState, useEffect } from "react";
 import serviceTypeApi from "../../Api/serviceTypeApi";
 import petTypeApi from "../../Api/petTypeApi";
 import { IServiceType } from "../../Interfaces/Caretaker/IServiceType";
-import { IPetType } from "../../Interfaces/IPetType";
+import { IPetType } from "../../Interfaces/Caretaker/IPetType";
 import { string } from "yup/lib/locale";
 
 interface Props {
@@ -53,12 +53,8 @@ export default function PriceandDates({
     formState: { errors },
   } = useFormContext();
 
-  console.log(`checked state pet ${JSON.stringify(checkedStatePet)}`);
-  console.log(
-    `checked state pet first is  ${JSON.stringify(checkedStatePet[0])}`
-  );
-
-  let error = false;
+  let error = true;
+  let errorService = true;
 
   function handleCheckbox(position: number) {
     const updatedCheckedState = checkedStatePet.map(
@@ -73,10 +69,10 @@ export default function PriceandDates({
 
   useEffect(() => {
     const selectedPets = checkedStatePet.filter((pet) => pet.checked === true);
-    // console.log(`selected languages are ${JSON.stringify(selectedLanguages)}`);
     setSelectedPet(selectedPets);
 
     error = checkedStatePet.filter((x) => x.checked === true).length < 1;
+
     if (error) {
       sendErrorPet(true);
     } else {
@@ -84,13 +80,40 @@ export default function PriceandDates({
     }
   }, [checkedStatePet]);
 
+  function handleServiceCheckbox(position: number) {
+    const updatedCheckedState = checkedStateService.map(
+      (item: any, index: number) =>
+        index === position
+          ? { value: item.value, checked: !item.checked }
+          : { value: item.value, checked: item.checked }
+    );
+
+    setCheckedStateService(updatedCheckedState);
+  }
+
+  useEffect(() => {
+    const selectedServices = checkedStateService.filter(
+      (service) => service.checked === true
+    );
+    setSelectedService(selectedServices);
+
+    errorService =
+      checkedStateService.filter((x) => x.checked === true).length < 1;
+
+    if (errorService) {
+      sendErrorService(true);
+    } else {
+      sendErrorService(false);
+    }
+  }, [checkedStateService]);
+
   return (
     <React.Fragment>
       <Typography variant="h6" gutterBottom>
         Schedule and price
       </Typography>
       <LocalizationProvider dateAdapter={AdapterDateFns} locale={lt}>
-        <Grid container spacing={3} maxWidth="sm">
+        <Grid container spacing={3} maxWidth="md">
           <Grid item xs={12} md={6}>
             <Controller
               name="startDate"
@@ -107,9 +130,7 @@ export default function PriceandDates({
                       {...params}
                       error={!!errors.startDate}
                       helperText={
-                        errors.startDate
-                          ? "Start date is required and must be valid"
-                          : ""
+                        errors.startDate ? errors.startDate?.message : ""
                       }
                     />
                   )}
@@ -132,11 +153,7 @@ export default function PriceandDates({
                       fullWidth
                       {...params}
                       error={!!errors.endDate}
-                      helperText={
-                        errors.endDate
-                          ? "End date is required and must be valid"
-                          : ""
-                      }
+                      helperText={errors.endDate ? errors.endDate?.message : ""}
                     />
                   )}
                 />
@@ -217,30 +234,64 @@ export default function PriceandDates({
           <Grid item xs={12} sx={{ mt: 3 }}>
             <Typography>Accepted pets</Typography>
           </Grid>
-          {petTypes.map((pet: any, index: number) => {
+          {petTypes.map((pet: IPetType, index: number) => {
             return (
               <Grid item xs={2}>
                 <FormControlLabel
                   control={
                     <Checkbox
                       onChange={() => handleCheckbox(index)}
-                      name={pet.value.name}
+                      name={pet.name}
                       key={index}
-                      id={pet.value.name}
-                      value={pet.value.name}
+                      id={pet.name}
+                      value={pet.name}
                       checked={checkedStatePet[index].checked}
                     />
                   }
                   key={index}
-                  label={pet.value.name}
+                  label={pet.name}
                 />
               </Grid>
             );
           })}
+
           {clickedPet && error && (
             <Grid item xs={12}>
               <Typography color="red">
-                Atleast one language must be selected
+                Atleast one pet must be selected
+              </Typography>
+            </Grid>
+          )}
+          <Grid item xs={12} sx={{ mt: 3 }}>
+            <Typography>Services</Typography>
+          </Grid>
+          {serviceTypes.map((service: IServiceType, index: number) => {
+            const labelText =
+              service.name === "house_sitting" ? "house sitting" : service.name;
+            return (
+              <Grid item xs={4}>
+                <FormControlLabel
+                  control={
+                    <Checkbox
+                      onChange={() => handleServiceCheckbox(index)}
+                      name={service.name}
+                      key={index}
+                      id={service.name}
+                      value={service.name}
+                      checked={checkedStateService[index].checked}
+                    />
+                  }
+                  key={index}
+                  label={labelText}
+                />
+              </Grid>
+            );
+          })}
+
+          {clickedService && errorService && (
+            <Grid item xs={12}>
+              <Typography color="red">
+                Atleast one service must be selected
               </Typography>
             </Grid>
           )}

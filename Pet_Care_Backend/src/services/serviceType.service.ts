@@ -13,7 +13,7 @@ const getCaretakerServices = async (sid: number, aid: number) => {
   return await serviceTypeModel.getCaretakerServices(sid, aid);
 };
 
-const insertCaretakerPets = async (serviceArray: ICaretakerService[]) => {
+const insertCaretakerServices = async (serviceArray: ICaretakerService[]) => {
   return await serviceTypeModel.insertCaretakerServices(serviceArray);
 };
 
@@ -21,5 +21,5 @@ export default {
   getServiceTypeById,
   getServiceTypes,
   getCaretakerServices,
-  insertCaretakerPets
+  insertCaretakerServices
 };
