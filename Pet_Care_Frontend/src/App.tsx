@@ -12,6 +12,7 @@ import Footer from "./Layout/Footer";
 import Navbar from "./Layout/Navbar";
 import CaretakerAdvertList from "./Components/CaretakerAdvertisement/CaretakerAdvertList";
 import MyCaretakerAdvertisements from "./Components/CaretakerAdvertisement/MyCaretakerAdvertisements";
+import AdvertiseBaseEdit from "./Components/CaretakerAdvertisement/AdvertBaseEdit";
 
 const guestLinksArray = [
   {
@@ -72,6 +73,10 @@ export default function App() {
         <Route
           path={"/MyAdverts"}
           element={<MyCaretakerAdvertisements currentUser={currentUser} />}
+        ></Route>
+        <Route
+          path={"/caretakerUpdate/:id"}
+          element={<AdvertiseBaseEdit currentUser={currentUser} />}
         ></Route>
         <Route path={"Register"} element={<Register />}></Route>
         <Route path={"Login"} element={<Login loadUsers={loadUsers} />}></Route>

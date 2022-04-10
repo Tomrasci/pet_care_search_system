@@ -1,0 +1,10 @@
+.parentFlexRight {
+  display: flex;
+  justify-content: flex-end;
+}
+.leftAlignItem {
+  margin-right: "auto";
+}
+.rightAlignItem {
+  margin-left: auto;
+}

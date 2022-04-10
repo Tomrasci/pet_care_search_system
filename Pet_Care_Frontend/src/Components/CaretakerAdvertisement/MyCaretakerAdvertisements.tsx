@@ -8,9 +8,13 @@ import Typography from "@mui/material/Typography";
 import { useState, useEffect } from "react";
 import caretakerAdvertisementApi from "../../Api/caretakerAdvertisementApi";
 import { ICaretakerAdvert } from "../../Interfaces/Caretaker/ICaretakerAdvert";
-import { Grid } from "@mui/material";
+import { Grid, IconButton, makeStyles } from "@mui/material";
 import { Link, useNavigate } from "react-router-dom";
 import isEmpty from "../../Utils/Empty";
+import "./MyCaretakerAdvertisement.css";
+import EditIcon from "@mui/icons-material/Edit";
+import DeleteIcon from "@mui/icons-material/Delete";
+import { toast } from "react-toastify";
 
 const MyCaretakerAdvertisements = ({ currentUser }: any) => {
   const [caretakerAdverts, setCaretakerAdverts] = useState<ICaretakerAdvert[]>(
@@ -23,16 +27,27 @@ const MyCaretakerAdvertisements = ({ currentUser }: any) => {
     navigate("/Login");
   }
 
-  useEffect(() => {
-    async function getAdverts() {
+  async function getAdverts() {
+    if (currentUser) {
       const cAdverts =
         await caretakerAdvertisementApi.getUserCaretakerAdvertisements(
           currentUser.id
         );
       setCaretakerAdverts(cAdverts);
     }
+  }
+
+  const handleAdvertDelete = async (id: number) => {
+    if (window.confirm("Are you sure you want to delete this advertisement?")) {
+      await caretakerAdvertisementApi.deleteCaretakerAdvertisement(id);
+      toast.success("Advertisement deleted successfully!");
+      getAdverts();
+    }
+  };
+
+  useEffect(() => {
     getAdverts();
-  }, []);
+  }, [currentUser]);
 
   return (
     <Box marginY={5}>
@@ -76,11 +91,22 @@ const MyCaretakerAdvertisements = ({ currentUser }: any) => {
                         {advertText}
                       </Typography>
                     </CardContent>
-                    <CardActions>
-                      <Button size="small">More information</Button>
+                    <CardActions disableSpacing className="parentFlexRight">
+                      <Button className="leftAlignItem" size="small">
+                        More information
+                      </Button>
+                      <Link to={`/caretakerUpdate/${advert.id}`}>
+                        <IconButton size="large">
+                          <EditIcon />
+                        </IconButton>
+                      </Link>
+                      <IconButton
+                        onClick={() => handleAdvertDelete(advert.id)}
+                        size="large"
+                      >
+                        <DeleteIcon />
+                      </IconButton>
                     </CardActions>
-                    <Button>Edit</Button>
-                    <Button>Delete</Button>
                   </Card>
                 </Grid>
               );

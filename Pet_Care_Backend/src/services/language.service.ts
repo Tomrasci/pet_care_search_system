@@ -19,9 +19,14 @@ const insertCaretakerLanguages = async (
   return await languageModel.insertCaretakerLanguages(languageArray);
 };
 
+const deleteCaretakerLangauges = async (id: number) => {
+  return await languageModel.deleteCaretakerLanguages(id);
+};
+
 export default {
   getLanguageById,
   getLanguages,
   getCaretakerLanguages,
-  insertCaretakerLanguages
+  insertCaretakerLanguages,
+  deleteCaretakerLangauges
 };

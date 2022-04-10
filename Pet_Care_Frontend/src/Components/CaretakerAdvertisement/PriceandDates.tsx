@@ -1,23 +1,17 @@
-import * as React from "react";
-import Typography from "@mui/material/Typography";
+import AdapterDateFns from "@mui/lab/AdapterDateFns";
+import DatePicker from "@mui/lab/DatePicker";
+import LocalizationProvider from "@mui/lab/LocalizationProvider";
+import TimePicker from "@mui/lab/TimePicker";
+import { Checkbox, FormControlLabel } from "@mui/material";
 import Grid from "@mui/material/Grid";
 import TextField from "@mui/material/TextField";
-import AdapterDateFns from "@mui/lab/AdapterDateFns";
-import LocalizationProvider from "@mui/lab/LocalizationProvider";
-import DatePicker from "@mui/lab/DatePicker";
-import TimePicker from "@mui/lab/TimePicker";
-import { useFormContext, UseFormRegisterReturn } from "react-hook-form";
-import { DateRangePicker } from "@mui/lab";
-import { Box, Checkbox, FormControlLabel } from "@mui/material";
-import { DateRange } from "@mui/lab/DateRangePicker/RangeTypes";
-import { Controller } from "react-hook-form";
+import Typography from "@mui/material/Typography";
 import { lt } from "date-fns/locale";
-import { useState, useEffect } from "react";
-import serviceTypeApi from "../../Api/serviceTypeApi";
-import petTypeApi from "../../Api/petTypeApi";
-import { IServiceType } from "../../Interfaces/Caretaker/IServiceType";
+import * as React from "react";
+import { useEffect } from "react";
+import { Controller, useFormContext } from "react-hook-form";
 import { IPetType } from "../../Interfaces/Caretaker/IPetType";
-import { string } from "yup/lib/locale";
+import { IServiceType } from "../../Interfaces/Caretaker/IServiceType";
 
 interface Props {
   sendErrorPet: (e: boolean) => void;
@@ -203,7 +197,6 @@ export default function PriceandDates({
                 />
               )}
             />
-            {/* "End time is required and must be valid" */}
           </Grid>
           <Grid item xs={6} md={3}>
             <Controller

@@ -46,9 +46,20 @@ const insertCaretakerServices = async (serviceArray: ICaretakerService[]) => {
     console.log(err.message);
   }
 };
+
+const deleteCaretakerServices = async (id: number) => {
+  try {
+    return await database('caretaker_services')
+      .where({ advertisement_id: id })
+      .del();
+  } catch (err) {
+    console.log(err.message);
+  }
+};
 export default {
   getServiceTypeById,
   getServiceTypes,
   getCaretakerServices,
-  insertCaretakerServices
+  insertCaretakerServices,
+  deleteCaretakerServices
 };

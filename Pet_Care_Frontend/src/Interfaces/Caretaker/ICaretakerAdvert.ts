@@ -13,6 +13,10 @@ export interface ICaretakerAdvert {
   title: string;
   languages: string[];
   photo_link: string;
-  created_at: Date;
-  updated_at: Date;
+  startDate: Date;
+  endDate: Date;
+  startTime: Date;
+  endTime: Date;
+  pets: string[];
+  services: string[];
 }

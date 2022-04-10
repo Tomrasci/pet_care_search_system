@@ -17,9 +17,14 @@ const insertCaretakerServices = async (serviceArray: ICaretakerService[]) => {
   return await serviceTypeModel.insertCaretakerServices(serviceArray);
 };
 
+const deleteCaretakerServices = async (id: number) => {
+  return await serviceTypeModel.deleteCaretakerServices(id);
+};
+
 export default {
   getServiceTypeById,
   getServiceTypes,
   getCaretakerServices,
-  insertCaretakerServices
+  insertCaretakerServices,
+  deleteCaretakerServices
 };

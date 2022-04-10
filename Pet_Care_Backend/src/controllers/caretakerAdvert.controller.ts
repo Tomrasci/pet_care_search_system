@@ -192,6 +192,10 @@ const deleteCareTakerAdvert = async (
       )
     );
   }
+  await petTypeService.deleteCaretakerPets(Number(req.params.id));
+  await serviceTypeService.deleteCaretakerServices(Number(req.params.id));
+  await languageService.deleteCaretakerLangauges(Number(req.params.id));
+
   await caretakerAdvertService.deleteCareTakerAdvert(Number(req.params.id));
 
   logger.info(

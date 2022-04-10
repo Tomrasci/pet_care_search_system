@@ -49,9 +49,20 @@ const insertCaretakerLanguages = async (
   }
 };
 
+const deleteCaretakerLanguages = async (id: number) => {
+  try {
+    return await database('caretaker_languages')
+      .where({ advertisement_id: id })
+      .del();
+  } catch (err) {
+    console.log(err.message);
+  }
+};
+
 export default {
   getLanguageById,
   getLanguages,
   getCaretakerLanguages,
-  insertCaretakerLanguages
+  insertCaretakerLanguages,
+  deleteCaretakerLanguages
 };

@@ -17,6 +17,7 @@ import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import userApi from "../Api/userApi";
 import { IUser } from "../Interfaces/User/IUser";
+import isEmpty from "../Utils/Empty";
 
 type NavbarProps = {
   name: string;
@@ -113,7 +114,7 @@ const Navbar = ({ loadUsers, currentUser }: any) => {
             <Grid item xs={1} />
             <Grid item xs={3}>
               <Box display="flex" alignItems="center">
-                {!!Object.keys(currentUser).length ? (
+                {!isEmpty(currentUser) ? (
                   <>
                     <Typography
                       color="white"

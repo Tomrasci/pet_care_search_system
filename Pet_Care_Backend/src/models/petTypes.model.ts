@@ -46,9 +46,20 @@ const insertCaretakerPets = async (petArray: ICaretakerPet[]) => {
   }
 };
 
+const deleteCaretakerPets = async (id: number) => {
+  try {
+    return await database('caretaker_pets')
+      .where({ advertisement_id: id })
+      .del();
+  } catch (err) {
+    console.log(err.message);
+  }
+};
+
 export default {
   getPetTypeById,
   getPetTypes,
   getCaretakerPets,
-  insertCaretakerPets
+  insertCaretakerPets,
+  deleteCaretakerPets
 };

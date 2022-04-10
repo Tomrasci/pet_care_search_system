@@ -17,9 +17,14 @@ const insertCaretakerPets = async (petArray: ICaretakerPet[]) => {
   return await petTypesModel.insertCaretakerPets(petArray);
 };
 
+const deleteCaretakerPets = async (id: number) => {
+  return await petTypesModel.deleteCaretakerPets(id);
+};
+
 export default {
   getPetTypeById,
   getPetTypes,
   getCaretakerPets,
-  insertCaretakerPets
+  insertCaretakerPets,
+  deleteCaretakerPets
 };
