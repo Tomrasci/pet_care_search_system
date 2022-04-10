@@ -33,7 +33,8 @@ const createCaretakerAdvertisement = async (
     endDate: req.body.endDate,
     startTime: req.body.startTime,
     endTime: req.body.endTime,
-    day_price: req.body.day_price
+    day_price: req.body.day_price,
+    user_id: req.body.user_id
   };
   const { error } = validation.validateCaretakerAdvert(caretakerAdvert);
   if (error) {
@@ -122,9 +123,19 @@ const getCareTakerAdverts = async (
   next: NextFunction
 ) => {
   const cAdverts = await caretakerAdvertService.getCareTakersAdverts();
-  logger.info(
-    `Caretaker adverts have been retrieved  ${JSON.stringify(cAdverts)}`
+
+  return res.status(ResponseCodes.OK).json(cAdverts);
+};
+
+const getUserCaretakerAdverts = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  const cAdverts = await caretakerAdvertService.getUserCaretakerAdverts(
+    Number(req.params.userId)
   );
+
   return res.status(ResponseCodes.OK).json(cAdverts);
 };
 
@@ -196,5 +207,6 @@ export default {
   getCareTakerAdvert,
   getCareTakerAdverts,
   updateCareTakerAdvert,
-  deleteCareTakerAdvert
+  deleteCareTakerAdvert,
+  getUserCaretakerAdverts
 };

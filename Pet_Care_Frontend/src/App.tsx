@@ -1,20 +1,17 @@
 import * as React from "react";
+import { useEffect } from "react";
 import { Route, Routes } from "react-router";
+import userApi from "./Api/userApi";
+import Login from "./Authentication/Login";
+import Register from "./Authentication/Register";
+import Aboutus from "./Components/Aboutus";
+import AdvertiseBase from "./Components/CaretakerAdvertisement/AdvertiseBase";
 import Home from "./Components/Home";
+import { IUser } from "./Interfaces/User/IUser";
 import Footer from "./Layout/Footer";
 import Navbar from "./Layout/Navbar";
-import Advertisements from "./Components/Advertisements";
-import Aboutus from "./Components/Aboutus";
-import Register from "./Authentication/Register";
-import Login from "./Authentication/Login";
-import SecondFooter from "./Layout/SecondFooter";
-import userApi from "./Api/userApi";
-import { IUser } from "./Interfaces/User/IUser";
-import { useEffect } from "react";
-import PersInformation from "./Components/CaretakerAdvertisement/PersInformation";
-import PriceandDates from "./Components/CaretakerAdvertisement/PriceandDates";
-import AdvertForm from "./Components/CaretakerAdvertisement/AdvertForm";
-import AdvertiseBase from "./Components/CaretakerAdvertisement/AdvertiseBase";
+import CaretakerAdvertList from "./Components/CaretakerAdvertisement/CaretakerAdvertList";
+import MyCaretakerAdvertisements from "./Components/CaretakerAdvertisement/MyCaretakerAdvertisements";
 
 const guestLinksArray = [
   {
@@ -26,8 +23,12 @@ const guestLinksArray = [
     component: <Aboutus />,
   },
   {
-    path: "/PriceandDates",
+    path: "/CaretakerAdvertCreate",
     component: <AdvertiseBase />,
+  },
+  {
+    path: "/CaretakerAdvertList",
+    component: <CaretakerAdvertList />,
   },
 ];
 
@@ -57,11 +58,24 @@ export default function App() {
     <>
       <Navbar loadUsers={loadUsers} currentUser={currentUser} />
       <Routes>
-        {guestLinksArray.map((link: any, index: any) => (
+        {/* {guestLinksArray.map((link: any, index: any) => (
           <Route path={link.path} element={link.component} key={index}></Route>
-        ))}
+        ))} */}
+        <Route
+          path={"/CaretakerAdvertCreate"}
+          element={<AdvertiseBase currentUser={currentUser} />}
+        ></Route>
+        <Route
+          path={"/CaretakerAdvertList"}
+          element={<CaretakerAdvertList currentUser={currentUser} />}
+        ></Route>
+        <Route
+          path={"/MyAdverts"}
+          element={<MyCaretakerAdvertisements currentUser={currentUser} />}
+        ></Route>
         <Route path={"Register"} element={<Register />}></Route>
         <Route path={"Login"} element={<Login loadUsers={loadUsers} />}></Route>
+        <Route path={"/"} element={<Home />}></Route>
         ))
       </Routes>
       <Footer></Footer>

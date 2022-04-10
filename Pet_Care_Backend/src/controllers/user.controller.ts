@@ -70,9 +70,9 @@ const login = async (req: Request, res: Response, next: NextFunction) => {
     next(ApiError.unauthorizedError(`Invalid password`));
     return;
   }
-
   const token = generateAccessToken({
     username: user.username,
+    id: user.id,
     phone: user.phone,
     email: user.email,
     address: user.address
@@ -84,6 +84,7 @@ const login = async (req: Request, res: Response, next: NextFunction) => {
     phone: user.phone,
     address: user.address,
     name: user.name,
+    id: user.id,
     surname: user.surname,
     accessToken: token
   });

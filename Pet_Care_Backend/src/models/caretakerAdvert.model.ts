@@ -31,6 +31,18 @@ const getCaretakerAdvertById = async (
   }
 };
 
+const getUserCaretakerAdverts = async (
+  userId: number
+): Promise<ICaretakerAdvert[]> => {
+  try {
+    return await database('caretaker_advertisement')
+      .where({ user_id: userId })
+      .select();
+  } catch (err) {
+    console.log(err.message);
+  }
+};
+
 const getCaretakerAdverts = async (): Promise<ICaretakerAdvert[]> => {
   try {
     return await database('caretaker_advertisement').select();
@@ -67,5 +79,6 @@ export default {
   getCaretakerAdvertById,
   getCaretakerAdverts,
   updateCareTakerAdvert,
-  deleteCareTakerAdvert
+  deleteCareTakerAdvert,
+  getUserCaretakerAdverts
 };

@@ -17,5 +17,5 @@ export interface ICaretakerAdvertCreate {
   pets: number[];
   services: number[];
   languages: number[];
-  // languages: string[];
+  user_id: number;
 }

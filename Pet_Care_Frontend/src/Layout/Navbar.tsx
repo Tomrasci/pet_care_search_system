@@ -32,13 +32,17 @@ const guestLinksArray = [
     name: "Home",
     route: "/",
   },
-  // {
-  //   name: "About us",
-  //   route: "/About",
-  // },
   {
-    name: "Advertisements",
-    route: "/PriceandDates",
+    name: "Create Advert",
+    route: "/CaretakerAdvertCreate",
+  },
+  {
+    name: "Adverts",
+    route: "/CaretakerAdvertList",
+  },
+  {
+    name: "MyAdverts",
+    route: "/MyAdverts",
   },
 ];
 
@@ -108,7 +112,7 @@ const Navbar = ({ loadUsers, currentUser }: any) => {
             </Grid>
             <Grid item xs={1} />
             <Grid item xs={3}>
-              <Box display="flex">
+              <Box display="flex" alignItems="center">
                 {!!Object.keys(currentUser).length ? (
                   <>
                     <Typography
@@ -117,7 +121,7 @@ const Navbar = ({ loadUsers, currentUser }: any) => {
                         marginLeft: "auto",
                       }}
                     >
-                      {currentUser.username}
+                      {currentUser.email}
                     </Typography>
                     <Link to="/" style={{ textDecoration: "none" }}>
                       <Button

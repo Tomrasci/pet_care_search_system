@@ -28,6 +28,7 @@ import petTypeApi from "../../Api/petTypeApi";
 import serviceTypeApi from "../../Api/serviceTypeApi";
 import languageApi from "../../Api/languageApi";
 import { ILanguageType } from "../../Interfaces/Caretaker/ILanguageType";
+import isEmpty from "../../Utils/Empty";
 
 const steps = [
   "Personal information",
@@ -37,8 +38,13 @@ const steps = [
 
 const theme = createTheme();
 
-export default function AdvertiseBase() {
+export default function AdvertiseBase({ currentUser }: any) {
   const navigate = useNavigate();
+
+  if (isEmpty(currentUser)) {
+    navigate("/Login");
+  }
+
   moment.locale("lt");
 
   const defaultValues = {
@@ -196,7 +202,6 @@ export default function AdvertiseBase() {
         setActiveStep(activeStep + 1);
         setClickedService(false);
         setClickedPet(false);
-        const checkedPets = selectedPet.map((pet) => pet.value.id);
       }
     } else {
       const isValid = await trigger();
@@ -234,6 +239,7 @@ export default function AdvertiseBase() {
       pets: checkedPets,
       services: checkedServices,
       languages: checkedLanguages,
+      user_id: currentUser.id,
     };
     const result = await caretakerAdvertisementApi.createCaretakerAdvertisement(
       newAdvert

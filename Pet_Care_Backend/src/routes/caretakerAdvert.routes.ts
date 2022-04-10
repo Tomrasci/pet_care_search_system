@@ -15,6 +15,11 @@ router.get(
   caretakerAdvertController.getCareTakerAdvert
 );
 
+router.get(
+  '/myAdverts/:userId',
+  caretakerAdvertController.getUserCaretakerAdverts
+);
+
 router.put(
   '/caretakerAdverts/:id',
   caretakerAdvertController.updateCareTakerAdvert

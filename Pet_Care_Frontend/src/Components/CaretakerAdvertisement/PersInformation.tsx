@@ -208,7 +208,7 @@ export default function PersInformation({
                   required
                   id="experience"
                   name="experience"
-                  label="Experience"
+                  label="Your experience with pets (ex. 5 years cat owner)"
                   fullWidth
                   autoComplete="family-name"
                   variant="standard"
@@ -224,7 +224,6 @@ export default function PersInformation({
             <Typography>Languages</Typography>
           </Grid>
           {languages.map((language: ILanguageType, index: number) => {
-            console.log(checkedState);
             return (
               <Grid item xs={2}>
                 <FormControlLabel
