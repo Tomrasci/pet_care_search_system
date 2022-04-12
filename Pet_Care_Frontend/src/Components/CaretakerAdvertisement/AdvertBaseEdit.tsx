@@ -52,28 +52,19 @@ export default function AdvertiseBaseEdit({ currentUser }: any) {
 
   const [advertDetails, setAdvertDetails] = React.useState<ICaretakerAdvert>();
 
-  React.useEffect(() => {
-    async function getAdvert() {
-      const advertDetails =
-        await caretakerAdvertisementApi.getCaretakerAdvertisement(Number(id));
-      setAdvertDetails(advertDetails);
-    }
-    getAdvert();
-  }, []);
-
   const defaultValues = {
-    firstName: advertDetails?.name || "Hey",
-    lastName: advertDetails?.surname || "",
+    name: advertDetails?.name || "Hey",
+    surname: advertDetails?.surname || "Hello",
     address: advertDetails?.address || "",
     phone: advertDetails?.phone || "",
     age: advertDetails?.age || "",
-    work_activities: advertDetails?.activity || "",
+    activity: advertDetails?.activity || "",
     experience: advertDetails?.experience || "",
     startDate: advertDetails?.startDate || "",
     endDate: advertDetails?.endDate || "",
     startTime: advertDetails?.startTime || "",
     endTime: advertDetails?.endTime || "",
-    price: advertDetails?.day_price || "",
+    day_price: advertDetails?.day_price || "",
     title: advertDetails?.title || "",
     description: advertDetails?.description || "",
     extra_information: advertDetails?.extra_information || "",
@@ -155,12 +146,12 @@ export default function AdvertiseBaseEdit({ currentUser }: any) {
   };
   const validationSchema = [
     yup.object({
-      firstName: yup.string().required("First name is required"),
-      lastName: yup.string().required("Last name is required"),
+      name: yup.string().required("First name is required"),
+      surname: yup.string().required("Last name is required"),
       address: yup.string().required("Address is required"),
       phone: yup.string().required("Phone is required"),
       age: yup.number().required("Age is required"),
-      work_activities: yup.string().required("Work or activity is required"),
+      activity: yup.string().required("Work or activity is required"),
       experience: yup.string().required("Experience is required"),
     }),
     yup.object({
@@ -181,7 +172,7 @@ export default function AdvertiseBaseEdit({ currentUser }: any) {
         .typeError("End time must be valid - select both hours and minutes")
         .required("End time is required")
         .min(yup.ref("startTime"), "End time must be later than start time"),
-      price: yup.number().required("Price is required"),
+      day_price: yup.number().required("Price is required"),
     }),
     yup.object({
       title: yup.string().required("Title is required"),
@@ -191,7 +182,6 @@ export default function AdvertiseBaseEdit({ currentUser }: any) {
 
   const [activeStep, setActiveStep] = React.useState(0);
 
-  console.log(`defaultValues are ${JSON.stringify(defaultValues)}`);
   const currentValidationSchema = validationSchema[activeStep];
   const methods = useForm({
     shouldUnregister: false,
@@ -199,7 +189,19 @@ export default function AdvertiseBaseEdit({ currentUser }: any) {
     resolver: yupResolver(currentValidationSchema),
     mode: "onChange",
   });
-  const { handleSubmit, reset, trigger, getValues } = methods;
+  const { handleSubmit, reset, trigger, getValues, setValue } = methods;
+
+  React.useEffect(() => {
+    async function getAdvert() {
+      const advertDetails =
+        await caretakerAdvertisementApi.getCaretakerAdvertisement(Number(id));
+      setAdvertDetails(advertDetails);
+      reset(advertDetails);
+      // setValue("startTime", advertDetails.startTime);
+      // setValue("endTime", advertDetails.endTime);
+    }
+    getAdvert();
+  }, []);
 
   const handleNext = async () => {
     if (activeStep === 0) {
@@ -236,12 +238,12 @@ export default function AdvertiseBaseEdit({ currentUser }: any) {
     const checkedServices = selectedService.map((service) => service.value.id);
 
     const newAdvert: ICaretakerAdvertCreate = {
-      name: getValues("firstName"),
-      surname: getValues("lastName"),
+      name: getValues("name"),
+      surname: getValues("surname"),
       address: getValues("address"),
       phone: getValues("phone"),
       age: Number(getValues("age")),
-      activity: getValues("work_activities"),
+      activity: getValues("activity"),
       experience: getValues("experience"),
       title: getValues("title"),
       description: getValues("description"),
@@ -250,7 +252,7 @@ export default function AdvertiseBaseEdit({ currentUser }: any) {
       endDate: new Date(getValues("endDate")),
       startTime: new Date(getValues("startTime")),
       endTime: new Date(getValues("endTime")),
-      day_price: Number(getValues("price")),
+      day_price: Number(getValues("day_price")),
       pets: checkedPets,
       services: checkedServices,
       languages: checkedLanguages,
@@ -267,6 +269,8 @@ export default function AdvertiseBaseEdit({ currentUser }: any) {
     }
   };
 
+  console.log(`end time is ${getValues("endTime")}`);
+
   function getStepContent(step: number) {
     switch (step) {
       case 0:
@@ -278,6 +282,7 @@ export default function AdvertiseBaseEdit({ currentUser }: any) {
             languages={languages}
             checkedState={checkedState}
             setCheckedState={setCheckedState}
+            getValues={getValues}
           />
         );
       case 1:
@@ -295,6 +300,7 @@ export default function AdvertiseBaseEdit({ currentUser }: any) {
             checkedStateService={checkedStateService}
             setCheckedStateService={setCheckedStateService}
             serviceTypes={serviceTypes}
+            getValues={getValues}
           />
         );
 

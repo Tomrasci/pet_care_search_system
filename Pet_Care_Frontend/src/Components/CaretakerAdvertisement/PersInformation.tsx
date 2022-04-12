@@ -23,6 +23,7 @@ interface Props {
     checked: boolean;
   }[];
   setCheckedState: any;
+  getValues: <UseFormGetValues>(payload?: string | string) => Object;
 }
 
 export default function PersInformation({
@@ -32,6 +33,7 @@ export default function PersInformation({
   languages,
   checkedState,
   setCheckedState,
+  getValues,
 }: Props) {
   const {
     control,
@@ -74,39 +76,39 @@ export default function PersInformation({
         <Grid container spacing={3} maxWidth="md">
           <Grid item xs={12} sm={6}>
             <Controller
-              name="firstName"
+              name="name"
               control={control}
               render={({ field }) => (
                 <TextField
                   {...field}
-                  id="firstName"
-                  name="firstName"
+                  id="name"
+                  name="name"
                   label="First name"
                   fullWidth
                   autoComplete="given-name"
                   variant="standard"
-                  error={!!errors.firstName}
-                  helperText={errors.firstName ? errors.firstName?.message : ""}
+                  error={!!errors.name}
+                  helperText={errors.name ? errors.name?.message : ""}
                 />
               )}
             />
           </Grid>
           <Grid item xs={12} sm={6}>
             <Controller
-              name="lastName"
+              name="surname"
               control={control}
               render={({ field }) => (
                 <TextField
                   {...field}
                   required
-                  id="lastName"
-                  name="lastName"
+                  id="surname"
+                  name="surname"
                   label="Last name"
                   fullWidth
                   autoComplete="family-name"
                   variant="standard"
-                  error={!!errors.lastName}
-                  helperText={errors.lastName ? errors.lastName?.message : ""}
+                  error={!!errors.surname}
+                  helperText={errors.surname ? errors.surname?.message : ""}
                 />
               )}
             />
@@ -176,24 +178,20 @@ export default function PersInformation({
           </Grid>
           <Grid item xs={12} sm={6}>
             <Controller
-              name="work_activities"
+              name="activity"
               control={control}
               render={({ field }) => (
                 <TextField
                   {...field}
                   required
-                  id="work_activities"
-                  name="work_activities"
+                  id="activity"
+                  name="activity"
                   label="Work/Activities"
                   fullWidth
                   autoComplete="family-name"
                   variant="standard"
-                  error={!!errors.work_activities}
-                  helperText={
-                    errors.work_activities
-                      ? errors.work_activities?.message
-                      : ""
-                  }
+                  error={!!errors.activity}
+                  helperText={errors.activity ? errors.activity?.message : ""}
                 />
               )}
             />
@@ -231,13 +229,13 @@ export default function PersInformation({
                     <Checkbox
                       onChange={() => handleCheckbox(index)}
                       name={language.name}
-                      key={index}
+                      key={language.id}
                       id={language.name}
                       value={language.name}
                       checked={checkedState[index].checked}
                     />
                   }
-                  key={index}
+                  key={language.id}
                   label={language.name}
                 />
               </Grid>

@@ -1,7 +1,7 @@
 import AdapterDateFns from "@mui/lab/AdapterDateFns";
 import DatePicker from "@mui/lab/DatePicker";
 import LocalizationProvider from "@mui/lab/LocalizationProvider";
-import TimePicker from "@mui/lab/TimePicker";
+// import TimePicker from "@mui/lab/TimePicker";
 import { Checkbox, FormControlLabel } from "@mui/material";
 import Grid from "@mui/material/Grid";
 import TextField from "@mui/material/TextField";
@@ -26,6 +26,7 @@ interface Props {
   checkedStateService: { value: IServiceType; checked: boolean }[];
   setCheckedStateService: any;
   serviceTypes: any;
+  getValues: <UseFormGetValues>(payload?: string | string) => Object;
 }
 
 export default function PriceandDates({
@@ -41,6 +42,7 @@ export default function PriceandDates({
   checkedStateService,
   setCheckedStateService,
   serviceTypes,
+  getValues,
 }: Props) {
   const {
     control,
@@ -120,6 +122,7 @@ export default function PriceandDates({
                   onChange={(e) => field.onChange(e)}
                   renderInput={(params) => (
                     <TextField
+                      name="startDate"
                       fullWidth
                       {...params}
                       error={!!errors.startDate}
@@ -144,6 +147,7 @@ export default function PriceandDates({
                   onChange={(e) => field.onChange(e)}
                   renderInput={(params) => (
                     <TextField
+                      name="endDate"
                       fullWidth
                       {...params}
                       error={!!errors.endDate}
@@ -159,20 +163,12 @@ export default function PriceandDates({
               name="startTime"
               control={control}
               render={({ field }) => (
-                <TimePicker
+                <TextField
+                  type="time"
+                  fullWidth
                   {...field}
-                  label="Start time"
-                  onChange={(e) => field.onChange(e)}
-                  renderInput={(params) => (
-                    <TextField
-                      fullWidth
-                      {...params}
-                      error={!!errors.startTime}
-                      helperText={
-                        errors.startTime ? errors.startTime?.message : ""
-                      }
-                    />
-                  )}
+                  error={!!errors.startTime}
+                  helperText={errors.startTime ? errors.startTime?.message : ""}
                 />
               )}
             />
@@ -182,39 +178,35 @@ export default function PriceandDates({
               name="endTime"
               control={control}
               render={({ field }) => (
-                <TimePicker
+                <TextField
+                  type="time"
+                  fullWidth
                   {...field}
-                  label="End time"
-                  onChange={(e) => field.onChange(e)}
-                  renderInput={(params) => (
-                    <TextField
-                      fullWidth
-                      {...params}
-                      error={!!errors.endTime}
-                      helperText={errors.endTime ? errors.endTime?.message : ""}
-                    />
-                  )}
+                  error={!!errors.endTime}
+                  helperText={errors.endTime ? errors.endTime?.message : ""}
                 />
               )}
             />
           </Grid>
           <Grid item xs={6} md={3}>
             <Controller
-              name="price"
+              name="day_price"
               control={control}
               render={({ field }) => (
                 <TextField
                   {...field}
-                  id="price"
-                  name="price"
+                  id="day_price"
+                  name="day_price"
                   label="Price"
                   type="number"
                   fullWidth
                   autoComplete="family-name"
                   variant="standard"
-                  error={!!errors.price}
+                  error={!!errors.day_price}
                   helperText={
-                    errors.price ? "Price is required and must be a number" : ""
+                    errors.day_price
+                      ? "Price is required and must be a number"
+                      : ""
                   }
                 />
               )}
@@ -235,13 +227,13 @@ export default function PriceandDates({
                     <Checkbox
                       onChange={() => handleCheckbox(index)}
                       name={pet.name}
-                      key={index}
+                      key={pet.id}
                       id={pet.name}
                       value={pet.name}
                       checked={checkedStatePet[index].checked}
                     />
                   }
-                  key={index}
+                  key={pet.id}
                   label={pet.name}
                 />
               </Grid>
@@ -268,13 +260,13 @@ export default function PriceandDates({
                     <Checkbox
                       onChange={() => handleServiceCheckbox(index)}
                       name={service.name}
-                      key={index}
+                      key={service.id}
                       id={service.name}
                       value={service.name}
                       checked={checkedStateService[index].checked}
                     />
                   }
-                  key={index}
+                  key={service.id}
                   label={labelText}
                 />
               </Grid>

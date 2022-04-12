@@ -263,6 +263,7 @@ export default function AdvertiseBase({ currentUser }: any) {
             languages={languages}
             checkedState={checkedState}
             setCheckedState={setCheckedState}
+            getValues={getValues}
           />
         );
       case 1:
@@ -280,6 +281,7 @@ export default function AdvertiseBase({ currentUser }: any) {
             checkedStateService={checkedStateService}
             setCheckedStateService={setCheckedStateService}
             serviceTypes={serviceTypes}
+            getValues={getValues}
           />
         );
 
