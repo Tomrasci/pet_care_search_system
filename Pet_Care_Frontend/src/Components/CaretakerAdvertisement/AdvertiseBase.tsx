@@ -192,11 +192,11 @@ export default function AdvertiseBase({ currentUser }: any) {
         setClicked(false);
       }
     } else if (activeStep === 1) {
-      const isValid = await trigger();
-
       setClickedPet(true);
       setClickedService(true);
       setClickedTime(true);
+      const isValid = await trigger();
+
       if (isValid && !errorPet && !errorService && !errorEndTime) {
         setActiveStep(activeStep + 1);
         setClickedService(false);

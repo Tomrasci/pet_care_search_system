@@ -18,6 +18,8 @@ import { useNavigate } from "react-router-dom";
 import userApi from "../Api/userApi";
 import { IUser } from "../Interfaces/User/IUser";
 import isEmpty from "../Utils/Empty";
+import "./Navbar.css";
+import CssBaseline from "@mui/material/CssBaseline";
 
 type NavbarProps = {
   name: string;
@@ -32,11 +34,13 @@ const guestLinksArray = [
   {
     name: "Home",
     route: "/",
+    id: 0,
   },
 
   {
-    name: "Adverts",
+    name: "Advertsisements",
     route: "/CaretakerAdvertList",
+    id: 1,
   },
 ];
 // {
@@ -62,7 +66,7 @@ const authLinksArray = [
 const Navbar = ({ loadUsers, currentUser }: any) => {
   const theme = useTheme();
   const isMatch = useMediaQuery(theme.breakpoints.down("md"));
-  const [value, setValue] = useState();
+  const [tabValue, setTabValue] = useState(0);
 
   const navigate = useNavigate();
 
@@ -72,70 +76,69 @@ const Navbar = ({ loadUsers, currentUser }: any) => {
     loadUsers();
   };
 
+  const handleChange = (event: React.SyntheticEvent, newValue: number) => {
+    setTabValue(newValue);
+  };
+
   return (
-    <AppBar
-      position="sticky"
-      sx={{
-        backgroundImage:
-          "linear-gradient(90deg, rgba(121,50,9,1) 0%, rgba(121,50,9,1) 35%, rgba(121,50,9,1) 100%)",
-      }}
-    >
-      <Toolbar>
-        {isMatch ? (
-          <>
-            <Typography>
-              <HomeIcon />
-            </Typography>
-            <DrawerComp links={guestLinksArray} />
-          </>
-        ) : (
-          <Grid sx={{ placeItems: "center" }} container>
-            <Grid item xs={2}>
+    <>
+      <CssBaseline />
+      <AppBar
+        position="sticky"
+        sx={{
+          backgroundImage:
+            "linear-gradient(90deg, rgba(121,50,9,1) 0%, rgba(121,50,9,1) 35%, rgba(121,50,9,1) 100%)",
+        }}
+      >
+        <Toolbar
+          sx={{
+            display: "flex",
+            flexDirection: "row",
+            justifyContent: "space-between",
+          }}
+        >
+          {isMatch ? (
+            <>
               <Typography>
-                <HomeIcon />
+                <Link style={{ textDecoration: "none", color: "white" }} to="/">
+                  <HomeIcon />
+                </Link>
               </Typography>
-            </Grid>
-            <Grid item xs={6}>
-              <Tabs
-                indicatorColor="secondary"
-                textColor="inherit"
-                value={0}
-                onChange={(e, val) => setValue(val)}
-              >
-                {guestLinksArray.map((link: any, index: any) => (
-                  <Link
-                    style={{ textDecoration: "none", color: "white" }}
-                    to={link.route}
-                  >
-                    <Tab key={index} label={link.name} />
-                  </Link>
-                ))}
-                {!isEmpty(currentUser) && (
-                  <Link
-                    style={{ textDecoration: "none", color: "white" }}
-                    to={"/CaretakerAdvertCreate"}
-                  >
-                    <Tab label="Create Advert" />
-                  </Link>
-                )}
-              </Tabs>
-            </Grid>
-            <Grid item xs={1} />
-            <Grid item xs={3}>
-              <Box display="flex" alignItems="center">
+              <DrawerComp links={guestLinksArray} />
+            </>
+          ) : (
+            <>
+              <div className="left_div">
+                <Tabs
+                  indicatorColor="secondary"
+                  textColor="inherit"
+                  onChange={handleChange}
+                >
+                  {guestLinksArray.map((link: any, index: any) => (
+                    <Link
+                      style={{ textDecoration: "none", color: "white" }}
+                      to={link.route}
+                    >
+                      <Tab value={link.name} key={link.id} label={link.name} />
+                    </Link>
+                  ))}
+                  {!isEmpty(currentUser) && (
+                    <Link
+                      style={{ textDecoration: "none", color: "white" }}
+                      to={"/CaretakerAdvertCreate"}
+                    >
+                      <Tab label="Create Advertisement" />
+                    </Link>
+                  )}
+                </Tabs>
+              </div>
+              <div className="right_div">
                 {!isEmpty(currentUser) ? (
                   <>
-                    <Typography
-                      color="white"
-                      sx={{
-                        marginLeft: "auto",
-                      }}
-                    >
-                      {currentUser.email}
-                    </Typography>
+                    <a>{currentUser.email}</a>
                     <Link to="/MyAdverts" style={{ textDecoration: "none" }}>
                       <Button
-                        sx={{ marginLeft: 1, background: "rgba(121,50,9,1)" }}
+                        sx={{ background: "rgba(121,50,9,1)" }}
                         variant="contained"
                       >
                         My Adverts
@@ -174,12 +177,12 @@ const Navbar = ({ loadUsers, currentUser }: any) => {
                     </Link>
                   </>
                 )}
-              </Box>
-            </Grid>
-          </Grid>
-        )}
-      </Toolbar>
-    </AppBar>
+              </div>
+            </>
+          )}
+        </Toolbar>
+      </AppBar>
+    </>
   );
 };
 

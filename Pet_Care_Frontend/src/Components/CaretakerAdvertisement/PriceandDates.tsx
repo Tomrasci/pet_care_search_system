@@ -59,7 +59,7 @@ export default function PriceandDates({
     formState: { errors },
   } = useFormContext();
 
-  const timeErrorMessage = "End time must be after startTime";
+  const timeErrorMessage = "End time must be after start time";
 
   const [timeError, setTimeError] = React.useState(true);
   const [petError, setPetError] = React.useState(true);
@@ -95,15 +95,11 @@ export default function PriceandDates({
   useEffect(() => {
     const st = getValues("startTime");
     const ed = getValues("endTime");
-    console.log(`st is ${st}`);
-    console.log(`ed is ${ed}`);
 
     if (ed <= st) {
-      console.log("end is lower");
       setTimeError(true);
       sendErrorEndTime(true);
     } else {
-      console.log("end is higher");
       setTimeError(false);
       sendErrorEndTime(false);
     }
@@ -215,9 +211,10 @@ export default function PriceandDates({
                 <TextField type="time" fullWidth {...field} />
               )}
             />
+
             {clickedTime && timeError && (
               <Grid item xs={12}>
-                <Typography color="red">{timeError}</Typography>
+                <Typography color="red">{timeErrorMessage}</Typography>
               </Grid>
             )}
           </Grid>
