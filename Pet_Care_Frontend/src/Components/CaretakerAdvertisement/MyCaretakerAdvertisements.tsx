@@ -23,10 +23,6 @@ const MyCaretakerAdvertisements = ({ currentUser }: any) => {
 
   const navigate = useNavigate();
 
-  if (isEmpty(currentUser)) {
-    navigate("/Login");
-  }
-
   async function getAdverts() {
     if (currentUser) {
       const cAdverts =
@@ -46,6 +42,9 @@ const MyCaretakerAdvertisements = ({ currentUser }: any) => {
   };
 
   useEffect(() => {
+    if (isEmpty(currentUser)) {
+      navigate("/Login");
+    }
     getAdverts();
   }, [currentUser]);
 

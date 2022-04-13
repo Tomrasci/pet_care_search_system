@@ -19,16 +19,13 @@ const getLanguages = async (): Promise<ILanguage[]> => {
 };
 
 const getCaretakerLanguages = async (
-  pid: number,
   aid: number
 ): Promise<ICaretakerLanguage[]> => {
   try {
     return await database('caretaker_languages')
       .where({
-        language_id: pid,
         advertisement_id: aid
       })
-      .first()
       .select();
   } catch (err) {
     console.log(err.message);

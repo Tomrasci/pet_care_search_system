@@ -33,19 +33,20 @@ const guestLinksArray = [
     name: "Home",
     route: "/",
   },
-  {
-    name: "Create Advert",
-    route: "/CaretakerAdvertCreate",
-  },
+
   {
     name: "Adverts",
     route: "/CaretakerAdvertList",
   },
-  {
-    name: "MyAdverts",
-    route: "/MyAdverts",
-  },
 ];
+// {
+//   name: "MyAdverts",
+//   route: "/MyAdverts",
+// },
+// {
+//   name: "Create Advert",
+//   route: "/CaretakerAdvertCreate",
+// },
 
 const authLinksArray = [
   {
@@ -109,6 +110,14 @@ const Navbar = ({ loadUsers, currentUser }: any) => {
                     <Tab key={index} label={link.name} />
                   </Link>
                 ))}
+                {!isEmpty(currentUser) && (
+                  <Link
+                    style={{ textDecoration: "none", color: "white" }}
+                    to={"/CaretakerAdvertCreate"}
+                  >
+                    <Tab label="Create Advert" />
+                  </Link>
+                )}
               </Tabs>
             </Grid>
             <Grid item xs={1} />
@@ -124,6 +133,14 @@ const Navbar = ({ loadUsers, currentUser }: any) => {
                     >
                       {currentUser.email}
                     </Typography>
+                    <Link to="/MyAdverts" style={{ textDecoration: "none" }}>
+                      <Button
+                        sx={{ marginLeft: 1, background: "rgba(121,50,9,1)" }}
+                        variant="contained"
+                      >
+                        My Adverts
+                      </Button>
+                    </Link>
                     <Link to="/" style={{ textDecoration: "none" }}>
                       <Button
                         sx={{ marginLeft: 1, background: "rgba(121,50,9,1)" }}

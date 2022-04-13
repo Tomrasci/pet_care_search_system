@@ -30,6 +30,12 @@ import languageApi from "../../Api/languageApi";
 import { ILanguageType } from "../../Interfaces/Caretaker/ILanguageType";
 import isEmpty from "../../Utils/Empty";
 import { ICaretakerAdvert } from "../../Interfaces/Caretaker/ICaretakerAdvert";
+import { IPet } from "../../Interfaces/Caretaker/IPet";
+import { IPetCheck } from "../../Interfaces/Caretaker/IPetCheck";
+import { IServiceCheck } from "../../Interfaces/Caretaker/IServiceCheck";
+import { IService } from "../../Interfaces/Caretaker/IService";
+import { ILanguageCheck } from "../../Interfaces/Caretaker/ILanguageCheck";
+import { ILanguage } from "../../Interfaces/Caretaker/ILanguage";
 
 const steps = [
   "Personal information",
@@ -83,6 +89,9 @@ export default function AdvertiseBaseEdit({ currentUser }: any) {
     { value: ILanguageType; checked: boolean }[]
   >([]);
 
+  const [clickedTime, setClickedTime] = React.useState(false);
+  const [errorEndTime, setErrorEndTime] = React.useState(false);
+
   const [clickedPet, setClickedPet] = React.useState(false);
   const [errorPet, setErrorPet] = React.useState(false);
   const [checkedStatePet, setCheckedStatePet] = React.useState<
@@ -103,31 +112,71 @@ export default function AdvertiseBaseEdit({ currentUser }: any) {
 
   React.useEffect(() => {
     async function getTypes() {
+      const languagesGet = await languageApi.getLanguages();
+      setLanguages(languagesGet);
       const petTypesGet = await petTypeApi.getPetTypes();
       setPetTypes(petTypesGet);
       const serviceTypesGet = await serviceTypeApi.getServiceTypes();
       setServiceTypes(serviceTypesGet);
-      const languagesGet = await languageApi.getLanguages();
 
-      setLanguages(languagesGet);
-
-      const petArray = petTypesGet.map((pet: IPetType) => {
-        return { value: pet, checked: false };
-      });
-      const serviceArray = serviceTypesGet.map((service: IServiceType) => {
-        return { value: service, checked: false };
-      });
-
-      const languageArray = languagesGet.map((language: ILanguageType) => {
+      let languageArray = languagesGet.map((language: ILanguageType) => {
         return { value: language, checked: false };
       });
 
+      let petArray = petTypesGet.map((pet: IPetType) => {
+        return { value: pet, checked: false };
+      });
+      let serviceArray = serviceTypesGet.map((service: IServiceType) => {
+        return { value: service, checked: false };
+      });
+      setCheckedState(languageArray);
+      setSelected(languageArray);
       setCheckedStatePet(petArray);
       setSelectedPet(petArray);
       setCheckedStateService(serviceArray);
       setSelectedService(serviceArray);
+
+      const pets: IPet[] = await caretakerAdvertisementApi.getCaretakerPets(
+        Number(id)
+      );
+      const services = await caretakerAdvertisementApi.getCaretakerServices(
+        Number(id)
+      );
+      const languages = await caretakerAdvertisementApi.getCaretakerLanguages(
+        Number(id)
+      );
+
+      languageArray = languageArray.map((language: ILanguageCheck) => {
+        return {
+          value: language.value,
+          checked: languages.some(
+            (l: ILanguage) => l.language_id === language.value.id
+          ),
+        };
+      });
+
+      petArray = petArray.map((pet: IPetCheck) => {
+        return {
+          value: pet.value,
+          checked: pets.some((p: IPet) => p.pet_type_id === pet.value.id),
+        };
+      });
+
+      serviceArray = serviceArray.map((service: IServiceCheck) => {
+        return {
+          value: service.value,
+          checked: services.some(
+            (s: IService) => s.service_type_id === service.value.id
+          ),
+        };
+      });
+
       setCheckedState(languageArray);
       setSelected(languageArray);
+      setCheckedStatePet(petArray);
+      setSelectedPet(petArray);
+      setCheckedStateService(serviceArray);
+      setSelectedService(serviceArray);
     }
 
     getTypes();
@@ -143,6 +192,10 @@ export default function AdvertiseBaseEdit({ currentUser }: any) {
 
   const sendErrorService = (serviceError: boolean) => {
     setErrorService(serviceError);
+  };
+
+  const sendErrorEndTime = (timeError: boolean) => {
+    setErrorEndTime(timeError);
   };
   const validationSchema = [
     yup.object({
@@ -163,15 +216,15 @@ export default function AdvertiseBaseEdit({ currentUser }: any) {
         .date()
         .typeError("End date must be valid")
         .required("End date is required"),
-      startTime: yup
-        .date()
-        .typeError("Start time must be valid - select both hours and minutes")
-        .required("Start time is required"),
-      endTime: yup
-        .date()
-        .typeError("End time must be valid - select both hours and minutes")
-        .required("End time is required")
-        .min(yup.ref("startTime"), "End time must be later than start time"),
+      // startTime: yup
+      //   .date()
+      //   .typeError("Start time must be valid - select both hours and minutes")
+      //   .required("Start time is required"),
+      // endTime: yup
+      //   .date()
+      //   .typeError("End time must be valid - select both hours and minutes")
+      //   .required("End time is required")
+      //   .min(yup.ref("startTime"), "End time must be later than start time"),
       day_price: yup.number().required("Price is required"),
     }),
     yup.object({
@@ -189,7 +242,7 @@ export default function AdvertiseBaseEdit({ currentUser }: any) {
     resolver: yupResolver(currentValidationSchema),
     mode: "onChange",
   });
-  const { handleSubmit, reset, trigger, getValues, setValue } = methods;
+  const { handleSubmit, reset, trigger, getValues, setValue, watch } = methods;
 
   React.useEffect(() => {
     async function getAdvert() {
@@ -197,9 +250,8 @@ export default function AdvertiseBaseEdit({ currentUser }: any) {
         await caretakerAdvertisementApi.getCaretakerAdvertisement(Number(id));
       setAdvertDetails(advertDetails);
       reset(advertDetails);
-      // setValue("startTime", advertDetails.startTime);
-      // setValue("endTime", advertDetails.endTime);
     }
+
     getAdvert();
   }, []);
 
@@ -212,13 +264,16 @@ export default function AdvertiseBaseEdit({ currentUser }: any) {
         setClicked(false);
       }
     } else if (activeStep === 1) {
-      const isValid = await trigger();
       setClickedPet(true);
       setClickedService(true);
-      if (isValid && !errorPet && !errorService) {
-        setActiveStep(activeStep + 1);
+      setClickedTime(true);
+      const isValid = await trigger();
+
+      if (isValid && !errorPet && !errorService && !errorEndTime) {
         setClickedService(false);
         setClickedPet(false);
+        setClickedTime(false);
+        setActiveStep(activeStep + 1);
       }
     } else {
       const isValid = await trigger();
@@ -250,26 +305,25 @@ export default function AdvertiseBaseEdit({ currentUser }: any) {
       extra_information: getValues("extra_information"),
       startDate: new Date(getValues("startDate")),
       endDate: new Date(getValues("endDate")),
-      startTime: new Date(getValues("startTime")),
-      endTime: new Date(getValues("endTime")),
+      startTime: getValues("startTime").toString(),
+      endTime: getValues("endTime").toString(),
       day_price: Number(getValues("day_price")),
       pets: checkedPets,
       services: checkedServices,
       languages: checkedLanguages,
       user_id: currentUser.id,
     };
-    const result = await caretakerAdvertisementApi.createCaretakerAdvertisement(
+    const result = await caretakerAdvertisementApi.editCaretakerAdvertisement(
+      Number(id),
       newAdvert
     );
-    if (result.status !== 201) {
-      toast.error("Advertisement creation failed");
+    if (result.status !== 200) {
+      toast.error("Advertisement update failed");
     } else {
-      toast.success("Advertisement creation successful");
+      toast.success("Advertisement updated successful");
       navigate("/");
     }
   };
-
-  console.log(`end time is ${getValues("endTime")}`);
 
   function getStepContent(step: number) {
     switch (step) {
@@ -282,7 +336,6 @@ export default function AdvertiseBaseEdit({ currentUser }: any) {
             languages={languages}
             checkedState={checkedState}
             setCheckedState={setCheckedState}
-            getValues={getValues}
           />
         );
       case 1:
@@ -301,6 +354,9 @@ export default function AdvertiseBaseEdit({ currentUser }: any) {
             setCheckedStateService={setCheckedStateService}
             serviceTypes={serviceTypes}
             getValues={getValues}
+            clickedTime={clickedTime}
+            sendErrorEndTime={sendErrorEndTime}
+            watchTime={watch}
           />
         );
 

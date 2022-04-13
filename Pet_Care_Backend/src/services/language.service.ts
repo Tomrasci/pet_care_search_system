@@ -9,8 +9,8 @@ const getLanguages = async () => {
   return await languageModel.getLanguages();
 };
 
-const getCaretakerLanguages = async (pid: number, aid: number) => {
-  return await languageModel.getCaretakerLanguages(pid, aid);
+const getCaretakerLanguages = async (aid: number) => {
+  return await languageModel.getCaretakerLanguages(aid);
 };
 
 const insertCaretakerLanguages = async (

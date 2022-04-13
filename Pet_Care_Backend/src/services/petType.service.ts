@@ -9,8 +9,8 @@ const getPetTypes = async () => {
   return await petTypesModel.getPetTypes();
 };
 
-const getCaretakerPets = async (pid: number, aid: number) => {
-  return await petTypesModel.getCaretakerPets(pid, aid);
+const getCaretakerPets = async (pid: number) => {
+  return await petTypesModel.getCaretakerPets(pid);
 };
 
 const insertCaretakerPets = async (petArray: ICaretakerPet[]) => {

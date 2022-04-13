@@ -34,6 +34,19 @@ const deleteCaretakerAdvertisement = async (id: number) => {
   return await http.delete(`/caretakerAdverts/${id}`);
 };
 
+const getCaretakerPets = async (id: number) => {
+  const { data, status } = await http.get(`/caretakerPets/${id}`);
+  return data;
+};
+const getCaretakerServices = async (id: number) => {
+  const { data, status } = await http.get(`/caretakerServices/${id}`);
+  return data;
+};
+const getCaretakerLanguages = async (id: number) => {
+  const { data, status } = await http.get(`/caretakerLanguages/${id}`);
+  return data;
+};
+
 export default {
   createCaretakerAdvertisement,
   getCaretakerAdvertisement,
@@ -41,4 +54,7 @@ export default {
   editCaretakerAdvertisement,
   deleteCaretakerAdvertisement,
   getUserCaretakerAdvertisements,
+  getCaretakerPets,
+  getCaretakerServices,
+  getCaretakerLanguages,
 };

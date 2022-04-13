@@ -13,6 +13,8 @@ import { Controller, useFormContext } from "react-hook-form";
 import { IPetType } from "../../Interfaces/Caretaker/IPetType";
 import { IServiceType } from "../../Interfaces/Caretaker/IServiceType";
 
+import Timeit from "react-timeit";
+
 interface Props {
   sendErrorPet: (e: boolean) => void;
   clickedPet: boolean;
@@ -26,7 +28,12 @@ interface Props {
   checkedStateService: { value: IServiceType; checked: boolean }[];
   setCheckedStateService: any;
   serviceTypes: any;
-  getValues: <UseFormGetValues>(payload?: string | string) => Object;
+  getValues: (payload?: string | string[]) => any;
+  clickedTime: boolean;
+  sendErrorEndTime: (e: boolean) => void;
+  watchTime: (
+    names?: string | string[] | ((data: any, options: any) => void)
+  ) => unknown;
 }
 
 export default function PriceandDates({
@@ -43,14 +50,22 @@ export default function PriceandDates({
   setCheckedStateService,
   serviceTypes,
   getValues,
+  clickedTime,
+  sendErrorEndTime,
+  watchTime,
 }: Props) {
   const {
     control,
     formState: { errors },
   } = useFormContext();
 
-  let error = true;
-  let errorService = true;
+  const timeErrorMessage = "End time must be after startTime";
+
+  const [timeError, setTimeError] = React.useState(true);
+  const [petError, setPetError] = React.useState(true);
+  const [serviceError, setServiceError] = React.useState(true);
+
+  const [timeCalc, setTimeCalc] = React.useState(true);
 
   function handleCheckbox(position: number) {
     const updatedCheckedState = checkedStatePet.map(
@@ -67,7 +82,8 @@ export default function PriceandDates({
     const selectedPets = checkedStatePet.filter((pet) => pet.checked === true);
     setSelectedPet(selectedPets);
 
-    error = checkedStatePet.filter((x) => x.checked === true).length < 1;
+    const error = checkedStatePet.filter((x) => x.checked === true).length < 1;
+    setPetError(error);
 
     if (error) {
       sendErrorPet(true);
@@ -75,6 +91,23 @@ export default function PriceandDates({
       sendErrorPet(false);
     }
   }, [checkedStatePet]);
+
+  useEffect(() => {
+    const st = getValues("startTime");
+    const ed = getValues("endTime");
+    console.log(`st is ${st}`);
+    console.log(`ed is ${ed}`);
+
+    if (ed <= st) {
+      console.log("end is lower");
+      setTimeError(true);
+      sendErrorEndTime(true);
+    } else {
+      console.log("end is higher");
+      setTimeError(false);
+      sendErrorEndTime(false);
+    }
+  }, [watchTime(["endTime", "startTime"])]);
 
   function handleServiceCheckbox(position: number) {
     const updatedCheckedState = checkedStateService.map(
@@ -93,8 +126,9 @@ export default function PriceandDates({
     );
     setSelectedService(selectedServices);
 
-    errorService =
+    const errorService =
       checkedStateService.filter((x) => x.checked === true).length < 1;
+    setServiceError(errorService);
 
     if (errorService) {
       sendErrorService(true);
@@ -178,15 +212,14 @@ export default function PriceandDates({
               name="endTime"
               control={control}
               render={({ field }) => (
-                <TextField
-                  type="time"
-                  fullWidth
-                  {...field}
-                  error={!!errors.endTime}
-                  helperText={errors.endTime ? errors.endTime?.message : ""}
-                />
+                <TextField type="time" fullWidth {...field} />
               )}
             />
+            {clickedTime && timeError && (
+              <Grid item xs={12}>
+                <Typography color="red">{timeError}</Typography>
+              </Grid>
+            )}
           </Grid>
           <Grid item xs={6} md={3}>
             <Controller
@@ -240,7 +273,7 @@ export default function PriceandDates({
             );
           })}
 
-          {clickedPet && error && (
+          {clickedPet && petError && (
             <Grid item xs={12}>
               <Typography color="red">
                 Atleast one pet must be selected
@@ -273,7 +306,7 @@ export default function PriceandDates({
             );
           })}
 
-          {clickedService && errorService && (
+          {clickedService && serviceError && (
             <Grid item xs={12}>
               <Typography color="red">
                 Atleast one service must be selected

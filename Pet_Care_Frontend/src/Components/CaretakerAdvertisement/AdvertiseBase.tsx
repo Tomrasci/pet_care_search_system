@@ -48,18 +48,18 @@ export default function AdvertiseBase({ currentUser }: any) {
   moment.locale("lt");
 
   const defaultValues = {
-    firstName: "",
-    lastName: "",
+    name: "",
+    surname: "",
     address: "",
     phone: "",
     age: "",
-    work_activities: "",
+    activity: "",
     experience: "",
     startDate: "",
     endDate: "",
     startTime: "",
     endTime: "",
-    price: "",
+    day_price: "",
     title: "",
     description: "",
     extra_information: "",
@@ -77,6 +77,8 @@ export default function AdvertiseBase({ currentUser }: any) {
   const [selected, setSelected] = React.useState<
     { value: ILanguageType; checked: boolean }[]
   >([]);
+  const [clickedTime, setClickedTime] = React.useState(false);
+  const [errorEndTime, setErrorEndTime] = React.useState(false);
 
   const [clickedPet, setClickedPet] = React.useState(false);
   const [errorPet, setErrorPet] = React.useState(false);
@@ -139,14 +141,18 @@ export default function AdvertiseBase({ currentUser }: any) {
   const sendErrorService = (serviceError: boolean) => {
     setErrorService(serviceError);
   };
+
+  const sendErrorEndTime = (timeError: boolean) => {
+    setErrorEndTime(timeError);
+  };
   const validationSchema = [
     yup.object({
-      firstName: yup.string().required("First name is required"),
-      lastName: yup.string().required("Last name is required"),
+      name: yup.string().required("First name is required"),
+      surname: yup.string().required("Last name is required"),
       address: yup.string().required("Address is required"),
       phone: yup.string().required("Phone is required"),
       age: yup.number().required("Age is required"),
-      work_activities: yup.string().required("Work or activity is required"),
+      activity: yup.string().required("Work or activity is required"),
       experience: yup.string().required("Experience is required"),
     }),
     yup.object({
@@ -158,16 +164,7 @@ export default function AdvertiseBase({ currentUser }: any) {
         .date()
         .typeError("End date must be valid")
         .required("End date is required"),
-      startTime: yup
-        .date()
-        .typeError("Start time must be valid - select both hours and minutes")
-        .required("Start time is required"),
-      endTime: yup
-        .date()
-        .typeError("End time must be valid - select both hours and minutes")
-        .required("End time is required")
-        .min(yup.ref("startTime"), "End time must be later than start time"),
-      price: yup.number().required("Price is required"),
+      day_price: yup.number().required("Price is required"),
     }),
     yup.object({
       title: yup.string().required("Title is required"),
@@ -184,7 +181,7 @@ export default function AdvertiseBase({ currentUser }: any) {
     resolver: yupResolver(currentValidationSchema),
     mode: "onChange",
   });
-  const { handleSubmit, reset, trigger, getValues } = methods;
+  const { handleSubmit, reset, trigger, getValues, watch } = methods;
 
   const handleNext = async () => {
     if (activeStep === 0) {
@@ -196,12 +193,15 @@ export default function AdvertiseBase({ currentUser }: any) {
       }
     } else if (activeStep === 1) {
       const isValid = await trigger();
+
       setClickedPet(true);
       setClickedService(true);
-      if (isValid && !errorPet && !errorService) {
+      setClickedTime(true);
+      if (isValid && !errorPet && !errorService && !errorEndTime) {
         setActiveStep(activeStep + 1);
         setClickedService(false);
         setClickedPet(false);
+        setClickedTime(false);
       }
     } else {
       const isValid = await trigger();
@@ -221,21 +221,21 @@ export default function AdvertiseBase({ currentUser }: any) {
     const checkedServices = selectedService.map((service) => service.value.id);
 
     const newAdvert: ICaretakerAdvertCreate = {
-      name: getValues("firstName"),
-      surname: getValues("lastName"),
+      name: getValues("name"),
+      surname: getValues("surname"),
       address: getValues("address"),
       phone: getValues("phone"),
       age: Number(getValues("age")),
-      activity: getValues("work_activities"),
+      activity: getValues("activity"),
       experience: getValues("experience"),
       title: getValues("title"),
       description: getValues("description"),
       extra_information: getValues("extra_information"),
       startDate: new Date(getValues("startDate")),
       endDate: new Date(getValues("endDate")),
-      startTime: new Date(getValues("startTime")),
-      endTime: new Date(getValues("endTime")),
-      day_price: Number(getValues("price")),
+      startTime: getValues("startTime"),
+      endTime: getValues("endTime"),
+      day_price: Number(getValues("day_price")),
       pets: checkedPets,
       services: checkedServices,
       languages: checkedLanguages,
@@ -263,7 +263,6 @@ export default function AdvertiseBase({ currentUser }: any) {
             languages={languages}
             checkedState={checkedState}
             setCheckedState={setCheckedState}
-            getValues={getValues}
           />
         );
       case 1:
@@ -282,6 +281,9 @@ export default function AdvertiseBase({ currentUser }: any) {
             setCheckedStateService={setCheckedStateService}
             serviceTypes={serviceTypes}
             getValues={getValues}
+            clickedTime={clickedTime}
+            sendErrorEndTime={sendErrorEndTime}
+            watchTime={watch}
           />
         );
 

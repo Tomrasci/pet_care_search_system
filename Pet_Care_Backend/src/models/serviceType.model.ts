@@ -19,16 +19,13 @@ const getServiceTypes = async (): Promise<IServiceType[]> => {
 };
 
 const getCaretakerServices = async (
-  sid: number,
   aid: number
 ): Promise<ICaretakerService[]> => {
   try {
     return await database('caretaker_services')
       .where({
-        service_type_id: sid,
         advertisement_id: aid
       })
-      .first()
       .select();
   } catch (err) {
     console.log(err.message);

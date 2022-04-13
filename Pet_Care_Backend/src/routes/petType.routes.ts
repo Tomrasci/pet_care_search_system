@@ -7,7 +7,5 @@ router.get('/petTypes', petTypeController.getPetTypes);
 
 router.get('/petTypes/:id', petTypeController.getPetType);
 
-router.get('/caretakerPets', petTypeController.getCaretakerPets);
-
 router.post('/caretakerPets', petTypeController.insertCaretakerPets);
 export default router;

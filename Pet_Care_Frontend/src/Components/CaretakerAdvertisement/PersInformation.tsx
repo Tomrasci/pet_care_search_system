@@ -23,7 +23,6 @@ interface Props {
     checked: boolean;
   }[];
   setCheckedState: any;
-  getValues: <UseFormGetValues>(payload?: string | string) => Object;
 }
 
 export default function PersInformation({
@@ -33,7 +32,6 @@ export default function PersInformation({
   languages,
   checkedState,
   setCheckedState,
-  getValues,
 }: Props) {
   const {
     control,

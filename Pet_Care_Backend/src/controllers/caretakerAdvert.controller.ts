@@ -62,7 +62,7 @@ const createCaretakerAdvertisement = async (
       `Caretaker pets have been inserted  ${JSON.stringify(caretakerPets)}`
     );
   } catch (err) {
-    console.log(err);
+    logger.error(err);
   }
 
   const serviceTypesArray = req.body.services;
@@ -144,31 +144,126 @@ const updateCareTakerAdvert = async (
   res: Response,
   next: NextFunction
 ) => {
-  const { error } = validation.validateCaretakerAdvert(req.body);
+  const editedCaretakerAdvert: ICaretakerAdvertCreate = {
+    name: req.body.name,
+    surname: req.body.surname,
+    address: req.body.address,
+    phone: req.body.phone,
+    age: req.body.age,
+    activity: req.body.activity,
+    experience: req.body.experience,
+    title: req.body.title,
+    description: req.body.description,
+    extra_information: req.body.extra_information,
+    startDate: req.body.startDate,
+    endDate: req.body.endDate,
+    startTime: req.body.startTime,
+    endTime: req.body.endTime,
+    day_price: req.body.day_price,
+    user_id: req.body.user_id
+  };
+  const { error } = validation.validateCaretakerAdvert(editedCaretakerAdvert);
   if (error) {
     logger.error(`Body validation failed ${error.message}`);
     return next(
       ApiError.badRequestError(`Body validation failed ${error.message}`)
     );
   }
+  const cAdvertId = Number(req.params.id);
   const neededCareTakerAdvert =
-    await caretakerAdvertService.getCareTakerAdvertById(Number(req.params.id));
+    await caretakerAdvertService.getCareTakerAdvertById(cAdvertId);
   if (isEmpty(neededCareTakerAdvert)) {
     logger.info(
-      `Caretaker advert with id  ${req.params.id}  was not found to update`
+      `Caretaker advert with id  ${cAdvertId}  was not found to update`
     );
     return next(
       ApiError.notFoundError(
-        `Caretaker advert was not found with id  ${req.params.id}`
+        `Caretaker advert was not found with id  ${cAdvertId}`
       )
     );
   }
-  await caretakerAdvertService.updateCareTakerAdvert(
-    req.body,
-    Number(req.params.id)
+
+  try {
+    await caretakerAdvertService.updateCareTakerAdvert(
+      editedCaretakerAdvert,
+      cAdvertId
+    );
+  } catch (err) {
+    logger.error(err);
+    throw err;
+  }
+  try {
+    await petTypeService.deleteCaretakerPets(cAdvertId);
+  } catch (err) {
+    logger.error(err);
+    throw err;
+  }
+  try {
+    await languageService.deleteCaretakerLangauges(cAdvertId);
+  } catch (err) {
+    logger.error(err);
+    throw err;
+  }
+  try {
+    await serviceTypeService.deleteCaretakerServices(cAdvertId);
+  } catch (err) {
+    logger.error(err);
+    throw err;
+  }
+  const petTypesArray = req.body.pets;
+  const caretakerPets: ICaretakerPet[] = petTypesArray.map((pet: number) => ({
+    pet_type_id: pet,
+    advertisement_id: cAdvertId
+  }));
+  try {
+    await petTypeService.insertCaretakerPets(caretakerPets);
+    logger.info(
+      `Caretaker pets have been inserted after edit ${JSON.stringify(
+        caretakerPets
+      )}`
+    );
+  } catch (err) {
+    console.log(err);
+  }
+
+  const serviceTypesArray = req.body.services;
+  const caretakerServices: ICaretakerService[] = serviceTypesArray.map(
+    (service: number) => ({
+      service_type_id: service,
+      advertisement_id: cAdvertId
+    })
   );
+
+  try {
+    await serviceTypeService.insertCaretakerServices(caretakerServices);
+    logger.info(
+      `Caretaker services have been inserted after edit ${JSON.stringify(
+        caretakerServices
+      )}`
+    );
+  } catch (err) {
+    console.log(err);
+  }
+  const languagesArray = req.body.languages;
+  const caretakerLanguages: ICaretakerLanguage[] = languagesArray.map(
+    (language: number) => ({
+      language_id: language,
+      advertisement_id: cAdvertId
+    })
+  );
+  try {
+    await languageService.insertCaretakerLanguages(caretakerLanguages);
+    logger.info(
+      `Caretaker languages have been inserted  ${JSON.stringify(
+        caretakerLanguages
+      )}`
+    );
+  } catch (err) {
+    console.log(err);
+  }
+
   const updatedCareTakerAdvert =
-    await caretakerAdvertService.getCareTakerAdvertById(Number(req.params.id));
+    await caretakerAdvertService.getCareTakerAdvertById(cAdvertId);
   logger.info(
     `Caretaker advert  ${updatedCareTakerAdvert}  has successfully been updated`
   );
@@ -206,11 +301,60 @@ const deleteCareTakerAdvert = async (
     .json('Caretaker advert deleted sucessfully');
 };
 
+const getCaretakerLanguages = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  const caretakerLanguages = await languageService.getCaretakerLanguages(
+    Number(req.params.id)
+  );
+  logger.info(
+    `Caretaker languages have been retrieved  ${JSON.stringify(
+      caretakerLanguages
+    )}`
+  );
+  return res.status(ResponseCodes.OK).json(caretakerLanguages);
+};
+
+const getCaretakerPets = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  const caretakerPets = await petTypeService.getCaretakerPets(
+    Number(req.params.id)
+  );
+  logger.info(
+    `Caretaker pets have been retrieved  ${JSON.stringify(caretakerPets)}`
+  );
+  return res.status(ResponseCodes.OK).json(caretakerPets);
+};
+
+const getCaretakerServices = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  const caretakerServices = await serviceTypeService.getCaretakerServices(
+    Number(req.params.id)
+  );
+  logger.info(
+    `Caretaker services have been retrieved  ${JSON.stringify(
+      caretakerServices
+    )}`
+  );
+  return res.status(ResponseCodes.OK).json(caretakerServices);
+};
+
 export default {
   createCaretakerAdvertisement,
   getCareTakerAdvert,
   getCareTakerAdverts,
   updateCareTakerAdvert,
   deleteCareTakerAdvert,
-  getUserCaretakerAdverts
+  getUserCaretakerAdverts,
+  getCaretakerLanguages,
+  getCaretakerPets,
+  getCaretakerServices
 };

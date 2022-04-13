@@ -15,21 +15,6 @@ const getPetTypes = async (req: Request, res: Response, next: NextFunction) => {
   return res.status(ResponseCodes.OK).json(petTypes);
 };
 
-const getCaretakerPets = async (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
-  const caretakerPets = await petTypeService.getCaretakerPets(
-    req.body.pid,
-    req.body.aid
-  );
-  logger.info(
-    `Caretaker pets have been retrieved  ${JSON.stringify(caretakerPets)}`
-  );
-  return res.status(ResponseCodes.OK).json(caretakerPets);
-};
-
 const insertCaretakerPets = async (
   req: Request,
   res: Response,
@@ -48,6 +33,5 @@ const insertCaretakerPets = async (
 export default {
   getPetType,
   getPetTypes,
-  getCaretakerPets,
   insertCaretakerPets
 };

@@ -9,8 +9,8 @@ const getServiceTypes = async () => {
   return await serviceTypeModel.getServiceTypes();
 };
 
-const getCaretakerServices = async (sid: number, aid: number) => {
-  return await serviceTypeModel.getCaretakerServices(sid, aid);
+const getCaretakerServices = async (aid: number) => {
+  return await serviceTypeModel.getCaretakerServices(aid);
 };
 
 const insertCaretakerServices = async (serviceArray: ICaretakerService[]) => {

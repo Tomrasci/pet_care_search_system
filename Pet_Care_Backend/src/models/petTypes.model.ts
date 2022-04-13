@@ -18,16 +18,12 @@ const getPetTypes = async (): Promise<IPetType[]> => {
   }
 };
 
-const getCaretakerPets = async (
-  pid: number,
-  aid: number
-): Promise<ICaretakerPet[]> => {
+const getCaretakerPets = async (aid: number): Promise<ICaretakerPet[]> => {
   try {
     return await database('caretaker_pets')
       .where({
         advertisement_id: aid
       })
-      .first()
       .select();
   } catch (err) {
     console.log(err.message);

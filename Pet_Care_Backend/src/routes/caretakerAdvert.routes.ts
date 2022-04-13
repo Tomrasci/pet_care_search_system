@@ -30,4 +30,16 @@ router.delete(
   caretakerAdvertController.deleteCareTakerAdvert
 );
 
+router.get('/caretakerPets/:id', caretakerAdvertController.getCaretakerPets);
+
+router.get(
+  '/caretakerServices/:id',
+  caretakerAdvertController.getCaretakerServices
+);
+
+router.get(
+  '/caretakerLanguages/:id',
+  caretakerAdvertController.getCaretakerLanguages
+);
+
 export default router;
