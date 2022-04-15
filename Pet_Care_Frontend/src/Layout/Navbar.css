@@ -2,12 +2,12 @@
   color: white;
   text-decoration: none;
 }
-.left_div {
+/* .left_div {
   display: flex;
   justify-content: center;
   align-items: center;
   align-content: flex-start;
-}
+} */
 
 .right_div > * + * {
   /* display: flex; */

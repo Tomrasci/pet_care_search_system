@@ -58,7 +58,9 @@ const register = async (req: Request, res: Response, next: NextFunction) => {
 const login = async (req: Request, res: Response, next: NextFunction) => {
   const user = await userService.getUserByEmail(req.body.email);
   if (isEmpty(user)) {
-    next(ApiError.notFoundError(`User with email ${req.body.email} not found`));
+    next(
+      ApiError.unauthorizedError(`User with email ${req.body.email} not found`)
+    );
     return;
   }
   const passwordIsValid = bcrypt.compareSync(

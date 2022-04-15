@@ -22,9 +22,11 @@ const Login = ({ loadUsers }: any) => {
   const handleLogin = async (e: any) => {
     e.preventDefault();
     const login = await userApi.login(values.email, values.password);
-    toast.success("Login successful");
-    navigate("/");
-    loadUsers();
+    if (login === "Success") {
+      toast.success("Login successful");
+      navigate("/");
+      loadUsers();
+    }
   };
 
   return (

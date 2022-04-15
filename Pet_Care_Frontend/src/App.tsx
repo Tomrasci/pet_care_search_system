@@ -43,6 +43,10 @@ const authLinksArray = [
 export default function App() {
   const [currentUser, setCurrentUser] = React.useState({});
 
+  const logOut = () => {
+    userApi.logout();
+  };
+
   const loadUsers = () => {
     const user = userApi.getCurrentUser();
     if (user !== null) {
