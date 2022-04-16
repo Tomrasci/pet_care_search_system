@@ -36,6 +36,8 @@ import { IServiceCheck } from "../../Interfaces/Caretaker/IServiceCheck";
 import { IService } from "../../Interfaces/Caretaker/IService";
 import { ILanguageCheck } from "../../Interfaces/Caretaker/ILanguageCheck";
 import { ILanguage } from "../../Interfaces/Caretaker/ILanguage";
+import interval from "./TimeIntervals";
+import { IDaysObject } from "../../Interfaces/Caretaker/IDaysObject";
 
 const steps = [
   "Personal information",
@@ -56,6 +58,9 @@ export default function AdvertiseBaseEdit({ currentUser }: any) {
 
   moment.locale("lt");
 
+  const timeInterval = interval.getInitialTimeIntervals();
+  const initialDayInterval = interval.getDaysIntervals();
+
   const [advertDetails, setAdvertDetails] = React.useState<ICaretakerAdvert>();
 
   const defaultValues = {
@@ -75,6 +80,17 @@ export default function AdvertiseBaseEdit({ currentUser }: any) {
     description: advertDetails?.description || "",
     extra_information: advertDetails?.extra_information || "",
   };
+
+  const [timeInterv, setTimeInterv] = React.useState(timeInterval);
+  const [mondayInterval, setMondayInterval] = React.useState<string[]>([]);
+  const [tuesdayInterval, setTuesdayInterval] = React.useState<string[]>([]);
+  const [wednesdayInterval, setWednesdayInterval] = React.useState<string[]>(
+    []
+  );
+  const [thursdayInterval, setThursdayInterval] = React.useState<string[]>([]);
+  const [fridayInterval, setFridayInterval] = React.useState<string[]>([]);
+  const [saturdayInterval, setSaturdayInterval] = React.useState<string[]>([]);
+  const [sundayInterval, setSundayInterval] = React.useState<string[]>([]);
 
   const [petTypes, setPetTypes] = React.useState<IPetType[]>([]);
   const [serviceTypes, setServiceTypes] = React.useState<IServiceType[]>([]);
@@ -312,6 +328,13 @@ export default function AdvertiseBaseEdit({ currentUser }: any) {
       services: checkedServices,
       languages: checkedLanguages,
       user_id: currentUser.id,
+      monday: mondayInterval,
+      tuesday: tuesdayInterval,
+      wednesday: wednesdayInterval,
+      thursday: thursdayInterval,
+      friday: fridayInterval,
+      saturday: saturdayInterval,
+      sunday: sundayInterval,
     };
     const result = await caretakerAdvertisementApi.editCaretakerAdvertisement(
       Number(id),
@@ -323,6 +346,24 @@ export default function AdvertiseBaseEdit({ currentUser }: any) {
       toast.success("Advertisement updated successful");
       navigate("/");
     }
+  };
+
+  const daysObject: IDaysObject = {
+    timeSelectValue: timeInterv,
+    mondayValue: mondayInterval,
+    handleMonday: setMondayInterval,
+    tuesdayValue: tuesdayInterval,
+    handleTuesday: setTuesdayInterval,
+    wednesdayValue: wednesdayInterval,
+    handleWednesday: setWednesdayInterval,
+    thursdayValue: thursdayInterval,
+    handleThursday: setThursdayInterval,
+    fridayValue: fridayInterval,
+    handleFriday: setFridayInterval,
+    saturdayValue: saturdayInterval,
+    handleSaturday: setSaturdayInterval,
+    sundayValue: sundayInterval,
+    handleSunday: setSundayInterval,
   };
 
   function getStepContent(step: number) {
@@ -357,6 +398,7 @@ export default function AdvertiseBaseEdit({ currentUser }: any) {
             clickedTime={clickedTime}
             sendErrorEndTime={sendErrorEndTime}
             watchTime={watch}
+            daysObject={daysObject}
           />
         );
 

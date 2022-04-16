@@ -13,6 +13,7 @@ import MenuIcon from "@mui/icons-material/Menu";
 type NavbarProps = {
   name: string;
   route: string;
+  id: number;
 };
 
 type Props = {
@@ -37,7 +38,7 @@ const DrawerComp = ({ links }: Props) => {
             <Link href={link.route}>
               <ListItemButton
                 onClick={() => setOpen(false)}
-                key={index}
+                key={link.id}
                 divider
               >
                 <ListItemIcon>

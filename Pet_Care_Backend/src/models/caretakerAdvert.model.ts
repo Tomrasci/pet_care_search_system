@@ -1,6 +1,7 @@
 import database from '../../database/db';
 import { ICaretakerAdvertCreate } from './interfaces/ICaretakerAdvertCreate';
 import { ICaretakerAdvert } from './interfaces/ICaretakerAdvert';
+import { ICaretakerAvailability } from './interfaces/ICaretakerAvailability';
 
 const createCaretakerAdvert = async (cAdvert: ICaretakerAdvertCreate) => {
   try {
@@ -51,6 +52,36 @@ const getCaretakerAdverts = async (): Promise<ICaretakerAdvert[]> => {
   }
 };
 
+const getCaretakerAvailability = async (
+  id: number
+): Promise<ICaretakerAvailability[]> => {
+  try {
+    return await database(`caretaker_availability`).where(id).select();
+  } catch (err) {
+    console.log(err.message);
+  }
+};
+
+const insertCaretakerAvailability = async (
+  availabilityArray: ICaretakerAvailability[]
+) => {
+  try {
+    return await database('caretaker_availability').insert(availabilityArray);
+  } catch (err) {
+    console.log(err.message);
+  }
+};
+
+const deleteCaretakerAvailability = async (id: number) => {
+  try {
+    return await database('caretaker_availability')
+      .where({ advertisement_id: id })
+      .del();
+  } catch (err) {
+    console.log(err.message);
+  }
+};
+
 const updateCareTakerAdvert = async (
   cAdvert: ICaretakerAdvertCreate,
   id: number
@@ -80,5 +111,8 @@ export default {
   getCaretakerAdverts,
   updateCareTakerAdvert,
   deleteCareTakerAdvert,
-  getUserCaretakerAdverts
+  getUserCaretakerAdverts,
+  getCaretakerAvailability,
+  insertCaretakerAvailability,
+  deleteCaretakerAvailability
 };

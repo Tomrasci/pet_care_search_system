@@ -2,7 +2,18 @@ import AdapterDateFns from "@mui/lab/AdapterDateFns";
 import DatePicker from "@mui/lab/DatePicker";
 import LocalizationProvider from "@mui/lab/LocalizationProvider";
 // import TimePicker from "@mui/lab/TimePicker";
-import { Checkbox, FormControlLabel } from "@mui/material";
+import {
+  Checkbox,
+  FormControl,
+  FormControlLabel,
+  InputLabel,
+  MenuItem,
+  OutlinedInput,
+  Select,
+  SelectChangeEvent,
+  Theme,
+  useTheme,
+} from "@mui/material";
 import Grid from "@mui/material/Grid";
 import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
@@ -14,6 +25,7 @@ import { IPetType } from "../../Interfaces/Caretaker/IPetType";
 import { IServiceType } from "../../Interfaces/Caretaker/IServiceType";
 
 import Timeit from "react-timeit";
+import { IDaysObject } from "../../Interfaces/Caretaker/IDaysObject";
 
 interface Props {
   sendErrorPet: (e: boolean) => void;
@@ -34,6 +46,7 @@ interface Props {
   watchTime: (
     names?: string | string[] | ((data: any, options: any) => void)
   ) => unknown;
+  daysObject: IDaysObject;
 }
 
 export default function PriceandDates({
@@ -53,6 +66,7 @@ export default function PriceandDates({
   clickedTime,
   sendErrorEndTime,
   watchTime,
+  daysObject,
 }: Props) {
   const {
     control,
@@ -60,6 +74,26 @@ export default function PriceandDates({
   } = useFormContext();
 
   const timeErrorMessage = "End time must be after start time";
+
+  const ITEM_HEIGHT = 48;
+  const ITEM_PADDING_TOP = 8;
+  const MenuProps = {
+    PaperProps: {
+      style: {
+        maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
+        width: 250,
+      },
+    },
+  };
+
+  function getStyles(time: string, timeValues: string[], theme: Theme) {
+    return {
+      fontWeight:
+        timeValues.indexOf(time) === -1
+          ? theme.typography.fontWeightRegular
+          : theme.typography.fontWeightMedium,
+    };
+  }
 
   const [timeError, setTimeError] = React.useState(true);
   const [petError, setPetError] = React.useState(true);
@@ -92,18 +126,87 @@ export default function PriceandDates({
     }
   }, [checkedStatePet]);
 
-  useEffect(() => {
-    const st = getValues("startTime");
-    const ed = getValues("endTime");
+  const handleChangeMultipleMonday = (
+    event: SelectChangeEvent<typeof daysObject.mondayValue>
+  ) => {
+    const {
+      target: { value },
+    } = event;
+    daysObject.handleMonday(
+      typeof value === "string" ? value.split(",") : value
+    );
+  };
 
-    if (ed <= st) {
-      setTimeError(true);
-      sendErrorEndTime(true);
-    } else {
-      setTimeError(false);
-      sendErrorEndTime(false);
-    }
-  }, [watchTime(["endTime", "startTime"])]);
+  const handleChangeMultipleTuesday = (
+    event: SelectChangeEvent<typeof daysObject.tuesdayValue>
+  ) => {
+    const {
+      target: { value },
+    } = event;
+    daysObject.handleTuesday(
+      typeof value === "string" ? value.split(",") : value
+    );
+  };
+
+  const handleChangeMultipleWednesday = (
+    event: SelectChangeEvent<typeof daysObject.wednesdayValue>
+  ) => {
+    const {
+      target: { value },
+    } = event;
+    daysObject.handleWednesday(
+      typeof value === "string" ? value.split(",") : value
+    );
+  };
+
+  const handleChangeMultipleThursday = (
+    event: SelectChangeEvent<typeof daysObject.thursdayValue>
+  ) => {
+    const {
+      target: { value },
+    } = event;
+    daysObject.handleThursday(
+      typeof value === "string" ? value.split(",") : value
+    );
+  };
+
+  const handleChangeMultipleFriday = (
+    event: SelectChangeEvent<typeof daysObject.fridayValue>
+  ) => {
+    const {
+      target: { value },
+    } = event;
+    daysObject.handleFriday(
+      typeof value === "string" ? value.split(",") : value
+    );
+  };
+
+  const handleChangeMultipleSaturday = (
+    event: SelectChangeEvent<typeof daysObject.saturdayValue>
+  ) => {
+    const {
+      target: { value },
+    } = event;
+    daysObject.handleSaturday(
+      typeof value === "string" ? value.split(",") : value
+    );
+  };
+
+  const handleChangeMultipleSunday = (
+    event: SelectChangeEvent<typeof daysObject.sundayValue>
+  ) => {
+    const {
+      target: { value },
+    } = event;
+    daysObject.handleSunday(
+      typeof value === "string" ? value.split(",") : value
+    );
+  };
+
+  console.log(`monday values are ${JSON.stringify(daysObject.mondayValue)}`);
+  console.log(
+    `saturday values are ${JSON.stringify(daysObject.saturdayValue)}`
+  );
 
   function handleServiceCheckbox(position: number) {
     const updatedCheckedState = checkedStateService.map(
@@ -133,6 +236,8 @@ export default function PriceandDates({
     }
   }, [checkedStateService]);
 
+  const theme = useTheme();
+
   return (
     <React.Fragment>
       <Typography variant="h6" gutterBottom>
@@ -147,6 +252,7 @@ export default function PriceandDates({
               render={({ field }) => (
                 <DatePicker
                   {...field}
+                  disablePast
                   mask="____-__-__"
                   label="Start date"
                   onChange={(e) => field.onChange(e)}
@@ -173,6 +279,7 @@ export default function PriceandDates({
                 <DatePicker
                   {...field}
                   mask="____-__-__"
+                  disablePast
                   label="End date"
                   onChange={(e) => field.onChange(e)}
                   renderInput={(params) => (
@@ -188,36 +295,189 @@ export default function PriceandDates({
               )}
             />
           </Grid>
-          <Grid item xs={12} md={6}>
-            <Controller
-              name="startTime"
-              control={control}
-              render={({ field }) => (
-                <TextField
-                  type="time"
-                  fullWidth
-                  {...field}
-                  error={!!errors.startTime}
-                  helperText={errors.startTime ? errors.startTime?.message : ""}
-                />
-              )}
-            />
-          </Grid>
-          <Grid item xs={12} md={6}>
-            <Controller
-              name="endTime"
-              control={control}
-              render={({ field }) => (
-                <TextField type="time" fullWidth {...field} />
-              )}
-            />
 
-            {clickedTime && timeError && (
-              <Grid item xs={12}>
-                <Typography color="red">{timeErrorMessage}</Typography>
-              </Grid>
-            )}
+          <Grid item xs={12}>
+            <FormControl sx={{ minWidth: 802.03 }}>
+              <InputLabel id="monday_select">Monday times</InputLabel>
+              <Select
+                labelId="monday_select"
+                fullWidth
+                id="monday_select"
+                value={daysObject.mondayValue}
+                multiple
+                onChange={handleChangeMultipleMonday}
+                input={<OutlinedInput label="Monday times" />}
+                MenuProps={MenuProps}
+              >
+                {daysObject.timeSelectValue.map((time) => (
+                  <MenuItem
+                    key={time}
+                    value={time}
+                    style={getStyles(time, daysObject.mondayValue, theme)}
+                  >
+                    {time}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
           </Grid>
+
+          <Grid item xs={12}>
+            <FormControl sx={{ minWidth: 802.03 }}>
+              <InputLabel id="tuesday_select">Tuesday times</InputLabel>
+              <Select
+                labelId="tuesday_select"
+                fullWidth
+                id="tuesday_select"
+                value={daysObject.tuesdayValue}
+                multiple
+                onChange={handleChangeMultipleTuesday}
+                input={<OutlinedInput label="Tuesday times" />}
+                MenuProps={MenuProps}
+              >
+                {daysObject.timeSelectValue.map((time) => (
+                  <MenuItem
+                    key={time}
+                    value={time}
+                    style={getStyles(time, daysObject.tuesdayValue, theme)}
+                  >
+                    {time}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+          </Grid>
+
+          <Grid item xs={12}>
+            <FormControl sx={{ minWidth: 802.03 }}>
+              <InputLabel id="wednesday_select">Wednesday times</InputLabel>
+              <Select
+                labelId="wednesday_select"
+                fullWidth
+                id="wednesday_select"
+                value={daysObject.wednesdayValue}
+                multiple
+                onChange={handleChangeMultipleWednesday}
+                input={<OutlinedInput label="Wednesday times" />}
+                MenuProps={MenuProps}
+              >
+                {daysObject.timeSelectValue.map((time) => (
+                  <MenuItem
+                    key={time}
+                    value={time}
+                    style={getStyles(time, daysObject.wednesdayValue, theme)}
+                  >
+                    {time}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+          </Grid>
+
+          <Grid item xs={12}>
+            <FormControl sx={{ minWidth: 802.03 }}>
+              <InputLabel id="thursday_select">Thursday times</InputLabel>
+              <Select
+                labelId="thursday_select"
+                fullWidth
+                id="thursday_select"
+                value={daysObject.thursdayValue}
+                multiple
+                onChange={handleChangeMultipleThursday}
+                input={<OutlinedInput label="Thursday times" />}
+                MenuProps={MenuProps}
+              >
+                {daysObject.timeSelectValue.map((time) => (
+                  <MenuItem
+                    key={time}
+                    value={time}
+                    style={getStyles(time, daysObject.thursdayValue, theme)}
+                  >
+                    {time}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+          </Grid>
+
+          <Grid item xs={12}>
+            <FormControl sx={{ minWidth: 802.03 }}>
+              <InputLabel id="friday_select">Friday times</InputLabel>
+              <Select
+                labelId="friday_select"
+                fullWidth
+                id="friday_select"
+                value={daysObject.fridayValue}
+                multiple
+                onChange={handleChangeMultipleFriday}
+                input={<OutlinedInput label="Friday times" />}
+                MenuProps={MenuProps}
+              >
+                {daysObject.timeSelectValue.map((time) => (
+                  <MenuItem
+                    key={time}
+                    value={time}
+                    style={getStyles(time, daysObject.fridayValue, theme)}
+                  >
+                    {time}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+          </Grid>
+
+          <Grid item xs={12}>
+            <FormControl sx={{ minWidth: 802.03 }}>
+              <InputLabel id="saturday_select">Saturday times</InputLabel>
+              <Select
+                labelId="saturday_select"
+                fullWidth
+                id="saturday_select"
+                value={daysObject.saturdayValue}
+                multiple
+                onChange={handleChangeMultipleSaturday}
+                input={<OutlinedInput label="Saturday times" />}
+                MenuProps={MenuProps}
+              >
+                {daysObject.timeSelectValue.map((time) => (
+                  <MenuItem
+                    key={time}
+                    value={time}
+                    style={getStyles(time, daysObject.saturdayValue, theme)}
+                  >
+                    {time}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+          </Grid>
+
+          <Grid item xs={12}>
+            <FormControl sx={{ minWidth: 802.03 }}>
+              <InputLabel id="sunday_select">Sunday times</InputLabel>
+              <Select
+                labelId="sunday_select"
+                fullWidth
+                id="sunday_select"
+                value={daysObject.sundayValue}
+                multiple
+                onChange={handleChangeMultipleSunday}
+                input={<OutlinedInput label="Sunday times" />}
+                MenuProps={MenuProps}
+              >
+                {daysObject.timeSelectValue.map((time) => (
+                  <MenuItem
+                    key={time}
+                    value={time}
+                    style={getStyles(time, daysObject.sundayValue, theme)}
+                  >
+                    {time}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+          </Grid>
+
           <Grid item xs={6} md={3}>
             <Controller
               name="day_price"

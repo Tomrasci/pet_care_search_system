@@ -139,6 +139,18 @@ const getUserCaretakerAdverts = async (
   return res.status(ResponseCodes.OK).json(cAdverts);
 };
 
+const getCaretakerAvailability = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  const cAvailability = await caretakerAdvertService.getCaretakerLAvailability(
+    Number(req.params.id)
+  );
+
+  return res.status(ResponseCodes.OK).json(cAvailability);
+};
+
 const updateCareTakerAdvert = async (
   req: Request,
   res: Response,
@@ -356,5 +368,6 @@ export default {
   getUserCaretakerAdverts,
   getCaretakerLanguages,
   getCaretakerPets,
-  getCaretakerServices
+  getCaretakerServices,
+  getCaretakerAvailability
 };

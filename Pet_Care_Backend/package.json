@@ -7,7 +7,8 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "serve": "nodemon app.ts",
     "migrate": "npx knex migrate:latest",
-    "prettier-format": "prettier --config .prettierrc './src/routes/auth.routes.ts' --write"
+    "prettier-format": "prettier --config .prettierrc './src/routes/auth.routes.ts' --write",
+    "migration": "npx knex migrate:make <fileName> -x ts"
   },
   "keywords": [],
   "author": "",

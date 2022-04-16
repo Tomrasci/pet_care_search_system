@@ -36,11 +36,7 @@ const insertCaretakerLanguages = async (
   languageArray: ICaretakerLanguage[]
 ) => {
   try {
-    const fieldsToInsert = languageArray.map((field) => ({
-      language_id: field.language_id,
-      advertisement_id: field.advertisement_id
-    }));
-    return await database('caretaker_languages').insert(fieldsToInsert);
+    return await database('caretaker_languages').insert(languageArray);
   } catch (err) {
     console.log(err.message);
   }

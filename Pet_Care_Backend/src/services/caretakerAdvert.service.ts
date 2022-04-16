@@ -1,6 +1,7 @@
 import caretakerAdvertModel from '../models/caretakerAdvert.model';
 import { ICaretakerAdvertCreate } from '../models/interfaces/ICaretakerAdvertCreate';
 import { ICaretakerAdvert } from '../models/interfaces/ICaretakerAdvert';
+import { ICaretakerAvailability } from '../models/interfaces/ICaretakerAvailability';
 
 const createCaretakerAdvert = async (cAdvert: ICaretakerAdvertCreate) => {
   return await caretakerAdvertModel.createCaretakerAdvert(cAdvert);
@@ -28,11 +29,30 @@ const deleteCareTakerAdvert = async (id: number): Promise<ICaretakerAdvert> => {
   return await caretakerAdvertModel.deleteCareTakerAdvert(id);
 };
 
+const getCaretakerLAvailability = async (aid: number) => {
+  return await caretakerAdvertModel.getCaretakerAvailability(aid);
+};
+
+const insertCaretakerAvailability = async (
+  availabilityArray: ICaretakerAvailability[]
+) => {
+  return await caretakerAdvertModel.insertCaretakerAvailability(
+    availabilityArray
+  );
+};
+
+const deleteCaretakerAvailability = async (id: number) => {
+  return await caretakerAdvertModel.deleteCaretakerAvailability(id);
+};
+
 export default {
   createCaretakerAdvert,
   getCareTakerAdvertById,
   getCareTakersAdverts,
   updateCareTakerAdvert,
   deleteCareTakerAdvert,
-  getUserCaretakerAdverts
+  getUserCaretakerAdverts,
+  getCaretakerLAvailability,
+  insertCaretakerAvailability,
+  deleteCaretakerAvailability
 };
