@@ -17,6 +17,4 @@ export interface ICaretakerAdvert {
   updated_at: Date;
   startDate: Date;
   endDate: Date;
-  startTime: Date;
-  endTime: Date;
 }

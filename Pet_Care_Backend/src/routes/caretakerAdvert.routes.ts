@@ -42,4 +42,9 @@ router.get(
   caretakerAdvertController.getCaretakerLanguages
 );
 
+router.get(
+  '/caretakerAvailability/:id',
+  caretakerAdvertController.getCaretakerAvailability
+);
+
 export default router;

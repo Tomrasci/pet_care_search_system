@@ -13,6 +13,9 @@ import Navbar from "./Layout/Navbar";
 import CaretakerAdvertList from "./Components/CaretakerAdvertisement/CaretakerAdvertList";
 import MyCaretakerAdvertisements from "./Components/CaretakerAdvertisement/MyCaretakerAdvertisements";
 import AdvertiseBaseEdit from "./Components/CaretakerAdvertisement/AdvertBaseEdit";
+import CaretakerCalendar from "./Components/CaretakerAdvertisement/CaretakerCalendar";
+import "bootstrap/dist/css/bootstrap.css";
+import "bootstrap-icons/font/bootstrap-icons.css";
 
 const guestLinksArray = [
   {
@@ -81,6 +84,10 @@ export default function App() {
         <Route
           path={"/caretakerUpdate/:id"}
           element={<AdvertiseBaseEdit currentUser={currentUser} />}
+        ></Route>
+        <Route
+          path={"/caretakerCalendar"}
+          element={<CaretakerCalendar />}
         ></Route>
         <Route path={"Register"} element={<Register />}></Route>
         <Route path={"Login"} element={<Login loadUsers={loadUsers} />}></Route>

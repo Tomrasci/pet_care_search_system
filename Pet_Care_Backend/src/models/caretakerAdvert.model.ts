@@ -56,7 +56,9 @@ const getCaretakerAvailability = async (
   id: number
 ): Promise<ICaretakerAvailability[]> => {
   try {
-    return await database(`caretaker_availability`).where(id).select();
+    return await database(`caretaker_availability`)
+      .where({ advertisement_id: id })
+      .select();
   } catch (err) {
     console.log(err.message);
   }

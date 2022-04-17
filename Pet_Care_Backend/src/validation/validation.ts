@@ -31,8 +31,6 @@ const validateCaretakerAdvert = (caretakerAdvert: ICaretakerAdvertCreate) => {
     languages: Joi.array().items(Joi.string()),
     startDate: Joi.date().required(),
     endDate: Joi.date().required(),
-    startTime: Joi.string().required(),
-    endTime: Joi.string().required(),
     user_id: Joi.number().required()
   });
   return schema.validate(caretakerAdvert);

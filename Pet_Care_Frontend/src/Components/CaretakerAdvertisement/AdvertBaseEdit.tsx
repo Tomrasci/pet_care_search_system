@@ -38,6 +38,7 @@ import { ILanguageCheck } from "../../Interfaces/Caretaker/ILanguageCheck";
 import { ILanguage } from "../../Interfaces/Caretaker/ILanguage";
 import interval from "./TimeIntervals";
 import { IDaysObject } from "../../Interfaces/Caretaker/IDaysObject";
+import FilterWeekDay from "../../Utils/FilterWeekday";
 
 const steps = [
   "Personal information",
@@ -63,9 +64,11 @@ export default function AdvertiseBaseEdit({ currentUser }: any) {
 
   const [advertDetails, setAdvertDetails] = React.useState<ICaretakerAdvert>();
 
+  console.log(`gotten advertDetails date of start ${advertDetails?.startDate}`);
+
   const defaultValues = {
-    name: advertDetails?.name || "Hey",
-    surname: advertDetails?.surname || "Hello",
+    name: advertDetails?.name || "",
+    surname: advertDetails?.surname || "",
     address: advertDetails?.address || "",
     phone: advertDetails?.phone || "",
     age: advertDetails?.age || "",
@@ -232,15 +235,7 @@ export default function AdvertiseBaseEdit({ currentUser }: any) {
         .date()
         .typeError("End date must be valid")
         .required("End date is required"),
-      // startTime: yup
-      //   .date()
-      //   .typeError("Start time must be valid - select both hours and minutes")
-      //   .required("Start time is required"),
-      // endTime: yup
-      //   .date()
-      //   .typeError("End time must be valid - select both hours and minutes")
-      //   .required("End time is required")
-      //   .min(yup.ref("startTime"), "End time must be later than start time"),
+
       day_price: yup.number().required("Price is required"),
     }),
     yup.object({
@@ -266,6 +261,30 @@ export default function AdvertiseBaseEdit({ currentUser }: any) {
         await caretakerAdvertisementApi.getCaretakerAdvertisement(Number(id));
       setAdvertDetails(advertDetails);
       reset(advertDetails);
+      const availabilityGet =
+        await caretakerAdvertisementApi.getCaretakerAvailability(
+          Number(advertDetails?.id)
+        );
+
+      const mondayArray = FilterWeekDay(availabilityGet, "Mon");
+      const tuesdayArray = FilterWeekDay(availabilityGet, "Tue");
+      const wednesdayArray = FilterWeekDay(availabilityGet, "Wed");
+      const thursdayArray = FilterWeekDay(availabilityGet, "Thu");
+      const fridayArray = FilterWeekDay(availabilityGet, "Fri");
+      const saturdayArray = FilterWeekDay(availabilityGet, "Sat");
+      const sundayArray = FilterWeekDay(availabilityGet, "Sun");
+
+      console.log(`tuesdayArray is ${JSON.stringify(tuesdayArray)}`);
+      console.log(`monyArray is ${JSON.stringify(mondayArray)}`);
+      console.log(`satu is ${JSON.stringify(saturdayArray)}`);
+
+      setMondayInterval(mondayArray);
+      setTuesdayInterval(tuesdayArray);
+      setWednesdayInterval(wednesdayArray);
+      setThursdayInterval(thursdayArray);
+      setFridayInterval(fridayArray);
+      setSaturdayInterval(saturdayArray);
+      setSundayInterval(sundayArray);
     }
 
     getAdvert();
@@ -321,8 +340,6 @@ export default function AdvertiseBaseEdit({ currentUser }: any) {
       extra_information: getValues("extra_information"),
       startDate: new Date(getValues("startDate")),
       endDate: new Date(getValues("endDate")),
-      startTime: getValues("startTime").toString(),
-      endTime: getValues("endTime").toString(),
       day_price: Number(getValues("day_price")),
       pets: checkedPets,
       services: checkedServices,

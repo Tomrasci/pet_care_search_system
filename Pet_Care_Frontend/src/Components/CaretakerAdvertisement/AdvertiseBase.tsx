@@ -237,6 +237,8 @@ export default function AdvertiseBase({ currentUser }: any) {
     const checkedPets = selectedPet.map((pet) => pet.value.id);
     const checkedServices = selectedService.map((service) => service.value.id);
 
+    console.log(`start date selected is ${getValues("startDate")}`);
+
     const newAdvert: ICaretakerAdvertCreate = {
       name: getValues("name"),
       surname: getValues("surname"),
@@ -250,8 +252,6 @@ export default function AdvertiseBase({ currentUser }: any) {
       extra_information: getValues("extra_information"),
       startDate: new Date(getValues("startDate")),
       endDate: new Date(getValues("endDate")),
-      startTime: getValues("startTime"),
-      endTime: getValues("endTime"),
       day_price: Number(getValues("day_price")),
       pets: checkedPets,
       services: checkedServices,

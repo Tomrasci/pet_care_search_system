@@ -12,6 +12,7 @@ import { ICaretakerService } from '../models/interfaces/ICaretakerService';
 import serviceTypeService from '../services/serviceType.service';
 import { ICaretakerLanguage } from '../models/interfaces/ICaretakerLanguage';
 import languageService from '../services/language.service';
+import fixWeekDayArray from '../utils/mapWeekdayArray';
 
 const createCaretakerAdvertisement = async (
   req: Request,
@@ -31,8 +32,6 @@ const createCaretakerAdvertisement = async (
     extra_information: req.body.extra_information,
     startDate: req.body.startDate,
     endDate: req.body.endDate,
-    startTime: req.body.startTime,
-    endTime: req.body.endTime,
     day_price: req.body.day_price,
     user_id: req.body.user_id
   };
@@ -63,6 +62,47 @@ const createCaretakerAdvertisement = async (
     );
   } catch (err) {
     logger.error(err);
+  }
+
+  const mondayArray = req.body.monday;
+  const fixedMondayArray = fixWeekDayArray(mondayArray, 'Mon', cAdvertId);
+
+  const tuesdayArray = req.body.tuesday;
+  const fixedTuesdayArray = fixWeekDayArray(tuesdayArray, 'Tue', cAdvertId);
+
+  const wednesdayArray = req.body.wednesday;
+  const fixedWednesdayArray = fixWeekDayArray(wednesdayArray, 'Wed', cAdvertId);
+
+  const thursdayArray = req.body.thursday;
+  const fixedThursdayArray = fixWeekDayArray(thursdayArray, 'Thu', cAdvertId);
+
+  const fridayArray = req.body.friday;
+  const fixedFridayArray = fixWeekDayArray(fridayArray, 'Fri', cAdvertId);
+
+  const saturdayArray = req.body.saturday;
+  const fixedSaturdayArray = fixWeekDayArray(saturdayArray, 'Sat', cAdvertId);
+
+  const sundayArray = req.body.sunday;
+  const fixedSundayArray = fixWeekDayArray(sundayArray, 'Sun', cAdvertId);
+
+  try {
+    await caretakerAdvertService.insertCaretakerAvailability(fixedMondayArray);
+    await caretakerAdvertService.insertCaretakerAvailability(fixedTuesdayArray);
+    await caretakerAdvertService.insertCaretakerAvailability(
+      fixedWednesdayArray
+    );
+    await caretakerAdvertService.insertCaretakerAvailability(
+      fixedThursdayArray
+    );
+    await caretakerAdvertService.insertCaretakerAvailability(fixedFridayArray);
+    await caretakerAdvertService.insertCaretakerAvailability(
+      fixedSaturdayArray
+    );
+    await caretakerAdvertService.insertCaretakerAvailability(fixedSundayArray);
+
+    logger.info(`Caretaker times have been inserted`);
+  } catch (err) {
+    console.log(err);
   }
 
   const serviceTypesArray = req.body.services;
@@ -169,8 +209,6 @@ const updateCareTakerAdvert = async (
     extra_information: req.body.extra_information,
     startDate: req.body.startDate,
     endDate: req.body.endDate,
-    startTime: req.body.startTime,
-    endTime: req.body.endTime,
     day_price: req.body.day_price,
     user_id: req.body.user_id
   };
@@ -205,6 +243,12 @@ const updateCareTakerAdvert = async (
     throw err;
   }
   try {
+    await caretakerAdvertService.deleteCaretakerAvailability(cAdvertId);
+  } catch (err) {
+    logger.error(err);
+    throw err;
+  }
+  try {
     await petTypeService.deleteCaretakerPets(cAdvertId);
   } catch (err) {
     logger.error(err);
@@ -222,6 +266,48 @@ const updateCareTakerAdvert = async (
     logger.error(err);
     throw err;
   }
+
+  const mondayArray = req.body.monday;
+  const fixedMondayArray = fixWeekDayArray(mondayArray, 'Mon', cAdvertId);
+
+  const tuesdayArray = req.body.tuesday;
+  const fixedTuesdayArray = fixWeekDayArray(tuesdayArray, 'Tue', cAdvertId);
+
+  const wednesdayArray = req.body.wednesday;
+  const fixedWednesdayArray = fixWeekDayArray(wednesdayArray, 'Wed', cAdvertId);
+
+  const thursdayArray = req.body.thursday;
+  const fixedThursdayArray = fixWeekDayArray(thursdayArray, 'Thu', cAdvertId);
+
+  const fridayArray = req.body.friday;
+  const fixedFridayArray = fixWeekDayArray(fridayArray, 'Fri', cAdvertId);
+
+  const saturdayArray = req.body.saturday;
+  const fixedSaturdayArray = fixWeekDayArray(saturdayArray, 'Sat', cAdvertId);
+
+  const sundayArray = req.body.sunday;
+  const fixedSundayArray = fixWeekDayArray(sundayArray, 'Sun', cAdvertId);
+
+  try {
+    await caretakerAdvertService.insertCaretakerAvailability(fixedMondayArray);
+    await caretakerAdvertService.insertCaretakerAvailability(fixedTuesdayArray);
+    await caretakerAdvertService.insertCaretakerAvailability(
+      fixedWednesdayArray
+    );
+    await caretakerAdvertService.insertCaretakerAvailability(
+      fixedThursdayArray
+    );
+    await caretakerAdvertService.insertCaretakerAvailability(fixedFridayArray);
+    await caretakerAdvertService.insertCaretakerAvailability(
+      fixedSaturdayArray
+    );
+    await caretakerAdvertService.insertCaretakerAvailability(fixedSundayArray);
+
+    logger.info(`Caretaker times have been inserted`);
+  } catch (err) {
+    console.log(err);
+  }
+
   const petTypesArray = req.body.pets;
   const caretakerPets: ICaretakerPet[] = petTypesArray.map((pet: number) => ({
     pet_type_id: pet,
@@ -299,6 +385,9 @@ const deleteCareTakerAdvert = async (
       )
     );
   }
+  await caretakerAdvertService.deleteCaretakerAvailability(
+    Number(req.params.id)
+  );
   await petTypeService.deleteCaretakerPets(Number(req.params.id));
   await serviceTypeService.deleteCaretakerServices(Number(req.params.id));
   await languageService.deleteCaretakerLangauges(Number(req.params.id));

@@ -23,8 +23,6 @@ import { useEffect } from "react";
 import { Controller, useFormContext } from "react-hook-form";
 import { IPetType } from "../../Interfaces/Caretaker/IPetType";
 import { IServiceType } from "../../Interfaces/Caretaker/IServiceType";
-
-import Timeit from "react-timeit";
 import { IDaysObject } from "../../Interfaces/Caretaker/IDaysObject";
 
 interface Props {
@@ -85,6 +83,8 @@ export default function PriceandDates({
       },
     },
   };
+
+  const valueArray = ["6:00 - 9:00", "9:00 - 12:00"];
 
   function getStyles(time: string, timeValues: string[], theme: Theme) {
     return {
@@ -253,6 +253,7 @@ export default function PriceandDates({
                 <DatePicker
                   {...field}
                   disablePast
+                  inputFormat="yyyy-MM-dd"
                   mask="____-__-__"
                   label="Start date"
                   onChange={(e) => field.onChange(e)}
@@ -279,6 +280,7 @@ export default function PriceandDates({
                 <DatePicker
                   {...field}
                   mask="____-__-__"
+                  inputFormat="yyyy-MM-dd"
                   disablePast
                   label="End date"
                   onChange={(e) => field.onChange(e)}
@@ -295,6 +297,8 @@ export default function PriceandDates({
               )}
             />
           </Grid>
+          {console.log(`monday values are ${daysObject.mondayValue}`)}
+          {console.log(`tuesday values are ${daysObject.tuesdayValue}`)}
 
           <Grid item xs={12}>
             <FormControl sx={{ minWidth: 802.03 }}>
@@ -309,9 +313,9 @@ export default function PriceandDates({
                 input={<OutlinedInput label="Monday times" />}
                 MenuProps={MenuProps}
               >
-                {daysObject.timeSelectValue.map((time) => (
+                {daysObject.timeSelectValue.map((time, index) => (
                   <MenuItem
-                    key={time}
+                    key={index}
                     value={time}
                     style={getStyles(time, daysObject.mondayValue, theme)}
                   >
@@ -321,7 +325,6 @@ export default function PriceandDates({
               </Select>
             </FormControl>
           </Grid>
-
           <Grid item xs={12}>
             <FormControl sx={{ minWidth: 802.03 }}>
               <InputLabel id="tuesday_select">Tuesday times</InputLabel>
@@ -335,9 +338,9 @@ export default function PriceandDates({
                 input={<OutlinedInput label="Tuesday times" />}
                 MenuProps={MenuProps}
               >
-                {daysObject.timeSelectValue.map((time) => (
+                {daysObject.timeSelectValue.map((time, index) => (
                   <MenuItem
-                    key={time}
+                    key={index}
                     value={time}
                     style={getStyles(time, daysObject.tuesdayValue, theme)}
                   >
@@ -347,7 +350,6 @@ export default function PriceandDates({
               </Select>
             </FormControl>
           </Grid>
-
           <Grid item xs={12}>
             <FormControl sx={{ minWidth: 802.03 }}>
               <InputLabel id="wednesday_select">Wednesday times</InputLabel>
@@ -373,7 +375,6 @@ export default function PriceandDates({
               </Select>
             </FormControl>
           </Grid>
-
           <Grid item xs={12}>
             <FormControl sx={{ minWidth: 802.03 }}>
               <InputLabel id="thursday_select">Thursday times</InputLabel>
@@ -399,7 +400,6 @@ export default function PriceandDates({
               </Select>
             </FormControl>
           </Grid>
-
           <Grid item xs={12}>
             <FormControl sx={{ minWidth: 802.03 }}>
               <InputLabel id="friday_select">Friday times</InputLabel>
@@ -425,7 +425,6 @@ export default function PriceandDates({
               </Select>
             </FormControl>
           </Grid>
-
           <Grid item xs={12}>
             <FormControl sx={{ minWidth: 802.03 }}>
               <InputLabel id="saturday_select">Saturday times</InputLabel>
@@ -451,7 +450,6 @@ export default function PriceandDates({
               </Select>
             </FormControl>
           </Grid>
-
           <Grid item xs={12}>
             <FormControl sx={{ minWidth: 802.03 }}>
               <InputLabel id="sunday_select">Sunday times</InputLabel>
@@ -477,7 +475,6 @@ export default function PriceandDates({
               </Select>
             </FormControl>
           </Grid>
-
           <Grid item xs={6} md={3}>
             <Controller
               name="day_price"
@@ -529,7 +526,6 @@ export default function PriceandDates({
               </Grid>
             );
           })}
-
           {clickedPet && petError && (
             <Grid item xs={12}>
               <Typography color="red">
@@ -562,7 +558,6 @@ export default function PriceandDates({
               </Grid>
             );
           })}
-
           {clickedService && serviceError && (
             <Grid item xs={12}>
               <Typography color="red">

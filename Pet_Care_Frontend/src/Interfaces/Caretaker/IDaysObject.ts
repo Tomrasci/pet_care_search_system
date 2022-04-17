@@ -1,5 +1,3 @@
-import { ITimeInterval } from "./ITimeInterval";
-
 export interface IDaysObject {
   timeSelectValue: string[];
   mondayValue: string[];

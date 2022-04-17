@@ -12,8 +12,8 @@ export interface ICaretakerAdvertCreate {
   title: string;
   startDate: Date;
   endDate: Date;
-  startTime: string;
-  endTime: string;
+  // startTime: string;
+  // endTime: string;
   pets: number[];
   services: number[];
   languages: number[];

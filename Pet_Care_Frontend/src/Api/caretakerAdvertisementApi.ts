@@ -1,6 +1,5 @@
 import { ICaretakerAdvertCreate } from "../Interfaces/Caretaker/ICaretakerAdvertCreate";
 import http from "../Utils/httpRequestBody";
-import { ICaretakerAdvert } from "../Interfaces/Caretaker/ICaretakerAdvert";
 
 const createCaretakerAdvertisement = async (
   caretakerAdvert: ICaretakerAdvertCreate
@@ -47,6 +46,11 @@ const getCaretakerLanguages = async (id: number) => {
   return data;
 };
 
+const getCaretakerAvailability = async (id: number) => {
+  const { data } = await http.get(`/caretakerAvailability/${id}`);
+  return data;
+};
+
 export default {
   createCaretakerAdvertisement,
   getCaretakerAdvertisement,
@@ -57,4 +61,5 @@ export default {
   getCaretakerPets,
   getCaretakerServices,
   getCaretakerLanguages,
+  getCaretakerAvailability,
 };
