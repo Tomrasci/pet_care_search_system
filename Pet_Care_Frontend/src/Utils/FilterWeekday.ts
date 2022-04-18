@@ -4,6 +4,9 @@ export default function FilterWeekDay(
   weekDayArray: ICaretakerAvailability[],
   day: string
 ) {
+  for (const value of weekDayArray) {
+    
+  }
   const DayStringArray = weekDayArray
     .filter((weekDay) => {
       return weekDay.day_of_week === day;
