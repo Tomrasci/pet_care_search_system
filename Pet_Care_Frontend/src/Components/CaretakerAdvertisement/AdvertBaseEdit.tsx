@@ -108,9 +108,6 @@ export default function AdvertiseBaseEdit({ currentUser }: any) {
     { value: ILanguageType; checked: boolean }[]
   >([]);
 
-  const [clickedTime, setClickedTime] = React.useState(false);
-  const [errorEndTime, setErrorEndTime] = React.useState(false);
-
   const [clickedPet, setClickedPet] = React.useState(false);
   const [errorPet, setErrorPet] = React.useState(false);
   const [checkedStatePet, setCheckedStatePet] = React.useState<
@@ -212,10 +209,6 @@ export default function AdvertiseBaseEdit({ currentUser }: any) {
   const sendErrorService = (serviceError: boolean) => {
     setErrorService(serviceError);
   };
-
-  const sendErrorEndTime = (timeError: boolean) => {
-    setErrorEndTime(timeError);
-  };
   const validationSchema = [
     yup.object({
       name: yup.string().required("First name is required"),
@@ -274,10 +267,6 @@ export default function AdvertiseBaseEdit({ currentUser }: any) {
       const saturdayArray = FilterWeekDay(availabilityGet, "Sat");
       const sundayArray = FilterWeekDay(availabilityGet, "Sun");
 
-      console.log(`tuesdayArray is ${JSON.stringify(tuesdayArray)}`);
-      console.log(`monyArray is ${JSON.stringify(mondayArray)}`);
-      console.log(`satu is ${JSON.stringify(saturdayArray)}`);
-
       setMondayInterval(mondayArray);
       setTuesdayInterval(tuesdayArray);
       setWednesdayInterval(wednesdayArray);
@@ -301,13 +290,11 @@ export default function AdvertiseBaseEdit({ currentUser }: any) {
     } else if (activeStep === 1) {
       setClickedPet(true);
       setClickedService(true);
-      setClickedTime(true);
       const isValid = await trigger();
 
-      if (isValid && !errorPet && !errorService && !errorEndTime) {
+      if (isValid && !errorPet && !errorService) {
         setClickedService(false);
         setClickedPet(false);
-        setClickedTime(false);
         setActiveStep(activeStep + 1);
       }
     } else {
@@ -411,10 +398,6 @@ export default function AdvertiseBaseEdit({ currentUser }: any) {
             checkedStateService={checkedStateService}
             setCheckedStateService={setCheckedStateService}
             serviceTypes={serviceTypes}
-            getValues={getValues}
-            clickedTime={clickedTime}
-            sendErrorEndTime={sendErrorEndTime}
-            watchTime={watch}
             daysObject={daysObject}
           />
         );

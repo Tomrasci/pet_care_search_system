@@ -93,8 +93,6 @@ export default function AdvertiseBase({ currentUser }: any) {
   const [selected, setSelected] = React.useState<
     { value: ILanguageType; checked: boolean }[]
   >([]);
-  const [clickedTime, setClickedTime] = React.useState(false);
-  const [errorEndTime, setErrorEndTime] = React.useState(false);
 
   const [clickedPet, setClickedPet] = React.useState(false);
   const [errorPet, setErrorPet] = React.useState(false);
@@ -158,10 +156,6 @@ export default function AdvertiseBase({ currentUser }: any) {
     setErrorService(serviceError);
   };
 
-  const sendErrorEndTime = (timeError: boolean) => {
-    setErrorEndTime(timeError);
-  };
-
   const validationSchema = [
     yup.object({
       name: yup.string().required("First name is required"),
@@ -211,14 +205,12 @@ export default function AdvertiseBase({ currentUser }: any) {
     } else if (activeStep === 1) {
       setClickedPet(true);
       setClickedService(true);
-      setClickedTime(true);
       const isValid = await trigger();
 
-      if (isValid && !errorPet && !errorService && !errorEndTime) {
+      if (isValid && !errorPet && !errorService) {
         setActiveStep(activeStep + 1);
         setClickedService(false);
         setClickedPet(false);
-        setClickedTime(false);
       }
     } else {
       const isValid = await trigger();
@@ -322,10 +314,6 @@ export default function AdvertiseBase({ currentUser }: any) {
             checkedStateService={checkedStateService}
             setCheckedStateService={setCheckedStateService}
             serviceTypes={serviceTypes}
-            getValues={getValues}
-            clickedTime={clickedTime}
-            sendErrorEndTime={sendErrorEndTime}
-            watchTime={watch}
             daysObject={daysObject}
           />
         );

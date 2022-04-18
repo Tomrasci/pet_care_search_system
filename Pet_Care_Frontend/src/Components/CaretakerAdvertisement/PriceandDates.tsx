@@ -1,9 +1,10 @@
 import AdapterDateFns from "@mui/lab/AdapterDateFns";
 import DatePicker from "@mui/lab/DatePicker";
 import LocalizationProvider from "@mui/lab/LocalizationProvider";
-// import TimePicker from "@mui/lab/TimePicker";
 import {
+  Box,
   Checkbox,
+  Chip,
   FormControl,
   FormControlLabel,
   InputLabel,
@@ -38,12 +39,6 @@ interface Props {
   checkedStateService: { value: IServiceType; checked: boolean }[];
   setCheckedStateService: any;
   serviceTypes: any;
-  getValues: (payload?: string | string[]) => any;
-  clickedTime: boolean;
-  sendErrorEndTime: (e: boolean) => void;
-  watchTime: (
-    names?: string | string[] | ((data: any, options: any) => void)
-  ) => unknown;
   daysObject: IDaysObject;
 }
 
@@ -60,18 +55,12 @@ export default function PriceandDates({
   checkedStateService,
   setCheckedStateService,
   serviceTypes,
-  getValues,
-  clickedTime,
-  sendErrorEndTime,
-  watchTime,
   daysObject,
 }: Props) {
   const {
     control,
     formState: { errors },
   } = useFormContext();
-
-  const timeErrorMessage = "End time must be after start time";
 
   const ITEM_HEIGHT = 48;
   const ITEM_PADDING_TOP = 8;
@@ -84,8 +73,6 @@ export default function PriceandDates({
     },
   };
 
-  const valueArray = ["6:00 - 9:00", "9:00 - 12:00"];
-
   function getStyles(time: string, timeValues: string[], theme: Theme) {
     return {
       fontWeight:
@@ -95,11 +82,8 @@ export default function PriceandDates({
     };
   }
 
-  const [timeError, setTimeError] = React.useState(true);
   const [petError, setPetError] = React.useState(true);
   const [serviceError, setServiceError] = React.useState(true);
-
-  const [timeCalc, setTimeCalc] = React.useState(true);
 
   function handleCheckbox(position: number) {
     const updatedCheckedState = checkedStatePet.map(
@@ -313,9 +297,9 @@ export default function PriceandDates({
                 input={<OutlinedInput label="Monday times" />}
                 MenuProps={MenuProps}
               >
-                {daysObject.timeSelectValue.map((time, index) => (
+                {daysObject.timeSelectValue.map((time) => (
                   <MenuItem
-                    key={index}
+                    key={time}
                     value={time}
                     style={getStyles(time, daysObject.mondayValue, theme)}
                   >
@@ -325,6 +309,7 @@ export default function PriceandDates({
               </Select>
             </FormControl>
           </Grid>
+
           <Grid item xs={12}>
             <FormControl sx={{ minWidth: 802.03 }}>
               <InputLabel id="tuesday_select">Tuesday times</InputLabel>
@@ -338,9 +323,9 @@ export default function PriceandDates({
                 input={<OutlinedInput label="Tuesday times" />}
                 MenuProps={MenuProps}
               >
-                {daysObject.timeSelectValue.map((time, index) => (
+                {daysObject.timeSelectValue.map((time) => (
                   <MenuItem
-                    key={index}
+                    key={time}
                     value={time}
                     style={getStyles(time, daysObject.tuesdayValue, theme)}
                   >
