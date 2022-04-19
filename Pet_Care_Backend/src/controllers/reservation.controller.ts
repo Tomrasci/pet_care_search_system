@@ -86,11 +86,39 @@ const deleteReservations = async (
   return res.status(ResponseCodes.OK).json('Reservations deleted sucessfully');
 };
 
+const confirmReservation = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    await reservationService.confirmReservation(Number(req.params.id));
+  } catch (err) {
+    logger.error(err.message);
+  }
+  return res.status(ResponseCodes.OK).json('Reservation confirmed sucessfully');
+};
+
+const cancelReservation = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    await reservationService.cancelReservation(Number(req.params.id));
+  } catch (err) {
+    logger.error(err.message);
+  }
+  return res.status(ResponseCodes.OK).json('Reservation cancelled sucessfully');
+};
+
 export default {
   getOwnerReservations,
   getAdvertisementReservations,
   getReservationById,
   getReservations,
   createReservations,
-  deleteReservations
+  deleteReservations,
+  confirmReservation,
+  cancelReservation
 };

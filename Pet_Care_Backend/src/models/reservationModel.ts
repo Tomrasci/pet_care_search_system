@@ -1,7 +1,8 @@
 import database from '../../database/db';
+import { IFetchedReservation } from './interfaces/IFetchedReservation';
 import { IReservation } from './interfaces/IReservation';
 
-const getReservationById = async (id: number): Promise<IReservation> => {
+const getReservationById = async (id: number): Promise<IFetchedReservation> => {
   try {
     return await database('reservation').where({ id }).first().select();
   } catch (err) {
@@ -9,7 +10,7 @@ const getReservationById = async (id: number): Promise<IReservation> => {
   }
 };
 
-const getReservations = async (): Promise<IReservation[]> => {
+const getReservations = async (): Promise<IFetchedReservation[]> => {
   try {
     return await database('reservation').select();
   } catch (err) {
@@ -19,7 +20,7 @@ const getReservations = async (): Promise<IReservation[]> => {
 
 const getAdvertisementReservations = async (
   id: number
-): Promise<IReservation[]> => {
+): Promise<IFetchedReservation[]> => {
   try {
     return await database('reservation')
       .where({
@@ -31,7 +32,9 @@ const getAdvertisementReservations = async (
   }
 };
 
-const getOwnerReservations = async (id: number): Promise<IReservation[]> => {
+const getOwnerReservations = async (
+  id: number
+): Promise<IFetchedReservation[]> => {
   try {
     return await database('reservation')
       .where({
@@ -71,6 +74,27 @@ const deleteOwnerAdvertisementReservations = async (
     console.log(err.message);
   }
 };
+
+const confirmReservation = async (id: number) => {
+  try {
+    return await database('reservation')
+      .where({ id: id })
+      .update('status', 'confirmed');
+  } catch (err) {
+    console.log(err.message);
+  }
+};
+
+const cancelReservation = async (id: number) => {
+  try {
+    return await database('reservation')
+      .where({ id: id })
+      .update('status', 'cancelled');
+  } catch (err) {
+    console.log(err.message);
+  }
+};
+
 export default {
   getReservationById,
   getReservations,
@@ -78,5 +102,7 @@ export default {
   getAdvertisementReservations,
   insertReservations,
   deleteAdvertisementReservations,
-  deleteOwnerAdvertisementReservations
+  deleteOwnerAdvertisementReservations,
+  confirmReservation,
+  cancelReservation
 };

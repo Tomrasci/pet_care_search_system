@@ -36,6 +36,14 @@ const insertReservations = async (reservationArray: IReservation[]) => {
   return await reservationModel.insertReservations(reservationArray);
 };
 
+const confirmReservation = async (id: number) => {
+  return await reservationModel.confirmReservation(id);
+};
+
+const cancelReservation = async (id: number) => {
+  return await reservationModel.cancelReservation(id);
+};
+
 export default {
   createReservation,
   getReservationById,
@@ -44,5 +52,7 @@ export default {
   getAdvertisementReservations,
   deleteAdvertisementReservations,
   deleteOwnerAdvertisementReservations,
-  insertReservations
+  insertReservations,
+  confirmReservation,
+  cancelReservation
 };

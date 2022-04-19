@@ -24,4 +24,14 @@ router.delete(
   reservationController.deleteReservations
 );
 
+router.post(
+  '/reservations/confirm/:id',
+  reservationController.confirmReservation
+);
+
+router.post(
+  '/reservations/cancel/:id',
+  reservationController.cancelReservation
+);
+
 export default router;

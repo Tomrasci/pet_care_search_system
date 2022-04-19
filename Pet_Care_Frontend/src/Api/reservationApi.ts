@@ -38,6 +38,16 @@ const deleteReservations = async (uid: number, aid: number) => {
   return await http.delete(`/caretakerAdverts/${uid}/${aid}`);
 };
 
+const confirmReservation = async (id: number) => {
+  const { data, status } = await http.post(`/reservations/confirm/${id}`);
+  return data;
+};
+
+const cancelReservation = async (id: number) => {
+  const { data, status } = await http.post(`/reservations/cancel/${id}`);
+  return data;
+};
+
 export default {
   createReservations,
   getAdvertisementReservations,
@@ -45,4 +55,6 @@ export default {
   getReservation,
   getReservations,
   deleteReservations,
+  confirmReservation,
+  cancelReservation,
 };

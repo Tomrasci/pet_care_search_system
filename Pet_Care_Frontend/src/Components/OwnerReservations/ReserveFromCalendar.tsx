@@ -93,24 +93,31 @@ const ReserveFromCalendar = ({ currentUser }: any) => {
   useEffect(() => {
     if (value?.getDay() === 0) {
       setCurrentInterval(sundayInterval);
+      setSelectInterval([]);
     }
     if (value?.getDay() === 1) {
       setCurrentInterval(mondayInterval);
+      setSelectInterval([]);
     }
     if (value?.getDay() === 2) {
       setCurrentInterval(tuesdayInterval);
+      setSelectInterval([]);
     }
     if (value?.getDay() === 3) {
       setCurrentInterval(wednesdayInterval);
+      setSelectInterval([]);
     }
     if (value?.getDay() === 4) {
       setCurrentInterval(thursdayInterval);
+      setSelectInterval([]);
     }
     if (value?.getDay() === 5) {
       setCurrentInterval(fridayInterval);
+      setSelectInterval([]);
     }
     if (value?.getDay() === 6) {
       setCurrentInterval(saturdayInterval);
+      setSelectInterval([]);
     }
   }, [setValue, value, availability]);
 
@@ -173,12 +180,14 @@ const ReserveFromCalendar = ({ currentUser }: any) => {
   return (
     <>
       <CaretakerCalendar />
-      <ButtonBase
-        title="Reservation creation"
-        buttonText="Make reservation"
-        buttonIcon={<BookOnlineIcon />}
-        content={<ReservationForm reservationObject={reservationObject} />}
-      />
+      <Grid container sx={{ mt: 10 }} justifyContent="center">
+        <ButtonBase
+          title="Reservation creation"
+          buttonText="Make reservation"
+          buttonIcon={<BookOnlineIcon />}
+          content={<ReservationForm reservationObject={reservationObject} />}
+        />
+      </Grid>
     </>
   );
 };

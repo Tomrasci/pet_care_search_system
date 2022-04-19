@@ -17,6 +17,7 @@ import CaretakerCalendar from "./Components/CaretakerAdvertisement/CaretakerCale
 import "bootstrap/dist/css/bootstrap.css";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import ReserveFromCalendar from "./Components/OwnerReservations/ReserveFromCalendar";
+import ReservationsTable from "./Components/CaretakerAdvertisement/CaretakerAdvertReservations";
 
 const guestLinksArray = [
   {
@@ -93,6 +94,10 @@ export default function App() {
         <Route
           path={"/ReserveFromCalendar"}
           element={<ReserveFromCalendar currentUser={currentUser} />}
+        ></Route>
+        <Route
+          path={"/ReservationsTable"}
+          element={<ReservationsTable />}
         ></Route>
         <Route path={"Register"} element={<Register />}></Route>
         <Route path={"Login"} element={<Login loadUsers={loadUsers} />}></Route>

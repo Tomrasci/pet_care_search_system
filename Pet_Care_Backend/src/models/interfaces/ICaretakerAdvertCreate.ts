@@ -10,11 +10,7 @@ export interface ICaretakerAdvertCreate {
   description: string;
   extra_information: string;
   title: string;
-  // photo_link: string;
-  // created_at: Date;
-  // updated_at: Date;
   startDate: Date;
   endDate: Date;
   user_id: number;
-  // languages: string[];
 }
