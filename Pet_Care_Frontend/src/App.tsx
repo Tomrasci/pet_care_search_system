@@ -16,6 +16,7 @@ import AdvertiseBaseEdit from "./Components/CaretakerAdvertisement/AdvertBaseEdi
 import CaretakerCalendar from "./Components/CaretakerAdvertisement/CaretakerCalendar";
 import "bootstrap/dist/css/bootstrap.css";
 import "bootstrap-icons/font/bootstrap-icons.css";
+import ReserveFromCalendar from "./Components/OwnerReservations/ReserveFromCalendar";
 
 const guestLinksArray = [
   {
@@ -88,6 +89,10 @@ export default function App() {
         <Route
           path={"/caretakerCalendar"}
           element={<CaretakerCalendar />}
+        ></Route>
+        <Route
+          path={"/ReserveFromCalendar"}
+          element={<ReserveFromCalendar />}
         ></Route>
         <Route path={"Register"} element={<Register />}></Route>
         <Route path={"Login"} element={<Login loadUsers={loadUsers} />}></Route>

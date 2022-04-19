@@ -47,14 +47,7 @@ const getAllDaysWithTimes = (
   weekDay: string
 ) => {
   const newArray: IDatesTimesInterface[] = [];
-  for (const time of timeArray) {
-    if (time.startTime === "24:00:00") {
-      time.startTime = "00:00:00";
-    }
-    if (time.endTime === "24:00:00") {
-      time.endTime = "00:00:00";
-    }
-  }
+
   for (const day of dayArray) {
     for (const time of timeArray) {
       newArray.push({

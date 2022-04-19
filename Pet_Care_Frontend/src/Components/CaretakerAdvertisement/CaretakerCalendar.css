@@ -1,3 +1,9 @@
 .fc-day-today {
   background: white !important;
 }
+.fc-datagrid-cell-frame {
+  height: 35px !important;
+}
+.fc-timeline-lane-frame {
+  height: 10px !important;
+}

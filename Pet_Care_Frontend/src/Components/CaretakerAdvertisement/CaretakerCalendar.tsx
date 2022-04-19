@@ -63,10 +63,10 @@ const CaretakerCalendar = () => {
   useEffect(() => {
     async function getCaretakerAvailability() {
       const cAvailablity =
-        await caretakerAdvertisementApi.getCaretakerAvailability(27);
+        await caretakerAdvertisementApi.getCaretakerAvailability(31);
       setAvailability(cAvailablity);
       const cAdvertisement =
-        await caretakerAdvertisementApi.getCaretakerAdvertisement(27);
+        await caretakerAdvertisementApi.getCaretakerAdvertisement(31);
       setCaretakerAdvertisement(cAdvertisement);
 
       console.log(
@@ -199,14 +199,15 @@ const CaretakerCalendar = () => {
       headerToolbar={{
         left: "prev,next today",
         center: "title",
-        right: "dayGridMonth,timeGridWeek,timeGridDay,listWeek",
+        right: "timeGridWeek,timeGridDay",
       }}
       eventTimeFormat={{
         hour12: false,
         hour: "2-digit",
         minute: "2-digit",
       }}
-      // locale={"en-GB"}
+      height="auto"
+      locale={"en-GB"}
       allDaySlot={false}
       slotLabelFormat={{ hour12: false, hour: "2-digit", minute: "2-digit" }}
       events={events}
