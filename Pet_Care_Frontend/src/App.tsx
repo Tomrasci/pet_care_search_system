@@ -92,7 +92,7 @@ export default function App() {
         ></Route>
         <Route
           path={"/ReserveFromCalendar"}
-          element={<ReserveFromCalendar />}
+          element={<ReserveFromCalendar currentUser={currentUser} />}
         ></Route>
         <Route path={"Register"} element={<Register />}></Route>
         <Route path={"Login"} element={<Login loadUsers={loadUsers} />}></Route>

@@ -6,7 +6,7 @@ const matchingDaysBetween = function (start: Date, end: Date, test: any) {
   var days = [];
   for (var day = moment(start); day.isBefore(end); day.add(1, "d")) {
     if (test(day)) {
-      days.push(moment(day)); // push a copy of day
+      days.push(moment(day));
     }
   }
   return days;
@@ -23,11 +23,7 @@ const getAllSelectedDays = (startDate: Date, endDate: Date, day: number) => {
   let start = moment(startDate.toLocaleString());
   let end = moment(endDate.toLocaleString());
 
-  console.log(`start is ${start}`);
-  console.log(`end is ${end}`);
-
   var arr = [];
-  // Get "next" monday
   let tmp = start.clone().day(day);
   if (tmp.isAfter(start, "d")) {
     arr.push(tmp.format("YYYY-MM-DD"));

@@ -487,7 +487,7 @@ export default function PriceandDates({
           <Grid item xs={2} md={1}>
             <p>Eur</p>
           </Grid>
-          <Grid item xs={4}></Grid>
+          <Grid item xs={4} md={8}></Grid>
           <Grid item xs={12} sx={{ mt: 3 }}>
             <Typography>Accepted pets</Typography>
           </Grid>

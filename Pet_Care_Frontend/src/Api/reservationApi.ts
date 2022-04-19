@@ -1,8 +1,10 @@
 import http from "../Utils/httpRequestBody";
 import { IReservation } from "../Interfaces/IReservation";
 
-const createReservations = async (reservations: IReservation[]) => {
-  return await http.post("/reservations", reservations);
+const createReservations = async (reservs: {
+  reservations: IReservation[];
+}) => {
+  return await http.post("/reservations", reservs);
 };
 
 const getReservations = async () => {

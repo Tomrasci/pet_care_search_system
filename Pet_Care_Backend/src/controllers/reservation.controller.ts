@@ -2,6 +2,7 @@ import { Request, Response, NextFunction } from 'express';
 import logger from '../../logger';
 import { ResponseCodes } from '../utils/responseCodes';
 import reservationService from '../services/reservation.service';
+import fixReservationTimes from '../utils/fixReservationTimes';
 
 const getReservationById = async (
   req: Request,
@@ -56,15 +57,17 @@ const createReservations = async (
   next: NextFunction
 ) => {
   const reservations = req.body.reservations;
+  const fixedReservations = fixReservationTimes(reservations);
 
   try {
-    await reservationService.insertReservations(reservations);
+    await reservationService.insertReservations(fixedReservations);
     logger.info(
-      `Reservations have been inserted ${JSON.stringify(reservations)}`
+      `Reservations have been inserted ${JSON.stringify(fixedReservations)}`
     );
   } catch (err) {
     console.log(err);
   }
+  return res.status(ResponseCodes.CREATED).json(fixReservationTimes);
 };
 
 const deleteReservations = async (

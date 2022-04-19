@@ -69,10 +69,6 @@ const CaretakerCalendar = () => {
         await caretakerAdvertisementApi.getCaretakerAdvertisement(31);
       setCaretakerAdvertisement(cAdvertisement);
 
-      console.log(
-        `caretaker advert is ${JSON.stringify(caretakerAdvertisement)}`
-      );
-
       const mondayDatez = CalendarFunctions.getAllSelectedDays(
         cAdvertisement?.startDate || new Date(),
         cAdvertisement?.endDate || new Date("2022-04-30"),

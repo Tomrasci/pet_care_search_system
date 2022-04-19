@@ -17,10 +17,10 @@ router.get(
   reservationController.getAdvertisementReservations
 );
 
-router.post('./reservations', reservationController.createReservations);
+router.post('/reservations', reservationController.createReservations);
 
 router.delete(
-  './reservations/:uid/:aid',
+  '/reservations/:uid/:aid',
   reservationController.deleteReservations
 );
 

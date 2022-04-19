@@ -1,12 +1,12 @@
 import { ICaretakerAvailability } from "../Interfaces/Caretaker/ICaretakerAvailability";
 
-export default function FilterWeekDay(
+export default function FilterAvailableWeekDay(
   weekDayArray: ICaretakerAvailability[],
   day: string
 ) {
   const DayStringArray = weekDayArray
     .filter((weekDay) => {
-      return weekDay.day_of_week === day;
+      return weekDay.day_of_week === day && weekDay.available === true;
     })
     .map((weekDay) => {
       return (
