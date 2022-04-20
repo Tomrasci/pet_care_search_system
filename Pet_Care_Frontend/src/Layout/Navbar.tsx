@@ -123,12 +123,32 @@ const Navbar = ({ loadUsers, currentUser }: any) => {
                     </Link>
                   ))}
                   {!isEmpty(currentUser) && (
-                    <Link
-                      style={{ textDecoration: "none", color: "white" }}
-                      to={"/CaretakerAdvertCreate"}
-                    >
-                      <Tab label="Create Advertisement" />
-                    </Link>
+                    <>
+                      <Link
+                        style={{ textDecoration: "none", color: "white" }}
+                        to={"/CaretakerAdvertCreate"}
+                      >
+                        <Tab label="Create Advertisement" />
+                      </Link>
+                      <Link
+                        style={{ textDecoration: "none", color: "white" }}
+                        to={"/caretakerCalendar"}
+                      >
+                        <Tab label="Caretaker Calendar" />
+                      </Link>
+                      <Link
+                        style={{ textDecoration: "none", color: "white" }}
+                        to={"/ReserveFromCalendar"}
+                      >
+                        <Tab label="Reserve" />
+                      </Link>
+                      <Link
+                        style={{ textDecoration: "none", color: "white" }}
+                        to={"/ReservationsTable"}
+                      >
+                        <Tab label="Reservations" />
+                      </Link>
+                    </>
                   )}
                 </Tabs>
               </div>

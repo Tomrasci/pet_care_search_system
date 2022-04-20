@@ -23,17 +23,6 @@ export default function ReservationsTable() {
     IFetchedReservation[]
   >([]);
   const [advertDetails, setAdvertDetails] = useState<ICaretakerAdvert>();
-  useEffect(() => {
-    async function getAdvertDetailsAndReservations() {
-      const advert: ICaretakerAdvert =
-        await caretakerAdvertisementApi.getCaretakerAdvertisement(31);
-      setAdvertDetails(advert);
-      const advertReservations =
-        await reservationApi.getAdvertisementReservations(advert.id);
-      setAdvertReservations(advertReservations);
-    }
-    getAdvertDetailsAndReservations();
-  }, []);
 
   const handleReservationConfirm = async (id: number) => {
     console.log("CLICKED");
@@ -54,6 +43,18 @@ export default function ReservationsTable() {
       toast.success("Reservation was cancelled successfully!");
     }
   };
+
+  useEffect(() => {
+    async function getAdvertDetailsAndReservations() {
+      const advert: ICaretakerAdvert =
+        await caretakerAdvertisementApi.getCaretakerAdvertisement(31);
+      setAdvertDetails(advert);
+      const advertReservations =
+        await reservationApi.getAdvertisementReservations(advert.id);
+      setAdvertReservations(advertReservations);
+    }
+    getAdvertDetailsAndReservations();
+  }, []);
 
   console.log("HELLO");
 
@@ -113,7 +114,7 @@ export default function ReservationsTable() {
               onClick={() => handleReservationConfirm(Number(`${params.id}`))}
               startIcon={<ThumbUpAltIcon />}
             >
-              Accept
+              Confirm
             </Button>
             <Button
               variant="contained"

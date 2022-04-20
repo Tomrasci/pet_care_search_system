@@ -39,13 +39,11 @@ const deleteReservations = async (uid: number, aid: number) => {
 };
 
 const confirmReservation = async (id: number) => {
-  const { data, status } = await http.post(`/reservations/confirm/${id}`);
-  return data;
+  return await http.post(`/reservations/confirm/${id}`);
 };
 
 const cancelReservation = async (id: number) => {
-  const { data, status } = await http.post(`/reservations/cancel/${id}`);
-  return data;
+  return await http.post(`/reservations/cancel/${id}`);
 };
 
 export default {

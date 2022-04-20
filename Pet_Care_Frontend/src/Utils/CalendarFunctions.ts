@@ -1,6 +1,8 @@
 import moment from "moment";
 import { ICaretakerAvailability } from "../Interfaces/Caretaker/ICaretakerAvailability";
 import { IDatesTimesInterface } from "../Interfaces/Caretaker/IDatesTimesInterface";
+import { IFetchedReservation } from "../Interfaces/IFetchedReservation";
+import { IReservationEvent } from "../Interfaces/Caretaker/IReservationEvent";
 
 const matchingDaysBetween = function (start: Date, end: Date, test: any) {
   var days = [];
@@ -65,9 +67,33 @@ const getAllDaysWithTimes = (
   return newArr;
 };
 
+const makeReservationsToEvents = (reservationArray: IFetchedReservation[]) => {
+  const reservations = reservationArray.map((res) => {
+    return {
+      ...res,
+      startTime: res.startTime.replace(/\s/g, ""),
+      endTime: res.endTime.replace(/\s/g, ""),
+      date: res.date.toString().split("T")[0],
+    };
+  });
+  console.log(`formatted reservations ${JSON.stringify(reservations)}`);
+  const eventReservations: IReservationEvent[] = reservations.map(
+    (reservation) => {
+      return {
+        start: reservation.date + "T" + reservation.startTime,
+        end: reservation.date + "T" + reservation.endTime,
+        date: reservation.date,
+        title: reservation.description,
+      };
+    }
+  );
+  return eventReservations;
+};
+
 export default {
   matchingDaysBetween,
   dayTimes,
   getAllSelectedDays,
   getAllDaysWithTimes,
+  makeReservationsToEvents,
 };
