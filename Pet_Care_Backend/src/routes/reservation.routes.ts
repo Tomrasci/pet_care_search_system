@@ -34,4 +34,9 @@ router.post(
   reservationController.cancelReservation
 );
 
+router.get(
+  '/reservations/confirmed/:id',
+  reservationController.getConfirmedAdvertisementReservations
+);
+
 export default router;

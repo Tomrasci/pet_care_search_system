@@ -77,7 +77,7 @@ const ReserveFromCalendar = ({ currentUser }: any) => {
       const sundayArray = FilterWeekDay(availabilityGet, "Sun");
 
       const advertReservations =
-        await reservationApi.getAdvertisementReservations(31);
+        await reservationApi.getConfirmedAdvertisementReservations(31);
 
       setAdvertReservations(advertReservations);
 

@@ -12,6 +12,11 @@ const getReservations = async () => {
   return data;
 };
 
+const getConfirmedAdvertisementReservations = async (adId: number) => {
+  const { data, status } = await http.get(`/reservations/confirmed/${adId}`);
+  return data;
+};
+
 const getOwnerReservations = async (userId: number) => {
   const { data, status } = await http.get(`/ownerReservations/${userId}`);
   return data;
@@ -55,4 +60,5 @@ export default {
   deleteReservations,
   confirmReservation,
   cancelReservation,
+  getConfirmedAdvertisementReservations,
 };

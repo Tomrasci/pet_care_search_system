@@ -138,7 +138,6 @@ const CaretakerCalendar = ({ reserving }: Props) => {
       "Thu"
     );
     setThursdayArray(thursdayArray);
-    console.log(`thursday array is ${JSON.stringify(thursdayArray)}`);
 
     const fridayDatez = CalendarFunctions.getAllSelectedDays(
       cAdvertisement?.startDate || new Date(),
@@ -195,7 +194,7 @@ const CaretakerCalendar = ({ reserving }: Props) => {
     setEvents(getEvents);
 
     const advertReservations =
-      await reservationApi.getAdvertisementReservations(31);
+      await reservationApi.getConfirmedAdvertisementReservations(31);
     let eventReservations = null;
     if (reserving) {
       eventReservations =

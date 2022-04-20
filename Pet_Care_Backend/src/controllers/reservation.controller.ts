@@ -26,6 +26,19 @@ const getReservations = async (
   return res.status(ResponseCodes.OK).json(reservations);
 };
 
+const getConfirmedAdvertisementReservations = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  const reservations =
+    await reservationService.getConfirmedAdvertisementReservations(
+      Number(req.params.id)
+    );
+
+  return res.status(ResponseCodes.OK).json(reservations);
+};
+
 const getOwnerReservations = async (
   req: Request,
   res: Response,
@@ -120,5 +133,6 @@ export default {
   createReservations,
   deleteReservations,
   confirmReservation,
-  cancelReservation
+  cancelReservation,
+  getConfirmedAdvertisementReservations
 };

@@ -44,6 +44,10 @@ const cancelReservation = async (id: number) => {
   return await reservationModel.cancelReservation(id);
 };
 
+const getConfirmedAdvertisementReservations = async (id: number) => {
+  return await reservationModel.getConfirmedAdvertisementReservations(id);
+};
+
 export default {
   createReservation,
   getReservationById,
@@ -54,5 +58,6 @@ export default {
   deleteOwnerAdvertisementReservations,
   insertReservations,
   confirmReservation,
-  cancelReservation
+  cancelReservation,
+  getConfirmedAdvertisementReservations
 };

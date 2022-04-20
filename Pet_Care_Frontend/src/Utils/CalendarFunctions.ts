@@ -76,7 +76,6 @@ const makeReservationsToEvents = (reservationArray: IFetchedReservation[]) => {
       date: res.date.toString().split("T")[0],
     };
   });
-  console.log(`formatted reservations ${JSON.stringify(reservations)}`);
   const eventReservations: IReservationEvent[] = reservations.map(
     (reservation) => {
       return {
@@ -101,7 +100,6 @@ const makeReservationsToEventsForOwner = (
       date: res.date.toString().split("T")[0],
     };
   });
-  console.log(`formatted reservations ${JSON.stringify(reservations)}`);
   const eventReservations: IReservationEvent[] = reservations.map(
     (reservation) => {
       return {
@@ -122,10 +120,6 @@ const filterExistingReservationsFromTImes = (
   date: Date | null
 ) => {
   for (const reservation of reservationArray) {
-    console.log(
-      `reservation date is ${new Date(reservation.date).toLocaleDateString()}`
-    );
-    console.log(`selected date is ${date?.toLocaleDateString()}`);
     if (
       new Date(reservation.date).getDay() === day &&
       new Date(reservation.date).toLocaleDateString() ===

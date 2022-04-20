@@ -46,6 +46,18 @@ const getOwnerReservations = async (
   }
 };
 
+const getConfirmedAdvertisementReservations = async (
+  id: number
+): Promise<IFetchedReservation[]> => {
+  try {
+    return await database('reservation')
+      .where({ status: 'confirmed', advertisement_id: id })
+      .select();
+  } catch (err) {
+    console.log(err.message);
+  }
+};
+
 const insertReservations = async (reservationArray: IReservation[]) => {
   try {
     return await database('reservation').insert(reservationArray);
@@ -104,5 +116,6 @@ export default {
   deleteAdvertisementReservations,
   deleteOwnerAdvertisementReservations,
   confirmReservation,
-  cancelReservation
+  cancelReservation,
+  getConfirmedAdvertisementReservations
 };

@@ -23,6 +23,7 @@ export default function ReservationsTable() {
     IFetchedReservation[]
   >([]);
   const [advertDetails, setAdvertDetails] = useState<ICaretakerAdvert>();
+  const [refetch, setRefetch] = useState(true);
 
   const handleReservationConfirm = async (id: number) => {
     console.log("CLICKED");
@@ -31,6 +32,7 @@ export default function ReservationsTable() {
     if (result.status !== 200) {
       toast.error("Reservation confirmation failed");
     } else {
+      setRefetch(!refetch);
       toast.success("Reservation was confirmed successfully!");
     }
   };
@@ -40,23 +42,33 @@ export default function ReservationsTable() {
     if (result.status !== 200) {
       toast.error("Reservation cancel failed");
     } else {
+      setRefetch(!refetch);
       toast.success("Reservation was cancelled successfully!");
     }
   };
-
   useEffect(() => {
-    async function getAdvertDetailsAndReservations() {
+    async function getAdvertDetails() {
       const advert: ICaretakerAdvert =
         await caretakerAdvertisementApi.getCaretakerAdvertisement(31);
       setAdvertDetails(advert);
-      const advertReservations =
-        await reservationApi.getAdvertisementReservations(advert.id);
-      setAdvertReservations(advertReservations);
     }
-    getAdvertDetailsAndReservations();
+    getAdvertDetails();
   }, []);
 
-  console.log("HELLO");
+  useEffect(() => {
+    async function getReservations() {
+      let advertReservs = null;
+      if (advertDetails) {
+        advertReservs = await reservationApi.getAdvertisementReservations(
+          advertDetails.id
+        );
+      }
+      setAdvertReservations(advertReservs);
+    }
+    getReservations();
+  }, [advertDetails, refetch]);
+
+  // console.log("HELLO");
 
   const columns: GridColDef[] = [
     {
