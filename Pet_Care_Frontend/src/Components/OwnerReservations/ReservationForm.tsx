@@ -112,7 +112,7 @@ const ReservationForm = ({ reservationObject, onSave }: Props) => {
                   }
                   MenuProps={MenuProps}
                 >
-                  {reservationObject.currentInterval.map((time) => (
+                  {reservationObject.currentInterval.sort().map((time) => (
                     <MenuItem
                       key={time}
                       value={time}

@@ -210,30 +210,36 @@ const CaretakerCalendar = ({ reserving }: Props) => {
   useEffect(() => {
     getCaretakerAvailability();
   }, []);
-  console.log(`events are ${JSON.stringify(events)}`);
-  console.log(`advertReservations are ${JSON.stringify(advertReservations)}`);
 
   return (
-    <FullCalendar
-      plugins={[daygridPlugin, timeGridPlugin, bootstrap5Plugin, momentPlugin]}
-      initialView="timeGridWeek"
-      themeSystem="bootstrap5"
-      headerToolbar={{
-        left: "prev,next today",
-        center: "title",
-        right: "timeGridWeek,timeGridDay",
-      }}
-      eventTimeFormat={{
-        hour12: false,
-        hour: "2-digit",
-        minute: "2-digit",
-      }}
-      height="auto"
-      locale={"en-GB"}
-      allDaySlot={false}
-      slotLabelFormat={{ hour12: false, hour: "2-digit", minute: "2-digit" }}
-      eventSources={[events, advertReservations]}
-    />
+    events &&
+    advertReservations && (
+      <FullCalendar
+        plugins={[
+          daygridPlugin,
+          timeGridPlugin,
+          bootstrap5Plugin,
+          momentPlugin,
+        ]}
+        initialView="timeGridWeek"
+        themeSystem="bootstrap5"
+        headerToolbar={{
+          left: "prev,next today",
+          center: "title",
+          right: "timeGridWeek,timeGridDay",
+        }}
+        eventTimeFormat={{
+          hour12: false,
+          hour: "2-digit",
+          minute: "2-digit",
+        }}
+        height="auto"
+        locale={"en-GB"}
+        allDaySlot={false}
+        slotLabelFormat={{ hour12: false, hour: "2-digit", minute: "2-digit" }}
+        eventSources={[events, advertReservations]}
+      />
+    )
   );
 };
 

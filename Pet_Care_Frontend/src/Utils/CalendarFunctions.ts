@@ -115,6 +115,39 @@ const makeReservationsToEventsForOwner = (
   return eventReservations;
 };
 
+const filterExistingReservationsFromTImes = (
+  reservationArray: IFetchedReservation[],
+  weekdayInterval: string[],
+  day: number,
+  date: Date | null
+) => {
+  for (const reservation of reservationArray) {
+    console.log(
+      `reservation date is ${new Date(reservation.date).toLocaleDateString()}`
+    );
+    console.log(`selected date is ${date?.toLocaleDateString()}`);
+    if (
+      new Date(reservation.date).getDay() === day &&
+      new Date(reservation.date).toLocaleDateString() ===
+        date?.toLocaleDateString()
+    ) {
+      if (
+        weekdayInterval.includes(
+          reservation.startTime + "-" + reservation.endTime
+        )
+      ) {
+        const index = weekdayInterval.indexOf(
+          reservation.startTime + "-" + reservation.endTime
+        );
+        if (index > -1) {
+          weekdayInterval.splice(index, 1);
+        }
+      }
+    }
+  }
+  return weekdayInterval;
+};
+
 export default {
   matchingDaysBetween,
   dayTimes,
@@ -122,4 +155,5 @@ export default {
   getAllDaysWithTimes,
   makeReservationsToEvents,
   makeReservationsToEventsForOwner,
+  filterExistingReservationsFromTImes,
 };

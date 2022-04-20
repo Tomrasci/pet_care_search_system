@@ -30,6 +30,9 @@ import { IReservationObject } from "../../Interfaces/IReservationObject";
 import ButtonBase from "../../Utils/ButtonBase";
 import BookOnlineIcon from "@mui/icons-material/BookOnline";
 import ReservationForm from "./ReservationForm";
+import CalendarFunctions from "../../Utils/CalendarFunctions";
+import { IReservationEvent } from "../../Interfaces/Caretaker/IReservationEvent";
+import { IFetchedReservation } from "../../Interfaces/IFetchedReservation";
 
 const ReserveFromCalendar = ({ currentUser }: any) => {
   const [availability, setAvailability] = useState<ICaretakerAvailability[]>(
@@ -53,6 +56,10 @@ const ReserveFromCalendar = ({ currentUser }: any) => {
   const [reservationDescription, setReservationDescription] =
     React.useState("");
 
+  const [advertReservations, setAdvertReservations] = useState<
+    IFetchedReservation[]
+  >([]);
+
   const reserving = true;
 
   useEffect(() => {
@@ -68,6 +75,11 @@ const ReserveFromCalendar = ({ currentUser }: any) => {
       const fridayArray = FilterWeekDay(availabilityGet, "Fri");
       const saturdayArray = FilterWeekDay(availabilityGet, "Sat");
       const sundayArray = FilterWeekDay(availabilityGet, "Sun");
+
+      const advertReservations =
+        await reservationApi.getAdvertisementReservations(31);
+
+      setAdvertReservations(advertReservations);
 
       setMondayInterval(mondayArray);
       setTuesdayInterval(tuesdayArray);
@@ -94,31 +106,83 @@ const ReserveFromCalendar = ({ currentUser }: any) => {
 
   useEffect(() => {
     if (value?.getDay() === 0) {
-      setCurrentInterval(sundayInterval);
+      const sundInterval = [...sundayInterval];
+      CalendarFunctions.filterExistingReservationsFromTImes(
+        advertReservations,
+        sundInterval,
+        0,
+        value
+      );
+      setCurrentInterval(sundInterval);
       setSelectInterval([]);
     }
     if (value?.getDay() === 1) {
-      setCurrentInterval(mondayInterval);
+      const mondInterval = [...mondayInterval];
+      CalendarFunctions.filterExistingReservationsFromTImes(
+        advertReservations,
+        mondInterval,
+        1,
+        value
+      );
+      setCurrentInterval(mondInterval);
       setSelectInterval([]);
     }
     if (value?.getDay() === 2) {
-      setCurrentInterval(tuesdayInterval);
+      const tuesdInterval = [...tuesdayInterval];
+      CalendarFunctions.filterExistingReservationsFromTImes(
+        advertReservations,
+        tuesdInterval,
+        2,
+        value
+      );
+      setCurrentInterval(tuesdInterval);
       setSelectInterval([]);
     }
     if (value?.getDay() === 3) {
-      setCurrentInterval(wednesdayInterval);
+      console.log(`initial wednesdayInterval ${wednesdayInterval}`);
+      const wednInterval = [...wednesdayInterval];
+      CalendarFunctions.filterExistingReservationsFromTImes(
+        advertReservations,
+        wednInterval,
+        3,
+        value
+      );
+      console.log(`new wedneInterval ${wednInterval}`);
+
+      setCurrentInterval(wednInterval);
       setSelectInterval([]);
     }
     if (value?.getDay() === 4) {
-      setCurrentInterval(thursdayInterval);
+      const thursInterval = [...thursdayInterval];
+      CalendarFunctions.filterExistingReservationsFromTImes(
+        advertReservations,
+        thursInterval,
+        4,
+        value
+      );
+      setCurrentInterval(thursInterval);
       setSelectInterval([]);
     }
     if (value?.getDay() === 5) {
-      setCurrentInterval(fridayInterval);
+      const fridInterval = [...fridayInterval];
+      CalendarFunctions.filterExistingReservationsFromTImes(
+        advertReservations,
+        fridInterval,
+        5,
+        value
+      );
+      setCurrentInterval(fridInterval);
       setSelectInterval([]);
     }
     if (value?.getDay() === 6) {
-      setCurrentInterval(saturdayInterval);
+      const satInterval = [...saturdayInterval];
+      CalendarFunctions.filterExistingReservationsFromTImes(
+        advertReservations,
+        satInterval,
+        6,
+        value
+      );
+      setCurrentInterval(satInterval);
       setSelectInterval([]);
     }
   }, [setValue, value, availability]);
