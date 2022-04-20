@@ -53,6 +53,8 @@ const ReserveFromCalendar = ({ currentUser }: any) => {
   const [reservationDescription, setReservationDescription] =
     React.useState("");
 
+  const reserving = true;
+
   useEffect(() => {
     async function getCaretakerAvailability() {
       const availabilityGet =
@@ -179,7 +181,7 @@ const ReserveFromCalendar = ({ currentUser }: any) => {
 
   return (
     <>
-      <CaretakerCalendar />
+      <CaretakerCalendar reserving={reserving} />
       <Grid container sx={{ mt: 10 }} justifyContent="center">
         <ButtonBase
           title="Reservation creation"

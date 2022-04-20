@@ -16,7 +16,11 @@ import reservationApi from "../../Api/reservationApi";
 import { IFetchedReservation } from "../../Interfaces/IFetchedReservation";
 import { IReservationEvent } from "../../Interfaces/Caretaker/IReservationEvent";
 
-const CaretakerCalendar = () => {
+interface Props {
+  reserving?: boolean;
+}
+
+const CaretakerCalendar = ({ reserving }: Props) => {
   const [availability, setAvailability] = useState<ICaretakerAvailability[]>(
     []
   );
@@ -192,8 +196,14 @@ const CaretakerCalendar = () => {
 
     const advertReservations =
       await reservationApi.getAdvertisementReservations(31);
-    const eventReservations =
-      CalendarFunctions.makeReservationsToEvents(advertReservations);
+    let eventReservations = null;
+    if (reserving) {
+      eventReservations =
+        CalendarFunctions.makeReservationsToEventsForOwner(advertReservations);
+    } else {
+      eventReservations =
+        CalendarFunctions.makeReservationsToEvents(advertReservations);
+    }
     setAdvertReservations(eventReservations);
   }
 

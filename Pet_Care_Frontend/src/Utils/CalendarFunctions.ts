@@ -90,10 +90,36 @@ const makeReservationsToEvents = (reservationArray: IFetchedReservation[]) => {
   return eventReservations;
 };
 
+const makeReservationsToEventsForOwner = (
+  reservationArray: IFetchedReservation[]
+) => {
+  const reservations = reservationArray.map((res) => {
+    return {
+      ...res,
+      startTime: res.startTime.replace(/\s/g, ""),
+      endTime: res.endTime.replace(/\s/g, ""),
+      date: res.date.toString().split("T")[0],
+    };
+  });
+  console.log(`formatted reservations ${JSON.stringify(reservations)}`);
+  const eventReservations: IReservationEvent[] = reservations.map(
+    (reservation) => {
+      return {
+        start: reservation.date + "T" + reservation.startTime,
+        end: reservation.date + "T" + reservation.endTime,
+        date: reservation.date,
+        title: "RESERVED",
+      };
+    }
+  );
+  return eventReservations;
+};
+
 export default {
   matchingDaysBetween,
   dayTimes,
   getAllSelectedDays,
   getAllDaysWithTimes,
   makeReservationsToEvents,
+  makeReservationsToEventsForOwner,
 };
