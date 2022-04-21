@@ -1,6 +1,7 @@
 import { IUser } from '../models/interfaces/IUser';
 import Joi from 'joi';
 import { ICaretakerAdvertCreate } from '../models/interfaces/ICaretakerAdvertCreate';
+import { IOwnerAdvertCreate } from '../models/interfaces/IOwnerAdvertCreate';
 
 const validateUser = (user: IUser) => {
   const schema = Joi.object().keys({
@@ -28,7 +29,6 @@ const validateCaretakerAdvert = (caretakerAdvert: ICaretakerAdvertCreate) => {
     description: Joi.string().required(),
     extra_information: Joi.string().allow(''),
     title: Joi.string().required(),
-    languages: Joi.array().items(Joi.string()),
     startDate: Joi.date().required(),
     endDate: Joi.date().required(),
     user_id: Joi.number().required()
@@ -36,4 +36,23 @@ const validateCaretakerAdvert = (caretakerAdvert: ICaretakerAdvertCreate) => {
   return schema.validate(caretakerAdvert);
 };
 
-export default { validateUser, validateCaretakerAdvert };
+const validateOwnerAdvert = (ownerAdvert: IOwnerAdvertCreate) => {
+  const schema = Joi.object().keys({
+    name: Joi.string().required(),
+    surname: Joi.string().required(),
+    phone: Joi.string().required(),
+    address: Joi.string().required(),
+    activity: Joi.string().required(),
+    day_price: Joi.number().required(),
+    description: Joi.string().required(),
+    extra_information: Joi.string().allow(''),
+    title: Joi.string().required(),
+    startDate: Joi.date().required(),
+    endDate: Joi.date().required(),
+    time_intervals: Joi.array().items(Joi.string()),
+    user_id: Joi.number().required()
+  });
+  return schema.validate(ownerAdvert);
+};
+
+export default { validateUser, validateCaretakerAdvert, validateOwnerAdvert };

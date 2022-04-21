@@ -1,11 +1,9 @@
-export interface ICaretakerAdvert {
+export interface IOwnerAdvert {
   id: number;
   name: string;
   surname: string;
-  age: number;
   phone: string;
   address: string;
-  experience: string;
   activity: string;
   day_price: number;
   description: string;
@@ -16,5 +14,6 @@ export interface ICaretakerAdvert {
   updated_at: Date;
   startDate: Date;
   endDate: Date;
+  time_intervals: string[];
   user_id: number;
 }

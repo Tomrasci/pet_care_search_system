@@ -68,8 +68,6 @@ export default function ReservationsTable() {
     getReservations();
   }, [advertDetails, refetch]);
 
-  // console.log("HELLO");
-
   const columns: GridColDef[] = [
     {
       field: "date",
@@ -82,12 +80,10 @@ export default function ReservationsTable() {
     {
       field: "startTime",
       headerName: "Start Time",
-      flex: 1,
     },
     {
       field: "endTime",
       headerName: "End Time",
-      flex: 1,
     },
     // {
     //   field: "user_id",
@@ -102,7 +98,7 @@ export default function ReservationsTable() {
     {
       field: "created_at",
       headerName: "Date created",
-      flex: 2,
+      flex: 1,
       type: "dateTime",
       valueFormatter: (value) =>
         new Date(value.value as string).toLocaleString(),

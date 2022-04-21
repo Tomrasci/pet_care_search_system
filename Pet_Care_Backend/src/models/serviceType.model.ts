@@ -53,10 +53,47 @@ const deleteCaretakerServices = async (id: number) => {
     console.log(err.message);
   }
 };
+
+const getOwnerServices = async (aid: number): Promise<ICaretakerService[]> => {
+  try {
+    return await database('owner_services')
+      .where({
+        advertisement_id: aid
+      })
+      .select();
+  } catch (err) {
+    console.log(err.message);
+  }
+};
+
+const insertOwnerServices = async (serviceArray: ICaretakerService[]) => {
+  try {
+    const fieldsToInsert = serviceArray.map((field) => ({
+      service_type_id: field.service_type_id,
+      advertisement_id: field.advertisement_id
+    }));
+    return await database('owner_services').insert(fieldsToInsert);
+  } catch (err) {
+    console.log(err.message);
+  }
+};
+
+const deleteOwnerServices = async (id: number) => {
+  try {
+    return await database('owner_services')
+      .where({ advertisement_id: id })
+      .del();
+  } catch (err) {
+    console.log(err.message);
+  }
+};
 export default {
   getServiceTypeById,
   getServiceTypes,
   getCaretakerServices,
   insertCaretakerServices,
-  deleteCaretakerServices
+  deleteCaretakerServices,
+  getOwnerServices,
+  insertOwnerServices,
+  deleteOwnerServices
 };

@@ -7,6 +7,8 @@ import petTypes from './src/routes/petType.routes';
 import serviceTypes from './src/routes/serviceType.routes';
 import languages from './src/routes/language.routes';
 import reservations from './src/routes/reservation.routes';
+import ownerAdvertisements from './src/routes/ownerAdvert.routes';
+
 require('dotenv').config();
 
 const app = express();
@@ -25,6 +27,7 @@ app.use(petTypes);
 app.use(serviceTypes);
 app.use(languages);
 app.use(reservations);
+app.use(ownerAdvertisements);
 app.use(apiErrorHandler);
 
 app.get('/', (req: Request, res: Response) => {

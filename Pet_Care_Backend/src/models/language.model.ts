@@ -52,10 +52,45 @@ const deleteCaretakerLanguages = async (id: number) => {
   }
 };
 
+const getOwnerLanguages = async (
+  aid: number
+): Promise<ICaretakerLanguage[]> => {
+  try {
+    return await database('owner_languages')
+      .where({
+        advertisement_id: aid
+      })
+      .select();
+  } catch (err) {
+    console.log(err.message);
+  }
+};
+
+const insertOwnerLanguages = async (languageArray: ICaretakerLanguage[]) => {
+  try {
+    return await database('owner_languages').insert(languageArray);
+  } catch (err) {
+    console.log(err.message);
+  }
+};
+
+const deleteOwnerLanguages = async (id: number) => {
+  try {
+    return await database('owner_languages')
+      .where({ advertisement_id: id })
+      .del();
+  } catch (err) {
+    console.log(err.message);
+  }
+};
+
 export default {
   getLanguageById,
   getLanguages,
   getCaretakerLanguages,
   insertCaretakerLanguages,
-  deleteCaretakerLanguages
+  deleteCaretakerLanguages,
+  getOwnerLanguages,
+  insertOwnerLanguages,
+  deleteOwnerLanguages
 };
