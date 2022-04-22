@@ -9,6 +9,6 @@ export interface IOwnerAdvertCreate {
   title: string;
   startDate: Date;
   endDate: Date;
-  time_intervals: string[];
+  time_intervals: string;
   user_id: number;
 }

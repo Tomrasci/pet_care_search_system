@@ -72,7 +72,7 @@ export default function ReservationsTable() {
     {
       field: "date",
       headerName: "Date",
-      flex: 1,
+
       type: "date",
       valueFormatter: (value) =>
         new Date(value.value as string).toLocaleDateString(),

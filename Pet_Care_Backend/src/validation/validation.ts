@@ -42,14 +42,13 @@ const validateOwnerAdvert = (ownerAdvert: IOwnerAdvertCreate) => {
     surname: Joi.string().required(),
     phone: Joi.string().required(),
     address: Joi.string().required(),
-    activity: Joi.string().required(),
     day_price: Joi.number().required(),
     description: Joi.string().required(),
     extra_information: Joi.string().allow(''),
     title: Joi.string().required(),
     startDate: Joi.date().required(),
-    endDate: Joi.date().required(),
-    time_intervals: Joi.array().items(Joi.string()),
+    endDate: Joi.date().allow(null).allow(''),
+    time_intervals: Joi.string(),
     user_id: Joi.number().required()
   });
   return schema.validate(ownerAdvert);

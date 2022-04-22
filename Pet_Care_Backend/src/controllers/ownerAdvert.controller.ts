@@ -12,6 +12,8 @@ import { ICaretakerLanguage } from '../models/interfaces/ICaretakerLanguage';
 import languageService from '../services/language.service';
 import { IOwnerAdvertCreate } from '../models/interfaces/IOwnerAdvertCreate';
 import ownerAdvertService from '../services/ownerAdvert.service';
+import pushValuesToStringArray from '../utils/pushValuesToStringArray';
+import fixJSONType from '../utils/fixJsonType';
 
 const createOwnerAdvertisement = async (
   req: Request,
@@ -30,7 +32,7 @@ const createOwnerAdvertisement = async (
     endDate: req.body.endDate,
     day_price: req.body.day_price,
     user_id: req.body.user_id,
-    time_intervals: req.body.time_intervals
+    time_intervals: req.body.time_intervals.toString()
   };
   const { error } = validation.validateOwnerAdvert(ownerAdvert);
   if (error) {
@@ -104,8 +106,15 @@ const getOwnerAdvert = async (
   const cAdvert = await ownerAdvertService.getOwnerAdvertById(
     Number(req.params.id)
   );
+
+  const newInterv: string[] = fixJSONType(cAdvert.time_intervals);
+  console.log(`newInterv is ${newInterv}`);
+  const newAdvert = {
+    ...cAdvert,
+    time_intervals: newInterv
+  };
   logger.info(`Owner advert has been retrieved with id  ${req.params.id}`);
-  return res.status(ResponseCodes.OK).json(cAdvert);
+  return res.status(ResponseCodes.OK).json(newAdvert);
 };
 
 const getOwnerAdverts = async (

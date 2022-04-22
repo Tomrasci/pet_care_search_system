@@ -18,9 +18,9 @@ import * as yup from "yup";
 import caretakerAdvertisementApi from "../../Api/caretakerAdvertisementApi";
 import { ICaretakerAdvertCreate } from "../../Interfaces/Caretaker/ICaretakerAdvertCreate";
 import { useFormHook } from "../../Utils/useFormHook";
-import AdvertForm from "./AdvertForm";
-import PersInformation from "./PersInformation";
-import PriceandDates from "./PriceandDates";
+import OwnerPriceandDates from "./OwnerPriceAndDates";
+import OwnerPersInformation from "./OwnerPersInformation";
+import OwnerAdvertForm from "./OwnerAdvertForm";
 import useState from "react";
 import { IPetType } from "../../Interfaces/Caretaker/IPetType";
 import { IServiceType } from "../../Interfaces/Caretaker/IServiceType";
@@ -29,16 +29,18 @@ import serviceTypeApi from "../../Api/serviceTypeApi";
 import languageApi from "../../Api/languageApi";
 import { ILanguageType } from "../../Interfaces/Caretaker/ILanguageType";
 import isEmpty from "../../Utils/Empty";
-import { ICaretakerAdvert } from "../../Interfaces/Caretaker/ICaretakerAdvert";
+import interval from "../CaretakerAdvertisement/TimeIntervals";
+import { IDaysObject } from "../../Interfaces/Caretaker/IDaysObject";
+import { IOwnerAdvertCreate } from "../../Interfaces/Owner/IOwnerAdvertCreate";
+import ownerAdverisementApi from "../../Api/ownerAdverisementApi";
+import { ITimeIntervalsObject } from "../../Interfaces/Owner/ITimeIntervalsObject";
+import { IOwnerAdvert } from "../../Interfaces/Owner/IOwnerAdvert";
 import { IPet } from "../../Interfaces/Caretaker/IPet";
+import { ILanguageCheck } from "../../Interfaces/Caretaker/ILanguageCheck";
 import { IPetCheck } from "../../Interfaces/Caretaker/IPetCheck";
 import { IServiceCheck } from "../../Interfaces/Caretaker/IServiceCheck";
 import { IService } from "../../Interfaces/Caretaker/IService";
-import { ILanguageCheck } from "../../Interfaces/Caretaker/ILanguageCheck";
 import { ILanguage } from "../../Interfaces/Caretaker/ILanguage";
-import interval from "./TimeIntervals";
-import { IDaysObject } from "../../Interfaces/Caretaker/IDaysObject";
-import FilterWeekDay from "../../Utils/FilterWeekday";
 
 const steps = [
   "Personal information",
@@ -48,7 +50,7 @@ const steps = [
 
 const theme = createTheme();
 
-export default function AdvertiseBaseEdit({ currentUser }: any) {
+export default function OwnerAdvertiseBaseEdit({ currentUser }: any) {
   const navigate = useNavigate();
 
   if (!currentUser) {
@@ -60,23 +62,16 @@ export default function AdvertiseBaseEdit({ currentUser }: any) {
   moment.locale("lt");
 
   const timeInterval = interval.getInitialTimeIntervals();
-  const initialDayInterval = interval.getDaysIntervals();
 
-  const [advertDetails, setAdvertDetails] = React.useState<ICaretakerAdvert>();
-
+  const [advertDetails, setAdvertDetails] = React.useState<IOwnerAdvert>();
 
   const defaultValues = {
     name: advertDetails?.name || "",
     surname: advertDetails?.surname || "",
     address: advertDetails?.address || "",
     phone: advertDetails?.phone || "",
-    age: advertDetails?.age || "",
-    activity: advertDetails?.activity || "",
-    experience: advertDetails?.experience || "",
     startDate: advertDetails?.startDate || "",
     endDate: advertDetails?.endDate || "",
-    startTime: advertDetails?.startTime || "",
-    endTime: advertDetails?.endTime || "",
     day_price: advertDetails?.day_price || "",
     title: advertDetails?.title || "",
     description: advertDetails?.description || "",
@@ -84,15 +79,9 @@ export default function AdvertiseBaseEdit({ currentUser }: any) {
   };
 
   const [timeInterv, setTimeInterv] = React.useState(timeInterval);
-  const [mondayInterval, setMondayInterval] = React.useState<string[]>([]);
-  const [tuesdayInterval, setTuesdayInterval] = React.useState<string[]>([]);
-  const [wednesdayInterval, setWednesdayInterval] = React.useState<string[]>(
+  const [selectedIntervals, setSelectedIntervals] = React.useState<string[]>(
     []
   );
-  const [thursdayInterval, setThursdayInterval] = React.useState<string[]>([]);
-  const [fridayInterval, setFridayInterval] = React.useState<string[]>([]);
-  const [saturdayInterval, setSaturdayInterval] = React.useState<string[]>([]);
-  const [sundayInterval, setSundayInterval] = React.useState<string[]>([]);
 
   const [petTypes, setPetTypes] = React.useState<IPetType[]>([]);
   const [serviceTypes, setServiceTypes] = React.useState<IServiceType[]>([]);
@@ -127,16 +116,13 @@ export default function AdvertiseBaseEdit({ currentUser }: any) {
 
   React.useEffect(() => {
     async function getTypes() {
-      const languagesGet = await languageApi.getLanguages();
-      setLanguages(languagesGet);
       const petTypesGet = await petTypeApi.getPetTypes();
       setPetTypes(petTypesGet);
       const serviceTypesGet = await serviceTypeApi.getServiceTypes();
       setServiceTypes(serviceTypesGet);
+      const languagesGet = await languageApi.getLanguages();
 
-      let languageArray = languagesGet.map((language: ILanguageType) => {
-        return { value: language, checked: false };
-      });
+      setLanguages(languagesGet);
 
       let petArray = petTypesGet.map((pet: IPetType) => {
         return { value: pet, checked: false };
@@ -144,6 +130,18 @@ export default function AdvertiseBaseEdit({ currentUser }: any) {
       let serviceArray = serviceTypesGet.map((service: IServiceType) => {
         return { value: service, checked: false };
       });
+
+      let languageArray = languagesGet.map((language: ILanguageType) => {
+        return { value: language, checked: false };
+      });
+
+      setCheckedStatePet(petArray);
+      setSelectedPet(petArray);
+      setCheckedStateService(serviceArray);
+      setSelectedService(serviceArray);
+      setCheckedState(languageArray);
+      setSelected(languageArray);
+
       setCheckedState(languageArray);
       setSelected(languageArray);
       setCheckedStatePet(petArray);
@@ -151,13 +149,9 @@ export default function AdvertiseBaseEdit({ currentUser }: any) {
       setCheckedStateService(serviceArray);
       setSelectedService(serviceArray);
 
-      const pets: IPet[] = await caretakerAdvertisementApi.getCaretakerPets(
-        Number(id)
-      );
-      const services = await caretakerAdvertisementApi.getCaretakerServices(
-        Number(id)
-      );
-      const languages = await caretakerAdvertisementApi.getCaretakerLanguages(
+      const pets: IPet[] = await ownerAdverisementApi.getOwnerPets(Number(id));
+      const services = await ownerAdverisementApi.getOwnerServices(Number(id));
+      const languages = await ownerAdverisementApi.getOwnerLanguages(
         Number(id)
       );
 
@@ -197,6 +191,21 @@ export default function AdvertiseBaseEdit({ currentUser }: any) {
     getTypes();
   }, []);
 
+  React.useEffect(() => {
+    async function getAdvert() {
+      const advertDetails = await ownerAdverisementApi.getOwnerAdvertisement(
+        Number(id)
+      );
+      setAdvertDetails(advertDetails);
+      reset(advertDetails);
+      console.log(`time intervals are ${advertDetails.time_intervals}`);
+      console.log(`advert name is ${advertDetails.title}`);
+      setSelectedIntervals(advertDetails.time_intervals);
+    }
+
+    getAdvert();
+  }, []);
+
   const sendError = (error: boolean) => {
     setError(error);
   };
@@ -208,25 +217,19 @@ export default function AdvertiseBaseEdit({ currentUser }: any) {
   const sendErrorService = (serviceError: boolean) => {
     setErrorService(serviceError);
   };
+
   const validationSchema = [
     yup.object({
       name: yup.string().required("First name is required"),
       surname: yup.string().required("Last name is required"),
       address: yup.string().required("Address is required"),
       phone: yup.string().required("Phone is required"),
-      age: yup.number().required("Age is required"),
-      activity: yup.string().required("Work or activity is required"),
-      experience: yup.string().required("Experience is required"),
     }),
     yup.object({
       startDate: yup
         .date()
         .typeError("Start date must be valid")
         .required("Start date is required"),
-      endDate: yup
-        .date()
-        .typeError("End date must be valid")
-        .required("End date is required"),
 
       day_price: yup.number().required("Price is required"),
     }),
@@ -245,38 +248,7 @@ export default function AdvertiseBaseEdit({ currentUser }: any) {
     resolver: yupResolver(currentValidationSchema),
     mode: "onChange",
   });
-  const { handleSubmit, reset, trigger, getValues, setValue, watch } = methods;
-
-  React.useEffect(() => {
-    async function getAdvert() {
-      const advertDetails =
-        await caretakerAdvertisementApi.getCaretakerAdvertisement(Number(id));
-      setAdvertDetails(advertDetails);
-      reset(advertDetails);
-      const availabilityGet =
-        await caretakerAdvertisementApi.getCaretakerAvailability(
-          Number(advertDetails?.id)
-        );
-
-      const mondayArray = FilterWeekDay(availabilityGet, "Mon");
-      const tuesdayArray = FilterWeekDay(availabilityGet, "Tue");
-      const wednesdayArray = FilterWeekDay(availabilityGet, "Wed");
-      const thursdayArray = FilterWeekDay(availabilityGet, "Thu");
-      const fridayArray = FilterWeekDay(availabilityGet, "Fri");
-      const saturdayArray = FilterWeekDay(availabilityGet, "Sat");
-      const sundayArray = FilterWeekDay(availabilityGet, "Sun");
-
-      setMondayInterval(mondayArray);
-      setTuesdayInterval(tuesdayArray);
-      setWednesdayInterval(wednesdayArray);
-      setThursdayInterval(thursdayArray);
-      setFridayInterval(fridayArray);
-      setSaturdayInterval(saturdayArray);
-      setSundayInterval(sundayArray);
-    }
-
-    getAdvert();
-  }, []);
+  const { handleSubmit, reset, trigger, getValues, watch } = methods;
 
   const handleNext = async () => {
     if (activeStep === 0) {
@@ -292,9 +264,9 @@ export default function AdvertiseBaseEdit({ currentUser }: any) {
       const isValid = await trigger();
 
       if (isValid && !errorPet && !errorService) {
+        setActiveStep(activeStep + 1);
         setClickedService(false);
         setClickedPet(false);
-        setActiveStep(activeStep + 1);
       }
     } else {
       const isValid = await trigger();
@@ -313,14 +285,11 @@ export default function AdvertiseBaseEdit({ currentUser }: any) {
     const checkedPets = selectedPet.map((pet) => pet.value.id);
     const checkedServices = selectedService.map((service) => service.value.id);
 
-    const newAdvert: ICaretakerAdvertCreate = {
+    const newAdvert: IOwnerAdvertCreate = {
       name: getValues("name"),
       surname: getValues("surname"),
       address: getValues("address"),
       phone: getValues("phone"),
-      age: Number(getValues("age")),
-      activity: getValues("activity"),
-      experience: getValues("experience"),
       title: getValues("title"),
       description: getValues("description"),
       extra_information: getValues("extra_information"),
@@ -331,49 +300,30 @@ export default function AdvertiseBaseEdit({ currentUser }: any) {
       services: checkedServices,
       languages: checkedLanguages,
       user_id: currentUser.id,
-      monday: mondayInterval,
-      tuesday: tuesdayInterval,
-      wednesday: wednesdayInterval,
-      thursday: thursdayInterval,
-      friday: fridayInterval,
-      saturday: saturdayInterval,
-      sunday: sundayInterval,
+      time_intervals: selectedIntervals,
     };
-    const result = await caretakerAdvertisementApi.editCaretakerAdvertisement(
-      Number(id),
+    const result = await ownerAdverisementApi.createOwnerAdvertisement(
       newAdvert
     );
-    if (result.status !== 200) {
-      toast.error("Advertisement update failed");
+    if (result.status !== 201) {
+      toast.error("Advertisement creation failed");
     } else {
-      toast.success("Advertisement updated successful");
+      toast.success("Advertisement creation successful");
       navigate("/");
     }
   };
 
-  const daysObject: IDaysObject = {
+  const timesIntervalObject: ITimeIntervalsObject = {
     timeSelectValue: timeInterv,
-    mondayValue: mondayInterval,
-    handleMonday: setMondayInterval,
-    tuesdayValue: tuesdayInterval,
-    handleTuesday: setTuesdayInterval,
-    wednesdayValue: wednesdayInterval,
-    handleWednesday: setWednesdayInterval,
-    thursdayValue: thursdayInterval,
-    handleThursday: setThursdayInterval,
-    fridayValue: fridayInterval,
-    handleFriday: setFridayInterval,
-    saturdayValue: saturdayInterval,
-    handleSaturday: setSaturdayInterval,
-    sundayValue: sundayInterval,
-    handleSunday: setSundayInterval,
+    selectedTimesValue: selectedIntervals,
+    handleSelectIntervals: setSelectedIntervals,
   };
 
   function getStepContent(step: number) {
     switch (step) {
       case 0:
         return (
-          <PersInformation
+          <OwnerPersInformation
             sendError={sendError}
             clicked={clicked}
             setSelected={setSelected}
@@ -384,7 +334,7 @@ export default function AdvertiseBaseEdit({ currentUser }: any) {
         );
       case 1:
         return (
-          <PriceandDates
+          <OwnerPriceandDates
             sendErrorPet={sendErrorPet}
             clickedPet={clickedPet}
             setSelectedPet={setSelectedPet}
@@ -397,12 +347,12 @@ export default function AdvertiseBaseEdit({ currentUser }: any) {
             checkedStateService={checkedStateService}
             setCheckedStateService={setCheckedStateService}
             serviceTypes={serviceTypes}
-            daysObject={daysObject}
+            timesIntervalObject={timesIntervalObject}
           />
         );
 
       case 2:
-        return <AdvertForm />;
+        return <OwnerAdvertForm />;
       default:
         throw new Error("Unknown step");
     }

@@ -18,6 +18,8 @@ import "bootstrap/dist/css/bootstrap.css";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import ReserveFromCalendar from "./Components/OwnerReservations/ReserveFromCalendar";
 import ReservationsTable from "./Components/CaretakerAdvertisement/CaretakerAdvertReservations";
+import OwnerAdvertiseBase from "./Components/OwnerAdvert/OwnerAdvertBase";
+import OwnerAdvertiseBaseEdit from "./Components/OwnerAdvert/OwnerAdvertBaseEdit";
 
 const guestLinksArray = [
   {
@@ -101,6 +103,14 @@ export default function App() {
         ></Route>
         <Route path={"Register"} element={<Register />}></Route>
         <Route path={"Login"} element={<Login loadUsers={loadUsers} />}></Route>
+        <Route
+          path={"/OwnerAdvertCreate"}
+          element={<OwnerAdvertiseBase currentUser={currentUser} />}
+        ></Route>
+        <Route
+          path={"/OwnerAdvertEdit/:id"}
+          element={<OwnerAdvertiseBaseEdit currentUser={currentUser} />}
+        ></Route>
         <Route path={"/"} element={<Home />}></Route>
         ))
       </Routes>

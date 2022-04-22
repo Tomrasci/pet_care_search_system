@@ -23,6 +23,17 @@ const getOwnerAdvertById = async (id: number): Promise<IOwnerAdvert> => {
   }
 };
 
+// const getOwnerAdvertTimesById = async (id: Number) => {
+//   try {
+//     return await database('owner_advertisement').where({id}).first().select({
+//       JSON_UNQUOTE('time_intervals');
+//     })
+//   }
+//   catch (err) {
+//     console.log(err.message);
+//   }
+// }
+
 const getUserOwnerAdverts = async (userId: number): Promise<IOwnerAdvert[]> => {
   try {
     return await database('owner_advertisement')

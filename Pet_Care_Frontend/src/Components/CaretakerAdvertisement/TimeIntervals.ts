@@ -1,7 +1,33 @@
 import { ITimeInterval } from "../../Interfaces/Caretaker/ITimeInterval";
 
-const startTimes = ["06:00", "09:00", "12:00", "15:00", "18:00", "21:00"];
-const endTimes = ["09:00", "12:00", "15:00", "18:00", "21:00", "24:00"];
+const startTimes = [
+  "00:00",
+  "02:00",
+  "04:00",
+  "06:00",
+  "08:00",
+  "10:00",
+  "12:00",
+  "14:00",
+  "16:00",
+  "18:00",
+  "20:00",
+  "22:00",
+];
+const endTimes = [
+  "02:00",
+  "04:00",
+  "06:00",
+  "08:00",
+  "10:00",
+  "12:00",
+  "14:00",
+  "16:00",
+  "18:00",
+  "20:00",
+  "22:00",
+  "24:00",
+];
 
 function getInitialTimeIntervals() {
   const makeTimeInterval = [startTimes, endTimes].reduce((start, end) =>
