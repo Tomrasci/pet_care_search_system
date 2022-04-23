@@ -34,7 +34,7 @@ import { IDaysObject } from "../../Interfaces/Caretaker/IDaysObject";
 
 const steps = [
   "Personal information",
-  "Schedule and price",
+  "Schedule, price and services",
   "Advertisement details",
 ];
 
@@ -51,6 +51,9 @@ export default function AdvertiseBase({ currentUser }: any) {
 
   const timeInterval = interval.getInitialTimeIntervals();
   const initialDayInterval = interval.getDaysIntervals();
+
+  const [selectedFile, setSelectedFile] = React.useState<File | undefined>();
+  const [preview, setPreview] = React.useState<string>();
 
   const defaultValues = {
     name: "",
@@ -229,8 +232,6 @@ export default function AdvertiseBase({ currentUser }: any) {
     const checkedPets = selectedPet.map((pet) => pet.value.id);
     const checkedServices = selectedService.map((service) => service.value.id);
 
-    console.log(`start date selected is ${getValues("startDate")}`);
-
     const newAdvert: ICaretakerAdvertCreate = {
       name: getValues("name"),
       surname: getValues("surname"),
@@ -260,12 +261,39 @@ export default function AdvertiseBase({ currentUser }: any) {
     const result = await caretakerAdvertisementApi.createCaretakerAdvertisement(
       newAdvert
     );
-    if (result.status !== 201) {
+    console.log(`result is ${result}`);
+    const imageUpload = await caretakerAdvertisementApi.uploadCaretakerImage(
+      result.data.id,
+      selectedFile
+    );
+    console.log(`imageUpload is ${imageUpload}`);
+    console.log(`result is ${result}`);
+    if (result.status !== 201 || imageUpload !== 200) {
       toast.error("Advertisement creation failed");
     } else {
       toast.success("Advertisement creation successful");
       navigate("/");
     }
+  };
+
+  React.useEffect(() => {
+    if (!selectedFile) {
+      setPreview(undefined);
+      return;
+    }
+    const objectUrl = URL.createObjectURL(selectedFile);
+    setPreview(objectUrl);
+
+    return () => URL.revokeObjectURL(objectUrl);
+  }, [selectedFile]);
+
+  const onSelectFile = (e: any) => {
+    if (!e.target.files || e.target.files.length === 0) {
+      setSelectedFile(undefined);
+      return;
+    }
+
+    setSelectedFile(e.target.files[0]);
   };
 
   const daysObject: IDaysObject = {
@@ -297,6 +325,9 @@ export default function AdvertiseBase({ currentUser }: any) {
             languages={languages}
             checkedState={checkedState}
             setCheckedState={setCheckedState}
+            selectedFile={selectedFile}
+            onSelectFile={onSelectFile}
+            preview={preview}
           />
         );
       case 1:
@@ -329,7 +360,7 @@ export default function AdvertiseBase({ currentUser }: any) {
     <ThemeProvider theme={theme}>
       <CssBaseline />
       <FormProvider {...methods}>
-        <form>
+        <form encType="multipart/form-data">
           <Container component="main" maxWidth="md" sx={{ mb: 4 }}>
             <Paper
               variant="outlined"

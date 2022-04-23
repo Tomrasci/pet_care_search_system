@@ -62,8 +62,10 @@ export default function AdvertiseBaseEdit({ currentUser }: any) {
   const timeInterval = interval.getInitialTimeIntervals();
   const initialDayInterval = interval.getDaysIntervals();
 
-  const [advertDetails, setAdvertDetails] = React.useState<ICaretakerAdvert>();
+  const [selectedFile, setSelectedFile] = React.useState<File | null>();
+  const [preview, setPreview] = React.useState<string>();
 
+  const [advertDetails, setAdvertDetails] = React.useState<ICaretakerAdvert>();
 
   const defaultValues = {
     name: advertDetails?.name || "",
@@ -351,6 +353,27 @@ export default function AdvertiseBaseEdit({ currentUser }: any) {
     }
   };
 
+  React.useEffect(() => {
+    if (!selectedFile) {
+      setPreview(undefined);
+      return;
+    }
+    const objectUrl = URL.createObjectURL(selectedFile);
+    setPreview(objectUrl);
+
+    // free memory when ever this component is unmounted
+    return () => URL.revokeObjectURL(objectUrl);
+  }, [selectedFile]);
+
+  const onSelectFile = (e: any) => {
+    if (!e.target.files || e.target.files.length === 0) {
+      setSelectedFile(undefined);
+      return;
+    }
+
+    setSelectedFile(e.target.files[0]);
+  };
+
   const daysObject: IDaysObject = {
     timeSelectValue: timeInterv,
     mondayValue: mondayInterval,
@@ -380,6 +403,9 @@ export default function AdvertiseBaseEdit({ currentUser }: any) {
             languages={languages}
             checkedState={checkedState}
             setCheckedState={setCheckedState}
+            selectedFile={selectedFile}
+            onSelectFile={onSelectFile}
+            preview={preview}
           />
         );
       case 1:

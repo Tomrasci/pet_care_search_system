@@ -107,6 +107,19 @@ const deleteCareTakerAdvert = async (id: number): Promise<ICaretakerAdvert> => {
     console.log(err.message);
   }
 };
+
+const uploadCaretakerAdvertImage = async (id: number, imageLink: string) => {
+  try {
+    console.log(`imageLink is ${imageLink}`);
+
+    return await database('caretaker_advertisement')
+      .where({ id })
+      .update('photo_link', `${imageLink}`);
+  } catch (err) {
+    console.log(`error while uploading photo ${err.message}`);
+  }
+};
+
 export default {
   createCaretakerAdvert,
   getCaretakerAdvertById,
@@ -116,5 +129,6 @@ export default {
   getUserCaretakerAdverts,
   getCaretakerAvailability,
   insertCaretakerAvailability,
-  deleteCaretakerAvailability
+  deleteCaretakerAvailability,
+  uploadCaretakerAdvertImage
 };

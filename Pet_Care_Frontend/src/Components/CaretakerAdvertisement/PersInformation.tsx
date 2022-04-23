@@ -23,6 +23,9 @@ interface Props {
     checked: boolean;
   }[];
   setCheckedState: any;
+  selectedFile: File | null | undefined;
+  onSelectFile: (e: any) => void;
+  preview: string | undefined;
 }
 
 export default function PersInformation({
@@ -32,6 +35,9 @@ export default function PersInformation({
   languages,
   checkedState,
   setCheckedState,
+  selectedFile,
+  onSelectFile,
+  preview,
 }: Props) {
   const {
     control,
@@ -215,6 +221,13 @@ export default function PersInformation({
                 />
               )}
             />
+          </Grid>
+          <Grid item xs={12} sx={{ mt: 3 }}>
+            <Typography>Choose your photo</Typography>
+          </Grid>
+          <Grid item xs={12}>
+            <input type="file" onChange={onSelectFile} />
+            {selectedFile && <img src={preview} width="500" height="300" />}
           </Grid>
           <Grid item xs={12} sx={{ mt: 3 }}>
             <Typography>Languages</Typography>

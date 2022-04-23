@@ -8,6 +8,7 @@ import serviceTypes from './src/routes/serviceType.routes';
 import languages from './src/routes/language.routes';
 import reservations from './src/routes/reservation.routes';
 import ownerAdvertisements from './src/routes/ownerAdvert.routes';
+import path from 'path';
 
 require('dotenv').config();
 
@@ -19,6 +20,7 @@ const corsOptions = {
 const router = require('./src/routes/auth.routes');
 
 app.use(cors(corsOptions));
+app.use('/uploads', express.static(path.resolve(__dirname, './uploads')));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(router);

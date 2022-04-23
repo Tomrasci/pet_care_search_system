@@ -45,6 +45,10 @@ const deleteCaretakerAvailability = async (id: number) => {
   return await caretakerAdvertModel.deleteCaretakerAvailability(id);
 };
 
+const uploadCaretakerImage = async (cid: number, imageLink: string) => {
+  return await caretakerAdvertModel.uploadCaretakerAdvertImage(cid, imageLink);
+};
+
 export default {
   createCaretakerAdvert,
   getCareTakerAdvertById,
@@ -54,5 +58,6 @@ export default {
   getUserCaretakerAdverts,
   getCaretakerLAvailability,
   insertCaretakerAvailability,
-  deleteCaretakerAvailability
+  deleteCaretakerAvailability,
+  uploadCaretakerImage
 };

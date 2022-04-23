@@ -1,3 +1,4 @@
+/* eslint-disable dot-notation */
 import caretakerAdvertService from '../services/caretakerAdvert.service';
 import { Request, Response, NextFunction } from 'express';
 import logger from '../../logger';
@@ -143,6 +144,27 @@ const createCaretakerAdvertisement = async (
   }
 
   return res.status(ResponseCodes.CREATED).send(insertedCaretakerAdvertisement);
+};
+
+const uploadCaretakerPhoto = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  if (
+    req['file'] &&
+    !req['file'].originalname.match(/\.(jpg|JPG|jpeg|JPEG|png|PNG|gif|GIF)$/)
+  ) {
+    res.send({ msg: 'Only image files (jpg, jpeg, png) are allowed!' });
+  }
+  const image = req['file'].filename;
+  console.log(`gotten image is ${image}`);
+  await caretakerAdvertService.uploadCaretakerImage(
+    Number(req.params.id),
+    image
+  );
+  console.log(`image added, sending response`);
+  return res.status(ResponseCodes.OK).send('Success');
 };
 
 const getCareTakerAdvert = async (
@@ -458,5 +480,6 @@ export default {
   getCaretakerLanguages,
   getCaretakerPets,
   getCaretakerServices,
-  getCaretakerAvailability
+  getCaretakerAvailability,
+  uploadCaretakerPhoto
 };

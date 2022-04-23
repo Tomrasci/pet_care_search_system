@@ -51,6 +51,18 @@ const getCaretakerAvailability = async (id: number) => {
   return data;
 };
 
+const uploadCaretakerImage = async (id: number, file: any) => {
+  const formData = new FormData();
+  formData.append("file", file);
+  const { data, status } = await http.post(
+    `/uploadCaretakerImage/${id}`,
+    formData
+  );
+  console.log(`data is ${data}`);
+  console.log(`status is ${status}`);
+  return status;
+};
+
 export default {
   createCaretakerAdvertisement,
   getCaretakerAdvertisement,
@@ -62,4 +74,5 @@ export default {
   getCaretakerServices,
   getCaretakerLanguages,
   getCaretakerAvailability,
+  uploadCaretakerImage,
 };
