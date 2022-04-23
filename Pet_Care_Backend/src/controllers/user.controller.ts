@@ -4,7 +4,6 @@ import userService from '../services/user.service';
 import validation from '../validation/validation';
 import bcrypt from 'bcryptjs';
 import ApiError from '../../error/ApiError';
-import isEmpty from '../utils/Empty';
 import { ResponseCodes } from '../utils/responseCodes';
 
 const jwt = require('jsonwebtoken');
@@ -46,7 +45,8 @@ const register = async (req: Request, res: Response, next: NextFunction) => {
     name: req.body.name,
     surname: req.body.surname,
     role: req.body.role,
-    city: req.body.city
+    city: req.body.city,
+    advert_count: 0
   };
   try {
     await userService.registerUser(user);
@@ -77,7 +77,9 @@ const login = async (req: Request, res: Response, next: NextFunction) => {
     id: user.id,
     phone: user.phone,
     email: user.email,
-    address: user.address
+    address: user.address,
+    role: user.role,
+    advert_count: user.advert_count
   });
 
   return res.status(ResponseCodes.OK).send({
@@ -88,6 +90,8 @@ const login = async (req: Request, res: Response, next: NextFunction) => {
     name: user.name,
     id: user.id,
     surname: user.surname,
+    role: user.role,
+    advert_count: user.advert_count,
     accessToken: token
   });
 };

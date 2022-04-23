@@ -1,13 +1,11 @@
-export interface IUser {
-  id?: number;
+export interface ICurrentUser {
   username: string;
-  password: string;
   email: string;
   phone: string;
   address: string;
   name: string;
-  surname: string;
+  id: number;
   role: number;
-  city: string;
   advert_count: number;
+  accessToken: string;
 }

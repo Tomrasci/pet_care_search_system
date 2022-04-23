@@ -8,17 +8,11 @@ const createUser = async (user: IUser): Promise<IUser> => {
 };
 
 const getUserByEmail = async (email: string): Promise<IUser> => {
-  return await database('user')
-    .where({ email })
-    .select('username', 'password', 'email', 'phone', 'address', 'id')
-    .first();
+  return await database('user').where({ email }).select().first();
 };
 
 const getUserByUsername = async (username: string): Promise<IUser> => {
-  return await database('user')
-    .where({ username })
-    .select('username', 'password', 'email', 'phone', 'address', 'id')
-    .first();
+  return await database('user').where({ username }).select().first();
 };
 
 export default {

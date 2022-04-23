@@ -20,6 +20,8 @@ import { IUser } from "../Interfaces/User/IUser";
 import isEmpty from "../Utils/Empty";
 import "./Navbar.css";
 import CssBaseline from "@mui/material/CssBaseline";
+import { Roles } from "../Interfaces/Roles";
+import { ICurrentUser } from "../Interfaces/User/ICurrentUser";
 
 type NavbarProps = {
   name: string;
@@ -63,12 +65,36 @@ const authLinksArray = [
   },
 ];
 
-const Navbar = ({ loadUsers, currentUser }: any) => {
+const Navbar = ({
+  loadUsers,
+  currentUser,
+}: {
+  loadUsers: any;
+  currentUser: ICurrentUser;
+}) => {
   const theme = useTheme();
   const isMatch = useMediaQuery(theme.breakpoints.down("md"));
   const [tabValue, setTabValue] = useState(0);
+  const [isCaretaker, setIsCaretaker] = useState(false);
+  const [isOwner, setIsOwner] = useState(false);
+  const [isAdmin, setIsAdmin] = useState(false);
+  const [hasAdvert, setHasAdvert] = useState(false);
 
   const navigate = useNavigate();
+  useEffect(() => {
+    if (currentUser.role === Roles.Caretaker) {
+      setIsCaretaker(true);
+    } else if (currentUser.role === Roles.Owner) {
+      setIsOwner(true);
+    } else if (currentUser.role === Roles.Admin) {
+      setIsAdmin(true);
+    }
+    if (currentUser.advert_count === 1) {
+      setHasAdvert(true);
+    } else if (currentUser.advert_count === 0) {
+      setHasAdvert(false);
+    }
+  }, [currentUser]);
 
   const logOut = () => {
     userApi.logout();
@@ -122,34 +148,51 @@ const Navbar = ({ loadUsers, currentUser }: any) => {
                       <Tab value={link.name} key={link.id} label={link.name} />
                     </Link>
                   ))}
-                  {!isEmpty(currentUser) && (
-                    <>
-                      <Link
-                        style={{ textDecoration: "none", color: "white" }}
-                        to={"/CaretakerAdvertCreate"}
-                      >
-                        <Tab label="Create Advertisement" />
-                      </Link>
-                      <Link
-                        style={{ textDecoration: "none", color: "white" }}
-                        to={"/caretakerCalendar"}
-                      >
-                        <Tab label="Caretaker Calendar" />
-                      </Link>
-                      <Link
-                        style={{ textDecoration: "none", color: "white" }}
-                        to={"/ReserveFromCalendar"}
-                      >
-                        <Tab label="Reserve" />
-                      </Link>
-                      <Link
-                        style={{ textDecoration: "none", color: "white" }}
-                        to={"/ReservationsTable"}
-                      >
-                        <Tab label="Reservations" />
-                      </Link>
-                    </>
-                  )}
+                  <>
+                    {!isEmpty(currentUser) && isCaretaker && (
+                      <>
+                        <Link
+                          style={{ textDecoration: "none", color: "white" }}
+                          to={"/caretakerCalendar"}
+                        >
+                          <Tab label="Caretaker Calendar" />
+                        </Link>
+                        <Link
+                          style={{ textDecoration: "none", color: "white" }}
+                          to={"/ReservationsTable"}
+                        >
+                          <Tab label="Reservations" />
+                        </Link>
+                        {!hasAdvert && (
+                          <Link
+                            style={{ textDecoration: "none", color: "white" }}
+                            to={"/CaretakerAdvertCreate"}
+                          >
+                            <Tab label="Create Advertisement" />
+                          </Link>
+                        )}
+                      </>
+                    )}
+
+                    {!isEmpty(currentUser) && (isOwner || isAdmin) && (
+                      <>
+                        <Link
+                          style={{ textDecoration: "none", color: "white" }}
+                          to={"/ReserveFromCalendar"}
+                        >
+                          <Tab label="Reserve" />
+                        </Link>
+                        {!hasAdvert && (
+                          <Link
+                            style={{ textDecoration: "none", color: "white" }}
+                            to={"/OwnerAdvertCreate"}
+                          >
+                            <Tab label="Create Advertisement" />
+                          </Link>
+                        )}
+                      </>
+                    )}
+                  </>
                 </Tabs>
               </div>
               <div className="right_div">

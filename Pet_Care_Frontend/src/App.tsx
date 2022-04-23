@@ -20,6 +20,7 @@ import ReserveFromCalendar from "./Components/OwnerReservations/ReserveFromCalen
 import ReservationsTable from "./Components/CaretakerAdvertisement/CaretakerAdvertReservations";
 import OwnerAdvertiseBase from "./Components/OwnerAdvert/OwnerAdvertBase";
 import OwnerAdvertiseBaseEdit from "./Components/OwnerAdvert/OwnerAdvertBaseEdit";
+import { ICurrentUser } from "./Interfaces/User/ICurrentUser";
 
 const guestLinksArray = [
   {
@@ -48,7 +49,7 @@ const authLinksArray = [
 ];
 
 export default function App() {
-  const [currentUser, setCurrentUser] = React.useState({});
+  const [currentUser, setCurrentUser] = React.useState({} as ICurrentUser);
 
   const logOut = () => {
     userApi.logout();
@@ -59,7 +60,7 @@ export default function App() {
     if (user !== null) {
       setCurrentUser(user);
     } else {
-      setCurrentUser({} as IUser);
+      setCurrentUser({} as ICurrentUser);
     }
   };
 
