@@ -225,7 +225,7 @@ export default function OwnerAdvertiseBase({ currentUser }: any) {
       description: getValues("description"),
       extra_information: getValues("extra_information"),
       startDate: new Date(getValues("startDate")),
-      endDate: new Date(getValues("endDate")),
+      endDate: getValues("endDate") ? new Date(getValues("endDate")) : null,
       day_price: Number(getValues("day_price")),
       pets: checkedPets,
       services: checkedServices,

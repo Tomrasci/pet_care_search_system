@@ -12,7 +12,6 @@ import { ICaretakerLanguage } from '../models/interfaces/ICaretakerLanguage';
 import languageService from '../services/language.service';
 import { IOwnerAdvertCreate } from '../models/interfaces/IOwnerAdvertCreate';
 import ownerAdvertService from '../services/ownerAdvert.service';
-import pushValuesToStringArray from '../utils/pushValuesToStringArray';
 import fixJSONType from '../utils/fixJsonType';
 
 const createOwnerAdvertisement = async (
@@ -29,7 +28,7 @@ const createOwnerAdvertisement = async (
     description: req.body.description,
     extra_information: req.body.extra_information,
     startDate: req.body.startDate,
-    endDate: req.body.endDate,
+    endDate: req.body.endDate || null,
     day_price: req.body.day_price,
     user_id: req.body.user_id,
     time_intervals: req.body.time_intervals.toString()
@@ -153,10 +152,10 @@ const updateOwnerAdvert = async (
     description: req.body.description,
     extra_information: req.body.extra_information,
     startDate: req.body.startDate,
-    endDate: req.body.endDate,
+    endDate: req.body.endDate || null,
     day_price: req.body.day_price,
     user_id: req.body.user_id,
-    time_intervals: req.body.time_intervals
+    time_intervals: req.body.time_intervals.toString()
   };
   const { error } = validation.validateOwnerAdvert(editedOwnerAdvert);
   if (error) {

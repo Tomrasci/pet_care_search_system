@@ -72,7 +72,7 @@ export default function OwnerAdvertiseBaseEdit({ currentUser }: any) {
     phone: advertDetails?.phone || "",
     startDate: advertDetails?.startDate || "",
     endDate: advertDetails?.endDate || "",
-    day_price: advertDetails?.day_price || "",
+    day_price: advertDetails?.day_price || null,
     title: advertDetails?.title || "",
     description: advertDetails?.description || "",
     extra_information: advertDetails?.extra_information || "",
@@ -198,8 +198,7 @@ export default function OwnerAdvertiseBaseEdit({ currentUser }: any) {
       );
       setAdvertDetails(advertDetails);
       reset(advertDetails);
-      console.log(`time intervals are ${advertDetails.time_intervals}`);
-      console.log(`advert name is ${advertDetails.title}`);
+
       setSelectedIntervals(advertDetails.time_intervals);
     }
 
@@ -294,7 +293,7 @@ export default function OwnerAdvertiseBaseEdit({ currentUser }: any) {
       description: getValues("description"),
       extra_information: getValues("extra_information"),
       startDate: new Date(getValues("startDate")),
-      endDate: new Date(getValues("endDate")),
+      endDate: getValues("endDate") ? new Date(getValues("endDate")) : null,
       day_price: Number(getValues("day_price")),
       pets: checkedPets,
       services: checkedServices,
@@ -302,13 +301,14 @@ export default function OwnerAdvertiseBaseEdit({ currentUser }: any) {
       user_id: currentUser.id,
       time_intervals: selectedIntervals,
     };
-    const result = await ownerAdverisementApi.createOwnerAdvertisement(
+    const result = await ownerAdverisementApi.editOwnerAdvertisement(
+      Number(id),
       newAdvert
     );
-    if (result.status !== 201) {
-      toast.error("Advertisement creation failed");
+    if (result.status !== 200) {
+      toast.error("Advertisement edit failed");
     } else {
-      toast.success("Advertisement creation successful");
+      toast.success("Advertisement edited successful");
       navigate("/");
     }
   };

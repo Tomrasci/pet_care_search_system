@@ -8,7 +8,7 @@ export interface IOwnerAdvertCreate {
   extra_information: string;
   title: string;
   startDate: Date;
-  endDate: Date;
+  endDate: Date | null;
   pets: number[];
   services: number[];
   languages: number[];

@@ -11,7 +11,7 @@ export interface IOwnerAdvert {
   languages: string[];
   photo_link: string;
   startDate: Date;
-  endDate: Date;
+  endDate: Date | null;
   startTime: Date;
   endTime: Date;
   pets: string[];

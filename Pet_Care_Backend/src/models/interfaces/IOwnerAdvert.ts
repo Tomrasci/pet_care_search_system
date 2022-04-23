@@ -13,7 +13,7 @@ export interface IOwnerAdvert {
   created_at: Date;
   updated_at: Date;
   startDate: Date;
-  endDate: Date;
+  endDate: Date | null;
   time_intervals: string;
   user_id: number;
 }

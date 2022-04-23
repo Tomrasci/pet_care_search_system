@@ -8,7 +8,7 @@ export interface IOwnerAdvertCreate {
   extra_information: string;
   title: string;
   startDate: Date;
-  endDate: Date;
+  endDate: Date | null;
   time_intervals: string;
   user_id: number;
 }
