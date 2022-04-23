@@ -19,13 +19,16 @@ const Login = ({ loadUsers }: any) => {
 
   const navigate = useNavigate();
 
+  const [showError, setShowError] = useState(false);
+
   const handleLogin = async (e: any) => {
     e.preventDefault();
     const login = await userApi.login(values.email, values.password);
     if (login === "Success") {
-      toast.success("Login successful");
       navigate("/");
       loadUsers();
+    } else {
+      setShowError(true);
     }
   };
 
@@ -47,6 +50,14 @@ const Login = ({ loadUsers }: any) => {
                   Login
                 </Typography>
               </Box>
+              <Box>
+                {showError && (
+                  <Typography color="red" align="center">
+                    Invalid username or password!
+                  </Typography>
+                )}
+              </Box>
+
               <Grid
                 container
                 spacing={2}

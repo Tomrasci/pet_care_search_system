@@ -1,4 +1,4 @@
-import { Box } from "@mui/material";
+import { Box, SelectChangeEvent } from "@mui/material";
 import React from "react";
 import { useForm } from "react-hook-form";
 import { useFormHook } from "../Utils/useFormHook";
@@ -8,6 +8,7 @@ import { IUser } from "../Interfaces/User/IUser";
 import userApi from "../Api/userApi";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
+import isEmpty from "../Utils/Empty";
 
 const Register = () => {
   const { register, handleSubmit, reset, formState } = useForm(
@@ -25,22 +26,37 @@ const Register = () => {
     address: "",
     name: "",
     surname: "",
+    city: "",
   });
 
+  const [role, setRole] = React.useState("");
+  const [showRoleError, setShowRoleError] = React.useState(false);
+
+  const handleRoleChange = (event: SelectChangeEvent) => {
+    setRole(event.target.value as string);
+  };
+
   const registerUser = async () => {
-    const userInfo: IUser = {
-      username: values.username,
-      email: values.email,
-      password: values.password,
-      phone: values.phone,
-      address: values.address,
-      name: values.name,
-      surname: values.surname,
-    };
-    resetValues();
-    const result = await userApi.userRegister(userInfo);
-    toast.success("Registration successful!");
-    navigate("/login");
+    if (!role) {
+      console.log(`role is empty and value is ${role}`);
+      setShowRoleError(true);
+    } else {
+      const userInfo: IUser = {
+        username: values.username,
+        email: values.email,
+        password: values.password,
+        phone: values.phone,
+        address: values.address,
+        name: values.name,
+        surname: values.surname,
+        role: Number(role),
+        city: values.city,
+      };
+      resetValues();
+      const result = await userApi.userRegister(userInfo);
+      toast.success("Registration successful!");
+      navigate("/login");
+    }
   };
 
   return (
@@ -72,6 +88,13 @@ const Register = () => {
           surnameError={errors.surname}
           surname={values.surname}
           handleChange={handleChange}
+          registerCity={register("city")}
+          cityError={errors.city}
+          city={values.city}
+          role={role}
+          showRoleError={showRoleError}
+          setShowRoleError={setShowRoleError}
+          handleRoleChange={handleRoleChange}
         />
       </form>
     </div>

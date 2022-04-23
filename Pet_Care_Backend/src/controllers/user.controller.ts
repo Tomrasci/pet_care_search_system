@@ -17,7 +17,7 @@ const register = async (req: Request, res: Response, next: NextFunction) => {
     return;
   }
   const testUserEmail = await userService.getUserByEmail(req.body.email);
-  if (!isEmpty(testUserEmail)) {
+  if (testUserEmail) {
     next(
       ApiError.duplicateEntryError(
         `User with email ${req.body.email} already exists`
@@ -29,7 +29,7 @@ const register = async (req: Request, res: Response, next: NextFunction) => {
   const testUserUsername = await userService.getUserByUsername(
     req.body.username
   );
-  if (!isEmpty(testUserUsername)) {
+  if (testUserUsername) {
     next(
       ApiError.duplicateEntryError(
         `User with username ${req.body.username} already exists`
@@ -44,7 +44,9 @@ const register = async (req: Request, res: Response, next: NextFunction) => {
     phone: req.body.phone,
     address: req.body.address,
     name: req.body.name,
-    surname: req.body.surname
+    surname: req.body.surname,
+    role: req.body.role,
+    city: req.body.city
   };
   try {
     await userService.registerUser(user);
@@ -57,10 +59,8 @@ const register = async (req: Request, res: Response, next: NextFunction) => {
 
 const login = async (req: Request, res: Response, next: NextFunction) => {
   const user = await userService.getUserByEmail(req.body.email);
-  if (isEmpty(user)) {
-    next(
-      ApiError.unauthorizedError(`User with email ${req.body.email} not found`)
-    );
+  if (!user) {
+    next(ApiError.unauthorizedError(`Invalid username or password`));
     return;
   }
   const passwordIsValid = bcrypt.compareSync(
@@ -69,7 +69,7 @@ const login = async (req: Request, res: Response, next: NextFunction) => {
   );
 
   if (!passwordIsValid) {
-    next(ApiError.unauthorizedError(`Invalid password`));
+    next(ApiError.unauthorizedError(`Invalid username or password`));
     return;
   }
   const token = generateAccessToken({

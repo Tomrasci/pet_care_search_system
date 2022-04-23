@@ -22,6 +22,7 @@ const registerValidationSchema = Yup.object().shape({
     .max(60, "Address cannot be more than 60 characters"),
   name: Yup.string().required("Name is required").max(50),
   surname: Yup.string().required("Surname is required").max(50),
+  city: Yup.string().required("City is required"),
 });
 const registerFormOptions = { resolver: yupResolver(registerValidationSchema) };
 

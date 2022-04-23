@@ -11,7 +11,9 @@ const validateUser = (user: IUser) => {
     phone: Joi.string().required(),
     address: Joi.string().required(),
     name: Joi.string().required(),
-    surname: Joi.string().required()
+    surname: Joi.string().required(),
+    role: Joi.number().required(),
+    city: Joi.string().required()
   });
   return schema.validate(user);
 };

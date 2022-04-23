@@ -1,9 +1,15 @@
+import { Shower } from "@mui/icons-material";
 import {
   Box,
   Button,
   Card,
+  FormControl,
   Grid,
+  InputLabel,
+  MenuItem,
   Paper,
+  Select,
+  SelectChangeEvent,
   TextField,
   Typography,
 } from "@mui/material";
@@ -36,7 +42,14 @@ interface Props {
   registerSurname: UseFormRegisterReturn;
   surnameError: { message: string };
   surname: string;
+  registerCity: UseFormRegisterReturn;
+  cityError: { message: string };
+  city: string;
   handleChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  role: string;
+  handleRoleChange: (event: SelectChangeEvent) => void;
+  showRoleError: boolean;
+  setShowRoleError: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const RegistrationBody = ({
@@ -65,6 +78,13 @@ const RegistrationBody = ({
   surnameError,
   surname,
   handleChange,
+  role,
+  registerCity,
+  cityError,
+  city,
+  handleRoleChange,
+  showRoleError,
+  setShowRoleError,
 }: Props) => {
   return (
     <>
@@ -243,6 +263,23 @@ const RegistrationBody = ({
               <Grid item xs={6}>
                 <Box marginX={2} marginY={2}>
                   <TextField
+                    {...registerCity}
+                    fullWidth
+                    id="city"
+                    name="city"
+                    className={`form-control ${cityError ? "is-invalid" : ""}`}
+                    value={city}
+                    label="City"
+                    onChange={handleChange}
+                  ></TextField>
+                  <Typography color="red">{cityError?.message}</Typography>
+                </Box>
+              </Grid>
+              <Grid item xs={6}></Grid>
+
+              <Grid item xs={6}>
+                <Box marginX={2} marginY={2}>
+                  <TextField
                     {...registerAddress}
                     fullWidth
                     id="address"
@@ -257,6 +294,30 @@ const RegistrationBody = ({
                   <Typography color="red">{addressError?.message}</Typography>
                 </Box>
               </Grid>
+              <Grid item xs={3}></Grid>
+              <Grid item xs={6}>
+                <FormControl fullWidth>
+                  <InputLabel id="demo-simple-select-label">
+                    Register as
+                  </InputLabel>
+                  <Select
+                    labelId="demo-simple-select-label"
+                    id="demo-simple-select"
+                    value={role}
+                    label="Register as"
+                    onChange={handleRoleChange}
+                  >
+                    <MenuItem value={2}>Caretaker</MenuItem>
+                    <MenuItem value={3}>Owner</MenuItem>
+                  </Select>
+                </FormControl>
+                {showRoleError && (
+                  <Typography color="red">Role must be selected</Typography>
+                )}
+              </Grid>
+
+              <Grid item xs={3}></Grid>
+
               <Grid item xs={6}>
                 <Box marginY={3} textAlign="center">
                   <Button type="submit" variant="contained">
