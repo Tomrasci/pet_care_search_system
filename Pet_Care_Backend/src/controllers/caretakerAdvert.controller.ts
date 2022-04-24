@@ -157,13 +157,19 @@ const uploadCaretakerPhoto = async (
   ) {
     res.send({ msg: 'Only image files (jpg, jpeg, png) are allowed!' });
   }
-  const image = req['file'].filename;
-  console.log(`gotten image is ${image}`);
+
+  // const image = req['file'] ?  req['file'].filename : 
+  let image;
+  if (req['file']) {
+   image = req['file'].filename;
+  }
+  else {
+    image = process.env.PICTURE_DIR + process.env.DEFAULT_PICTURE_NAME
+  }
   await caretakerAdvertService.uploadCaretakerImage(
     Number(req.params.id),
     image
   );
-  console.log(`image added, sending response`);
   return res.status(ResponseCodes.OK).send('Success');
 };
 

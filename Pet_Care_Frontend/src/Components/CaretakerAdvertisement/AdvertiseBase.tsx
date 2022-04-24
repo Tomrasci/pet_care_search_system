@@ -54,6 +54,7 @@ export default function AdvertiseBase({ currentUser }: any) {
 
   const [selectedFile, setSelectedFile] = React.useState<File | undefined>();
   const [preview, setPreview] = React.useState<string>();
+  const [isEdit, setIsEdit] = React.useState(false);
 
   const defaultValues = {
     name: "",
@@ -261,13 +262,10 @@ export default function AdvertiseBase({ currentUser }: any) {
     const result = await caretakerAdvertisementApi.createCaretakerAdvertisement(
       newAdvert
     );
-    console.log(`result is ${result}`);
     const imageUpload = await caretakerAdvertisementApi.uploadCaretakerImage(
       result.data.id,
       selectedFile
     );
-    console.log(`imageUpload is ${imageUpload}`);
-    console.log(`result is ${result}`);
     if (result.status !== 201 || imageUpload !== 200) {
       toast.error("Advertisement creation failed");
     } else {
@@ -328,6 +326,7 @@ export default function AdvertiseBase({ currentUser }: any) {
             selectedFile={selectedFile}
             onSelectFile={onSelectFile}
             preview={preview}
+            isEdit={isEdit}
           />
         );
       case 1:
@@ -360,7 +359,7 @@ export default function AdvertiseBase({ currentUser }: any) {
     <ThemeProvider theme={theme}>
       <CssBaseline />
       <FormProvider {...methods}>
-        <form encType="multipart/form-data">
+        <form>
           <Container component="main" maxWidth="md" sx={{ mb: 4 }}>
             <Paper
               variant="outlined"

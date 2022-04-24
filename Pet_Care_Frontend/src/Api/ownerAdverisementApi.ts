@@ -49,6 +49,14 @@ const getOwnerAvailability = async (id: number) => {
   return data;
 };
 
+const uploadOwnerImage = async (id: number, file: any) => {
+  const formData = new FormData();
+  formData.append("file", file);
+  const { data, status } = await http.post(`/uploadOwnerImage/${id}`, formData);
+
+  return status;
+};
+
 export default {
   createOwnerAdvertisement,
   getOwnerAdvertisement,
@@ -60,4 +68,5 @@ export default {
   getOwnerServices,
   getOwnerLanguages,
   getOwnerAvailability,
+  uploadOwnerImage,
 };

@@ -24,6 +24,9 @@ const updateOwnerAdvert = async (cAdvert: IOwnerAdvertCreate, id: number) => {
 const deleteOwnerAdvert = async (id: number): Promise<IOwnerAdvert> => {
   return await ownerAdvertModel.deleteOwnerAdvert(id);
 };
+const uploadOwnerImage = async (oid: number, imageLink: string) => {
+  return await ownerAdvertModel.uploadOwnerAdvertImage(oid, imageLink);
+};
 
 export default {
   createOwnerAdvert,
@@ -31,5 +34,6 @@ export default {
   getOwnersAdverts,
   updateOwnerAdvert,
   deleteOwnerAdvert,
-  getUserOwnerAdverts
+  getUserOwnerAdverts,
+  uploadOwnerImage
 };

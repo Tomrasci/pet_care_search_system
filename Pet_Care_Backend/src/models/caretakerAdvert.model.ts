@@ -110,8 +110,6 @@ const deleteCareTakerAdvert = async (id: number): Promise<ICaretakerAdvert> => {
 
 const uploadCaretakerAdvertImage = async (id: number, imageLink: string) => {
   try {
-    console.log(`imageLink is ${imageLink}`);
-
     return await database('caretaker_advertisement')
       .where({ id })
       .update('photo_link', `${imageLink}`);

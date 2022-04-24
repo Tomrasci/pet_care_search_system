@@ -12,6 +12,7 @@ import {
   UseFormRegisterReturn,
 } from "react-hook-form";
 import isEmpty from "../../Utils/Empty";
+import "./PersInformation.css";
 
 interface Props {
   sendError: (e: boolean) => void;
@@ -26,6 +27,7 @@ interface Props {
   selectedFile: File | null | undefined;
   onSelectFile: (e: any) => void;
   preview: string | undefined;
+  isEdit: boolean;
 }
 
 export default function PersInformation({
@@ -38,6 +40,7 @@ export default function PersInformation({
   selectedFile,
   onSelectFile,
   preview,
+  isEdit,
 }: Props) {
   const {
     control,
@@ -226,8 +229,10 @@ export default function PersInformation({
             <Typography>Choose your photo</Typography>
           </Grid>
           <Grid item xs={12}>
-            <input type="file" onChange={onSelectFile} />
-            {selectedFile && <img src={preview} width="500" height="300" />}
+            <input type="file" onChange={onSelectFile} className="fileInput" />
+            {(selectedFile || isEdit) && (
+              <img src={preview} width="150" height="100" />
+            )}
           </Grid>
           <Grid item xs={12} sx={{ mt: 3 }}>
             <Typography>Languages</Typography>

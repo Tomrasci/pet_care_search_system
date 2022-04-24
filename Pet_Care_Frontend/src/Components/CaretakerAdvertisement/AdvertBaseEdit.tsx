@@ -64,6 +64,7 @@ export default function AdvertiseBaseEdit({ currentUser }: any) {
 
   const [selectedFile, setSelectedFile] = React.useState<File | null>();
   const [preview, setPreview] = React.useState<string>();
+  const [isEdit, setIsEdit] = React.useState(true);
 
   const [advertDetails, setAdvertDetails] = React.useState<ICaretakerAdvert>();
 
@@ -251,14 +252,17 @@ export default function AdvertiseBaseEdit({ currentUser }: any) {
 
   React.useEffect(() => {
     async function getAdvert() {
-      const advertDetails =
+      const advertInfo =
         await caretakerAdvertisementApi.getCaretakerAdvertisement(Number(id));
-      setAdvertDetails(advertDetails);
-      reset(advertDetails);
+      setAdvertDetails(advertInfo);
+      reset(advertInfo);
+      console.log(`advertInfo photo is ${advertInfo.photo_link}`);
+      setPreview("http://localhost:3002/" + advertInfo.photo_link);
       const availabilityGet =
         await caretakerAdvertisementApi.getCaretakerAvailability(
-          Number(advertDetails?.id)
+          Number(advertInfo.id)
         );
+      console.log(`preview is ${preview}`);
 
       const mondayArray = FilterWeekDay(availabilityGet, "Mon");
       const tuesdayArray = FilterWeekDay(availabilityGet, "Tue");
@@ -345,7 +349,11 @@ export default function AdvertiseBaseEdit({ currentUser }: any) {
       Number(id),
       newAdvert
     );
-    if (result.status !== 200) {
+    const imageUpload = await caretakerAdvertisementApi.uploadCaretakerImage(
+      Number(id),
+      selectedFile
+    );
+    if (result.status !== 200 || imageUpload !== 200) {
       toast.error("Advertisement update failed");
     } else {
       toast.success("Advertisement updated successful");
@@ -361,7 +369,6 @@ export default function AdvertiseBaseEdit({ currentUser }: any) {
     const objectUrl = URL.createObjectURL(selectedFile);
     setPreview(objectUrl);
 
-    // free memory when ever this component is unmounted
     return () => URL.revokeObjectURL(objectUrl);
   }, [selectedFile]);
 
@@ -406,6 +413,7 @@ export default function AdvertiseBaseEdit({ currentUser }: any) {
             selectedFile={selectedFile}
             onSelectFile={onSelectFile}
             preview={preview}
+            isEdit={isEdit}
           />
         );
       case 1:
@@ -445,7 +453,7 @@ export default function AdvertiseBaseEdit({ currentUser }: any) {
               sx={{ my: { xs: 3, md: 6 }, p: { xs: 2, md: 3 } }}
             >
               <Typography component="h1" variant="h4" align="center">
-                Advertisement creation
+                Advertisement edit
               </Typography>
               <Stepper activeStep={activeStep} sx={{ pt: 6, pb: 5 }}>
                 {steps.map((label) => (

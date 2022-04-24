@@ -58,8 +58,7 @@ const uploadCaretakerImage = async (id: number, file: any) => {
     `/uploadCaretakerImage/${id}`,
     formData
   );
-  console.log(`data is ${data}`);
-  console.log(`status is ${status}`);
+
   return status;
 };
 

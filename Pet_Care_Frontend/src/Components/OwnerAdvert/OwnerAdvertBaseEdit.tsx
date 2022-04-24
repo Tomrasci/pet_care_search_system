@@ -83,6 +83,10 @@ export default function OwnerAdvertiseBaseEdit({ currentUser }: any) {
     []
   );
 
+  const [selectedFile, setSelectedFile] = React.useState<File | undefined>();
+  const [preview, setPreview] = React.useState<string>();
+  const [isEdit, setIsEdit] = React.useState(false);
+
   const [petTypes, setPetTypes] = React.useState<IPetType[]>([]);
   const [serviceTypes, setServiceTypes] = React.useState<IServiceType[]>([]);
   const [languages, setLanguages] = React.useState<ILanguageType[]>([]);
@@ -305,12 +309,36 @@ export default function OwnerAdvertiseBaseEdit({ currentUser }: any) {
       Number(id),
       newAdvert
     );
-    if (result.status !== 200) {
+    const imageUpload = await ownerAdverisementApi.uploadOwnerImage(
+      Number(id),
+      selectedFile
+    );
+    if (result.status !== 200 || imageUpload !== 200) {
       toast.error("Advertisement edit failed");
     } else {
       toast.success("Advertisement edited successful");
       navigate("/");
     }
+  };
+
+  React.useEffect(() => {
+    if (!selectedFile) {
+      setPreview(undefined);
+      return;
+    }
+    const objectUrl = URL.createObjectURL(selectedFile);
+    setPreview(objectUrl);
+
+    return () => URL.revokeObjectURL(objectUrl);
+  }, [selectedFile]);
+
+  const onSelectFile = (e: any) => {
+    if (!e.target.files || e.target.files.length === 0) {
+      setSelectedFile(undefined);
+      return;
+    }
+
+    setSelectedFile(e.target.files[0]);
   };
 
   const timesIntervalObject: ITimeIntervalsObject = {
@@ -330,6 +358,10 @@ export default function OwnerAdvertiseBaseEdit({ currentUser }: any) {
             languages={languages}
             checkedState={checkedState}
             setCheckedState={setCheckedState}
+            selectedFile={selectedFile}
+            onSelectFile={onSelectFile}
+            preview={preview}
+            isEdit={isEdit}
           />
         );
       case 1:

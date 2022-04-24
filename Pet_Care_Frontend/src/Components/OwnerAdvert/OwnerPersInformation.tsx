@@ -23,6 +23,10 @@ interface Props {
     checked: boolean;
   }[];
   setCheckedState: any;
+  selectedFile: File | null | undefined;
+  onSelectFile: (e: any) => void;
+  preview: string | undefined;
+  isEdit: boolean;
 }
 
 export default function OwnerPersInformation({
@@ -32,6 +36,10 @@ export default function OwnerPersInformation({
   languages,
   checkedState,
   setCheckedState,
+  selectedFile,
+  onSelectFile,
+  preview,
+  isEdit,
 }: Props) {
   const {
     control,
@@ -150,6 +158,16 @@ export default function OwnerPersInformation({
                 />
               )}
             />
+          </Grid>
+
+          <Grid item xs={12} sx={{ mt: 3 }}>
+            <Typography>Choose your photo</Typography>
+          </Grid>
+          <Grid item xs={12}>
+            <input type="file" onChange={onSelectFile} className="fileInput" />
+            {(selectedFile || isEdit) && (
+              <img src={preview} width="150" height="100" />
+            )}
           </Grid>
 
           <Grid item xs={12} sx={{ mt: 3 }}>

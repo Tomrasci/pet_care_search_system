@@ -1,3 +1,4 @@
+/* eslint-disable dot-notation */
 import { Request, Response, NextFunction } from 'express';
 import logger from '../../logger';
 import validation from '../validation/validation';
@@ -95,6 +96,28 @@ const createOwnerAdvertisement = async (
   }
 
   return res.status(ResponseCodes.CREATED).send(insertedOwnerAdvertisement);
+};
+
+const uploadOwnerPhoto = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  if (
+    req['file'] &&
+    !req['file'].originalname.match(/\.(jpg|JPG|jpeg|JPEG|png|PNG|gif|GIF)$/)
+  ) {
+    res.send({ msg: 'Only image files (jpg, jpeg, png) are allowed!' });
+  }
+
+  let image;
+  if (req['file']) {
+    image = req['file'].filename;
+  } else {
+    image = process.env.PICTURE_DIR + process.env.DEFAULT_PICTURE_NAME;
+  }
+  await ownerAdvertService.uploadOwnerImage(Number(req.params.id), image);
+  return res.status(ResponseCodes.OK).send('Success');
 };
 
 const getOwnerAdvert = async (
@@ -336,5 +359,6 @@ export default {
   getUserOwnerAdverts,
   getOwnerLanguages,
   getOwnerPets,
-  getOwnerServices
+  getOwnerServices,
+  uploadOwnerPhoto
 };

@@ -75,11 +75,23 @@ const deleteOwnerAdvert = async (id: number): Promise<IOwnerAdvert> => {
     console.log(err.message);
   }
 };
+
+const uploadOwnerAdvertImage = async (id: number, imageLink: string) => {
+  try {
+    return await database('owner_advertisement')
+      .where({ id })
+      .update('photo_link', `${imageLink}`);
+  } catch (err) {
+    console.log(`error while uploading photo ${err.message}`);
+  }
+};
+
 export default {
   createOwnerAdvert,
   getOwnerAdvertById,
   getOwnerAdverts,
   updateOwnerAdvert,
   deleteOwnerAdvert,
-  getUserOwnerAdverts
+  getUserOwnerAdverts,
+  uploadOwnerAdvertImage
 };
