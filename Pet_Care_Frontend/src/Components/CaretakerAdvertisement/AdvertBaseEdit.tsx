@@ -256,7 +256,6 @@ export default function AdvertiseBaseEdit({ currentUser }: any) {
         await caretakerAdvertisementApi.getCaretakerAdvertisement(Number(id));
       setAdvertDetails(advertInfo);
       reset(advertInfo);
-      console.log(`advertInfo photo is ${advertInfo.photo_link}`);
       setPreview("http://localhost:3002/" + advertInfo.photo_link);
       const availabilityGet =
         await caretakerAdvertisementApi.getCaretakerAvailability(

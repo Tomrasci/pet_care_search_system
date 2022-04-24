@@ -197,13 +197,13 @@ export default function OwnerAdvertiseBaseEdit({ currentUser }: any) {
 
   React.useEffect(() => {
     async function getAdvert() {
-      const advertDetails = await ownerAdverisementApi.getOwnerAdvertisement(
+      const advertInfo = await ownerAdverisementApi.getOwnerAdvertisement(
         Number(id)
       );
-      setAdvertDetails(advertDetails);
-      reset(advertDetails);
-
-      setSelectedIntervals(advertDetails.time_intervals);
+      setAdvertDetails(advertInfo);
+      reset(advertInfo);
+      setPreview("http://localhost:3002/" + advertInfo.photo_link);
+      setSelectedIntervals(advertInfo.time_intervals);
     }
 
     getAdvert();

@@ -12,6 +12,7 @@ import {
   UseFormRegisterReturn,
 } from "react-hook-form";
 import isEmpty from "../../Utils/Empty";
+import "../CaretakerAdvertisement/PersInformation.css";
 
 interface Props {
   sendError: (e: boolean) => void;

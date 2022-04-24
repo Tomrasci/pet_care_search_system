@@ -8,8 +8,9 @@ import Typography from "@mui/material/Typography";
 import { useState, useEffect } from "react";
 import caretakerAdvertisementApi from "../../Api/caretakerAdvertisementApi";
 import { ICaretakerAdvert } from "../../Interfaces/Caretaker/ICaretakerAdvert";
-import { Grid } from "@mui/material";
+import { CardMedia, Grid } from "@mui/material";
 import { Link } from "react-router-dom";
+import "./CaretakerAdvertList.css";
 
 const CaretakerAdvertList = ({ currentUser }: any) => {
   const [caretakerAdverts, setCaretakerAdverts] = useState<ICaretakerAdvert[]>(
@@ -32,53 +33,82 @@ const CaretakerAdvertList = ({ currentUser }: any) => {
           <Typography align="center" color="inherit" sx={{ fontSize: 32 }}>
             Caretaker advertisements
           </Typography>
-
+          <Box sx={{ mt: 5 }}></Box>
           <Grid
             container
-            spacing={4}
             direction="column"
             alignItems="center"
+            spacing={4}
             justifyContent="center"
+            display="flex"
           >
             {caretakerAdverts.map((advert) => {
-              const advertText = advert.description.substring(0, 80) + "...";
               return (
-                <Grid item xs={12}>
-                  <Card sx={{ minWidth: 600, maxWidth: 600 }}>
-                    <CardContent>
-                      <Typography variant="h5" gutterBottom>
-                        {advert.title}
-                      </Typography>
-                      <Typography
-                        sx={{ fontSize: 13 }}
-                        gutterBottom
-                        component="div"
-                      >
-                        {advert.name +
-                          "." +
-                          " " +
-                          advert.age +
-                          " years old." +
-                          " " +
-                          advert.experience +
-                          "."}
-                      </Typography>
-                      <Typography sx={{ fontSize: 16 }}>
-                        {advertText}
-                      </Typography>
-                    </CardContent>
-                    <CardActions>
-                      <Link
-                        to="/Login"
+                <>
+                  <Grid item xs={12} spacing={4}>
+                    <Card sx={{ minWidth: 600, maxWidth: 600 }}>
+                      <Grid
+                        container
+                        spacing={6}
                         style={{
-                          textDecoration: "none",
+                          justifyContent: "center",
+                          display: "flex",
+                          alignItems: "center",
                         }}
                       >
-                        <Button size="small">More information</Button>
-                      </Link>
-                    </CardActions>
-                  </Card>
-                </Grid>
+                        <Grid item>
+                          <CardMedia
+                            component="img"
+                            sx={{
+                              width: 150,
+                              height: 100,
+                            }}
+                            image={"http://localhost:3002/" + advert.photo_link}
+                          />
+                        </Grid>
+                        <Grid item xs={12} sm container>
+                          <Grid item xs spacing={4}>
+                            <CardContent>
+                              <Typography variant="h5" gutterBottom>
+                                {advert.title}
+                              </Typography>
+                              <Typography
+                                sx={{ fontSize: 13 }}
+                                gutterBottom
+                                component="div"
+                              >
+                                {advert.name +
+                                  "." +
+                                  " " +
+                                  advert.age +
+                                  " years old." +
+                                  " " +
+                                  advert.experience +
+                                  "."}
+                              </Typography>
+                              <Typography
+                                sx={{ fontSize: 16 }}
+                                className="lineBreak"
+                              >
+                                {advert.description}
+                              </Typography>
+                            </CardContent>
+                            <CardActions>
+                              <Link
+                                to="/Login"
+                                style={{
+                                  textDecoration: "none",
+                                }}
+                              >
+                                <Button size="small">More information</Button>
+                              </Link>
+                            </CardActions>
+                          </Grid>
+                        </Grid>
+                      </Grid>
+                    </Card>
+                  </Grid>
+                </>
               );
             })}
           </Grid>
