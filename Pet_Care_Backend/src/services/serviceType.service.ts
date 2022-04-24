@@ -32,6 +32,9 @@ const insertOwnerServices = async (serviceArray: ICaretakerService[]) => {
 const deleteOwnerServices = async (id: number) => {
   return await serviceTypeModel.deleteOwnerServices(id);
 };
+const getCaretakerServiceNames = async (id: number) => {
+  return await serviceTypeModel.getCaretakerServiceNames(id);
+};
 
 export default {
   getServiceTypeById,
@@ -41,5 +44,6 @@ export default {
   deleteCaretakerServices,
   getOwnerServices,
   insertOwnerServices,
-  deleteOwnerServices
+  deleteOwnerServices,
+  getCaretakerServiceNames
 };

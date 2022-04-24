@@ -40,13 +40,14 @@ const CaretakerAdvertList = ({ currentUser }: any) => {
             alignItems="center"
             spacing={4}
             justifyContent="center"
+            alignContent="center"
             display="flex"
           >
             {caretakerAdverts.map((advert) => {
               return (
                 <>
                   <Grid item xs={12} spacing={4}>
-                    <Card sx={{ minWidth: 600, maxWidth: 600 }}>
+                    <Card sx={{ minWidth: 700, maxWidth: 700 }}>
                       <Grid
                         container
                         spacing={6}
@@ -62,6 +63,7 @@ const CaretakerAdvertList = ({ currentUser }: any) => {
                             sx={{
                               width: 150,
                               height: 100,
+                              marginLeft: 2,
                             }}
                             image={"http://localhost:3002/" + advert.photo_link}
                           />
@@ -69,7 +71,11 @@ const CaretakerAdvertList = ({ currentUser }: any) => {
                         <Grid item xs={12} sm container>
                           <Grid item xs spacing={4}>
                             <CardContent>
-                              <Typography variant="h5" gutterBottom>
+                              <Typography
+                                variant="h5"
+                                gutterBottom
+                                className="lineBreakTitle"
+                              >
                                 {advert.title}
                               </Typography>
                               <Typography

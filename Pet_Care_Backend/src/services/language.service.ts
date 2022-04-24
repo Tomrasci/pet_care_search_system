@@ -35,6 +35,10 @@ const deleteOwnerLangauges = async (id: number) => {
   return await languageModel.deleteOwnerLanguages(id);
 };
 
+const getCaretakerLanguageNames = async (id: number) => {
+  return await languageModel.getCaretakerLanguageNames(id);
+};
+
 export default {
   getLanguageById,
   getLanguages,
@@ -43,5 +47,6 @@ export default {
   deleteCaretakerLangauges,
   getOwnerLanguages,
   insertOwnerLanguages,
-  deleteOwnerLangauges
+  deleteOwnerLangauges,
+  getCaretakerLanguageNames
 };

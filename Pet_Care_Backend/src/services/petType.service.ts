@@ -32,6 +32,9 @@ const insertOwnerPets = async (petArray: ICaretakerPet[]) => {
 const deleteOwnerPets = async (id: number) => {
   return await petTypesModel.deleteOwnerPets(id);
 };
+const getCaretakerPetNames = async (id: number) => {
+  return await petTypesModel.getCaretakerPetNames(id);
+};
 
 export default {
   getPetTypeById,
@@ -41,5 +44,6 @@ export default {
   deleteCaretakerPets,
   getOwnerPets,
   insertOwnerPets,
-  deleteOwnerPets
+  deleteOwnerPets,
+  getCaretakerPetNames
 };

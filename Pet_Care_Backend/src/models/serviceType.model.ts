@@ -87,6 +87,20 @@ const deleteOwnerServices = async (id: number) => {
     console.log(err.message);
   }
 };
+const getCaretakerServiceNames = async (id: number) => {
+  try {
+    return await database(`caretaker_services`)
+      .where('advertisement_id', id)
+      .join(
+        `service_type`,
+        `caretaker_services.service_type_id`,
+        `service_type.id`
+      )
+      .select('service_type.name');
+  } catch (err) {
+    console.log(err.message);
+  }
+};
 export default {
   getServiceTypeById,
   getServiceTypes,
@@ -95,5 +109,6 @@ export default {
   deleteCaretakerServices,
   getOwnerServices,
   insertOwnerServices,
-  deleteOwnerServices
+  deleteOwnerServices,
+  getCaretakerServiceNames
 };

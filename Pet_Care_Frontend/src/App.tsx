@@ -21,6 +21,7 @@ import ReservationsTable from "./Components/CaretakerAdvertisement/CaretakerAdve
 import OwnerAdvertiseBase from "./Components/OwnerAdvert/OwnerAdvertBase";
 import OwnerAdvertiseBaseEdit from "./Components/OwnerAdvert/OwnerAdvertBaseEdit";
 import { ICurrentUser } from "./Interfaces/User/ICurrentUser";
+import CaretakerAdvertisement from "./Components/CaretakerAdvertisement/CaretakerAdvertismentLayout";
 
 const guestLinksArray = [
   {
@@ -111,6 +112,10 @@ export default function App() {
         <Route
           path={"/OwnerAdvertEdit/:id"}
           element={<OwnerAdvertiseBaseEdit currentUser={currentUser} />}
+        ></Route>
+        <Route
+          path={"/CaretakerAdvertisement/:id"}
+          element={<CaretakerAdvertisement currentUser={currentUser} />}
         ></Route>
         <Route path={"/"} element={<Home />}></Route>
         ))

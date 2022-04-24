@@ -14,6 +14,9 @@ import serviceTypeService from '../services/serviceType.service';
 import { ICaretakerLanguage } from '../models/interfaces/ICaretakerLanguage';
 import languageService from '../services/language.service';
 import fixWeekDayArray from '../utils/mapWeekdayArray';
+import MapObjectNamesToStringArray from '../utils/MapObjectNamesToStringArray';
+import { INamesObject } from '../models/interfaces/INamesObject';
+import { ICaretakerAdvert } from '../models/interfaces/ICaretakerAdvert';
 
 const createCaretakerAdvertisement = async (
   req: Request,
@@ -157,14 +160,11 @@ const uploadCaretakerPhoto = async (
   ) {
     res.send({ msg: 'Only image files (jpg, jpeg, png) are allowed!' });
   }
-
-  // const image = req['file'] ?  req['file'].filename : 
   let image;
   if (req['file']) {
-   image = req['file'].filename;
-  }
-  else {
-    image = process.env.PICTURE_DIR + process.env.DEFAULT_PICTURE_NAME
+    image = req['file'].filename;
+  } else {
+    image = process.env.PICTURE_DIR + process.env.DEFAULT_PICTURE_NAME;
   }
   await caretakerAdvertService.uploadCaretakerImage(
     Number(req.params.id),
@@ -182,7 +182,26 @@ const getCareTakerAdvert = async (
     Number(req.params.id)
   );
   logger.info(`Caretaker advert has been retrieved with id  ${req.params.id}`);
-  return res.status(ResponseCodes.OK).json(cAdvert);
+
+  const caretakerLanguages: INamesObject[] =
+    await languageService.getCaretakerLanguageNames(cAdvert.id);
+  const caretakerPets: INamesObject[] =
+    await petTypeService.getCaretakerPetNames(cAdvert.id);
+  const caretakerServices: INamesObject[] =
+    await serviceTypeService.getCaretakerServiceNames(cAdvert.id);
+
+  const languages = MapObjectNamesToStringArray(caretakerLanguages);
+  const pets = MapObjectNamesToStringArray(caretakerPets);
+  const services = MapObjectNamesToStringArray(caretakerServices);
+
+  const fullAdvert: ICaretakerAdvert = {
+    ...cAdvert,
+    languages: languages,
+    services: services,
+    pets: pets
+  };
+
+  return res.status(ResponseCodes.OK).json(fullAdvert);
 };
 
 const getCareTakerAdverts = async (
