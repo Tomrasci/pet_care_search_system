@@ -92,15 +92,15 @@ export default function App() {
           element={<AdvertiseBaseEdit currentUser={currentUser} />}
         ></Route>
         <Route
-          path={"/caretakerCalendar"}
+          path={"/caretakerCalendar/:id"}
           element={<CaretakerCalendar />}
         ></Route>
         <Route
-          path={"/ReserveFromCalendar"}
+          path={"/ReserveFromCalendar/:id"}
           element={<ReserveFromCalendar currentUser={currentUser} />}
         ></Route>
         <Route
-          path={"/ReservationsTable"}
+          path={"/ReservationsTable/:id"}
           element={<ReservationsTable />}
         ></Route>
         <Route path={"Register"} element={<Register />}></Route>

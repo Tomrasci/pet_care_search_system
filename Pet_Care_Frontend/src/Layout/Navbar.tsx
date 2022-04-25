@@ -10,6 +10,11 @@ import {
   Typography,
   useTheme,
   useMediaQuery,
+  Tooltip,
+  IconButton,
+  Menu,
+  MenuItem,
+  Avatar,
 } from "@mui/material";
 import HomeIcon from "@mui/icons-material/Home";
 import DrawerComp from "./DrawerComp";
@@ -22,6 +27,7 @@ import "./Navbar.css";
 import CssBaseline from "@mui/material/CssBaseline";
 import { Roles } from "../Interfaces/Roles";
 import { ICurrentUser } from "../Interfaces/User/ICurrentUser";
+import userIcon from "../Images/user_icon.png";
 
 type NavbarProps = {
   name: string;
@@ -53,6 +59,24 @@ const guestLinksArray = [
 //   name: "Create Advert",
 //   route: "/CaretakerAdvertCreate",
 // },
+
+const careTakerLinks = [
+  {
+    name: "My Advertisement",
+    route: "/MyAdverts/id",
+    id: 0,
+  },
+  {
+    name: "Reservation list",
+    route: "/ReservationsTable/:id",
+    id: 1,
+  },
+  {
+    name: "My Calendar",
+    route: "/caretakerCalendar/:id",
+    id: 2,
+  },
+];
 
 const authLinksArray = [
   {
@@ -100,6 +124,16 @@ const Navbar = ({
     userApi.logout();
     navigate("/");
     loadUsers();
+  };
+  const settings = ["Profile", "Account", "Dashboard", "Logout"];
+  const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(
+    null
+  );
+  const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
+    setAnchorElUser(event.currentTarget);
+  };
+  const handleCloseUserMenu = () => {
+    setAnchorElUser(null);
   };
 
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
@@ -198,6 +232,41 @@ const Navbar = ({
               <div className="right_div">
                 {!isEmpty(currentUser) ? (
                   <>
+                    <Box sx={{ flexGrow: 0 }}>
+                      <Tooltip title="Open settings">
+                        <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+                          <Avatar
+                            sx={{ width: 40, height: 40 }}
+                            alt="User"
+                            src={userIcon}
+                          />
+                        </IconButton>
+                      </Tooltip>
+                      <Menu
+                        sx={{ mt: "45px" }}
+                        id="menu-appbar"
+                        anchorEl={anchorElUser}
+                        anchorOrigin={{
+                          vertical: "top",
+                          horizontal: "right",
+                        }}
+                        keepMounted
+                        transformOrigin={{
+                          vertical: "top",
+                          horizontal: "right",
+                        }}
+                        open={Boolean(anchorElUser)}
+                        onClose={handleCloseUserMenu}
+                      >
+                        {settings.map((setting) => (
+                          <MenuItem key={setting} onClick={handleCloseUserMenu}>
+                            <Typography textAlign="center">
+                              {setting}
+                            </Typography>
+                          </MenuItem>
+                        ))}
+                      </Menu>
+                    </Box>
                     <a>{currentUser.email}</a>
                     <Link to="/MyAdverts" style={{ textDecoration: "none" }}>
                       <Button

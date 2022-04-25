@@ -15,6 +15,7 @@ import momentPlugin from "@fullcalendar/moment";
 import reservationApi from "../../Api/reservationApi";
 import { IFetchedReservation } from "../../Interfaces/IFetchedReservation";
 import { IReservationEvent } from "../../Interfaces/Caretaker/IReservationEvent";
+import { useParams } from "react-router";
 
 interface Props {
   reserving?: boolean;
@@ -71,12 +72,14 @@ const CaretakerCalendar = ({ reserving }: Props) => {
 
   const [events, setEvents] = useState<IEventAvailableInfo[]>([]);
 
+  const { id } = useParams();
+
   async function getCaretakerAvailability() {
     const cAvailablity =
-      await caretakerAdvertisementApi.getCaretakerAvailability(31);
+      await caretakerAdvertisementApi.getCaretakerAvailability(Number(id));
     setAvailability(cAvailablity);
     const cAdvertisement =
-      await caretakerAdvertisementApi.getCaretakerAdvertisement(31);
+      await caretakerAdvertisementApi.getCaretakerAdvertisement(Number(id));
     setCaretakerAdvertisement(cAdvertisement);
 
     const mondayDatez = CalendarFunctions.getAllSelectedDays(
