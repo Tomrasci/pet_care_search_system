@@ -17,8 +17,13 @@ import { IFetchedReservation } from "../../Interfaces/IFetchedReservation";
 import CancelIcon from "@mui/icons-material/Cancel";
 import ThumbUpAltIcon from "@mui/icons-material/ThumbUpAlt";
 import styles from "./caretakerReservations.module.css";
+import { ICurrentUser } from "../../Interfaces/User/ICurrentUser";
 
-export default function ReservationsTable() {
+export default function ReservationsTable({
+  currentUser,
+}: {
+  currentUser: ICurrentUser;
+}) {
   const [advertReservations, setAdvertReservations] = useState<
     IFetchedReservation[]
   >([]);
@@ -26,9 +31,7 @@ export default function ReservationsTable() {
   const [refetch, setRefetch] = useState(true);
 
   const handleReservationConfirm = async (id: number) => {
-    console.log("CLICKED");
     const result = await reservationApi.confirmReservation(id);
-    console.log(`result.status is ${result.status}`);
     if (result.status !== 200) {
       toast.error("Reservation confirmation failed");
     } else {
@@ -49,7 +52,9 @@ export default function ReservationsTable() {
   useEffect(() => {
     async function getAdvertDetails() {
       const advert: ICaretakerAdvert =
-        await caretakerAdvertisementApi.getCaretakerAdvertisement(31);
+        await caretakerAdvertisementApi.getUserCaretakerAdvertisement(
+          currentUser.id
+        );
       setAdvertDetails(advert);
     }
     getAdvertDetails();
@@ -138,26 +143,32 @@ export default function ReservationsTable() {
     },
   ];
 
-  return (
-    advertReservations && (
-      <Box sx={{ width: 1 }}>
-        <Typography variant="h4" align="center">
-          Reservations list
-        </Typography>
-        <Card elevation={1}>
-          <CardContent>
-            <div style={{ height: 700, width: "100%" }}>
-              <DataGrid
-                rows={advertReservations}
-                columns={columns}
-                getRowId={(row) => row.id}
-                pageSize={50}
-                disableSelectionOnClick
-              />
-            </div>
-          </CardContent>
-        </Card>
-      </Box>
-    )
+  return advertReservations && advertReservations.length ? (
+    <Box marginY={5} sx={{ width: 1 }}>
+      <Typography variant="h4" align="center">
+        Reservations list
+      </Typography>
+      <Box marginY={2}></Box>
+      <Card elevation={1}>
+        <CardContent>
+          <div style={{ height: 700, width: "100%" }}>
+            <DataGrid
+              rows={advertReservations}
+              columns={columns}
+              getRowId={(row) => row.id}
+              pageSize={50}
+              disableSelectionOnClick
+            />
+          </div>
+        </CardContent>
+      </Card>
+    </Box>
+  ) : (
+    <Box marginY={15} alignItems="center" justifyContent="center">
+      <Typography align="center" color="inherit" sx={{ fontSize: 32 }}>
+        Your advertisement does not have any reservations yet
+      </Typography>
+      <Box sx={{ minHeight: 300 }}></Box>
+    </Box>
   );
 }

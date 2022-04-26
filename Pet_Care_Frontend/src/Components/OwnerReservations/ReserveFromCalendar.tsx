@@ -245,7 +245,7 @@ const ReserveFromCalendar = ({ currentUser }: any) => {
 
   return (
     <>
-      <CaretakerCalendar reserving={reserving} />
+      <CaretakerCalendar reserving={reserving} currentUser={currentUser} />
       <Grid container sx={{ mt: 10 }} justifyContent="center">
         <ButtonBase
           title="Reservation creation"

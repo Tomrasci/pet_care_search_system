@@ -15,32 +15,26 @@ import { FormProvider, useForm } from "react-hook-form";
 import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import * as yup from "yup";
-import caretakerAdvertisementApi from "../../Api/caretakerAdvertisementApi";
-import { ICaretakerAdvertCreate } from "../../Interfaces/Caretaker/ICaretakerAdvertCreate";
-import { useFormHook } from "../../Utils/useFormHook";
-import OwnerPriceandDates from "./OwnerPriceAndDates";
-import OwnerPersInformation from "./OwnerPersInformation";
-import OwnerAdvertForm from "./OwnerAdvertForm";
-import useState from "react";
-import { IPetType } from "../../Interfaces/Caretaker/IPetType";
-import { IServiceType } from "../../Interfaces/Caretaker/IServiceType";
+import languageApi from "../../Api/languageApi";
+import ownerAdverisementApi from "../../Api/ownerAdverisementApi";
 import petTypeApi from "../../Api/petTypeApi";
 import serviceTypeApi from "../../Api/serviceTypeApi";
-import languageApi from "../../Api/languageApi";
-import { ILanguageType } from "../../Interfaces/Caretaker/ILanguageType";
-import isEmpty from "../../Utils/Empty";
-import interval from "../CaretakerAdvertisement/TimeIntervals";
-import { IDaysObject } from "../../Interfaces/Caretaker/IDaysObject";
-import { IOwnerAdvertCreate } from "../../Interfaces/Owner/IOwnerAdvertCreate";
-import ownerAdverisementApi from "../../Api/ownerAdverisementApi";
-import { ITimeIntervalsObject } from "../../Interfaces/Owner/ITimeIntervalsObject";
-import { IOwnerAdvert } from "../../Interfaces/Owner/IOwnerAdvert";
-import { IPet } from "../../Interfaces/Caretaker/IPet";
-import { ILanguageCheck } from "../../Interfaces/Caretaker/ILanguageCheck";
-import { IPetCheck } from "../../Interfaces/Caretaker/IPetCheck";
-import { IServiceCheck } from "../../Interfaces/Caretaker/IServiceCheck";
-import { IService } from "../../Interfaces/Caretaker/IService";
 import { ILanguage } from "../../Interfaces/Caretaker/ILanguage";
+import { ILanguageCheck } from "../../Interfaces/Caretaker/ILanguageCheck";
+import { ILanguageType } from "../../Interfaces/Caretaker/ILanguageType";
+import { IPet } from "../../Interfaces/Caretaker/IPet";
+import { IPetCheck } from "../../Interfaces/Caretaker/IPetCheck";
+import { IPetType } from "../../Interfaces/Caretaker/IPetType";
+import { IService } from "../../Interfaces/Caretaker/IService";
+import { IServiceCheck } from "../../Interfaces/Caretaker/IServiceCheck";
+import { IServiceType } from "../../Interfaces/Caretaker/IServiceType";
+import { IOwnerAdvert } from "../../Interfaces/Owner/IOwnerAdvert";
+import { IOwnerAdvertCreate } from "../../Interfaces/Owner/IOwnerAdvertCreate";
+import { ITimeIntervalsObject } from "../../Interfaces/Owner/ITimeIntervalsObject";
+import interval from "../CaretakerAdvertisement/TimeIntervals";
+import OwnerAdvertForm from "./OwnerAdvertForm";
+import OwnerPersInformation from "./OwnerPersInformation";
+import OwnerPriceandDates from "./OwnerPriceAndDates";
 
 const steps = [
   "Personal information",
@@ -85,7 +79,8 @@ export default function OwnerAdvertiseBaseEdit({ currentUser }: any) {
 
   const [selectedFile, setSelectedFile] = React.useState<File | undefined>();
   const [preview, setPreview] = React.useState<string>();
-  const [isEdit, setIsEdit] = React.useState(false);
+  const [isEdit, setIsEdit] = React.useState(true);
+  const [newFileAdded, setNewFileAdded] = React.useState(false);
 
   const [petTypes, setPetTypes] = React.useState<IPetType[]>([]);
   const [serviceTypes, setServiceTypes] = React.useState<IServiceType[]>([]);
@@ -197,9 +192,11 @@ export default function OwnerAdvertiseBaseEdit({ currentUser }: any) {
 
   React.useEffect(() => {
     async function getAdvert() {
+      console.log(`calling advert`);
       const advertInfo = await ownerAdverisementApi.getOwnerAdvertisement(
         Number(id)
       );
+      console.log(`advertInfo is ${advertInfo}`);
       setAdvertDetails(advertInfo);
       reset(advertInfo);
       setPreview("http://localhost:3002/" + advertInfo.photo_link);
@@ -309,11 +306,14 @@ export default function OwnerAdvertiseBaseEdit({ currentUser }: any) {
       Number(id),
       newAdvert
     );
-    const imageUpload = await ownerAdverisementApi.uploadOwnerImage(
-      Number(id),
-      selectedFile
-    );
-    if (result.status !== 200 || imageUpload !== 200) {
+    let imageUpload;
+    if (newFileAdded) {
+      imageUpload = await ownerAdverisementApi.uploadOwnerImage(
+        Number(id),
+        selectedFile
+      );
+    }
+    if (result.status !== 200 || (imageUpload && imageUpload !== 200)) {
       toast.error("Advertisement edit failed");
     } else {
       toast.success("Advertisement edited successful");
@@ -339,6 +339,7 @@ export default function OwnerAdvertiseBaseEdit({ currentUser }: any) {
     }
 
     setSelectedFile(e.target.files[0]);
+    setNewFileAdded(true);
   };
 
   const timesIntervalObject: ITimeIntervalsObject = {

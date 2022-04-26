@@ -44,13 +44,44 @@ const guestLinksArray = [
     route: "/",
     id: 0,
   },
-
   {
-    name: "Advertsisements",
+    name: "Caretaker Advertsisements",
+    route: "/CaretakerAdvertList",
+    id: 1,
+  },
+  {
+    name: "Owner Advertsisements",
+    route: "/OwnerAdvertList",
+    id: 2,
+  },
+];
+
+const caretakerLeftLinksArray = [
+  {
+    name: "Home",
+    route: "/",
+    id: 0,
+  },
+  {
+    name: "Owner Advertsisements",
+    route: "/OwnerAdvertList",
+    id: 1,
+  },
+];
+
+const ownerLeftLinksArray = [
+  {
+    name: "Home",
+    route: "/",
+    id: 0,
+  },
+  {
+    name: "Caretaker Advertsisements",
     route: "/CaretakerAdvertList",
     id: 1,
   },
 ];
+
 // {
 //   name: "MyAdverts",
 //   route: "/MyAdverts",
@@ -63,18 +94,26 @@ const guestLinksArray = [
 const careTakerLinks = [
   {
     name: "My Advertisement",
-    route: "/MyAdverts/id",
+    route: "/MyCaretakerAdvert",
     id: 0,
   },
   {
     name: "Reservation list",
-    route: "/ReservationsTable/:id",
+    route: "/ReservationsTable",
     id: 1,
   },
   {
     name: "My Calendar",
-    route: "/caretakerCalendar/:id",
+    route: "/caretakerCalendar",
     id: 2,
+  },
+];
+
+const ownerLinks = [
+  {
+    name: "My Advertisement",
+    route: "/MyOwnerAdvert",
+    id: 0,
   },
 ];
 
@@ -121,11 +160,13 @@ const Navbar = ({
   }, [currentUser]);
 
   const logOut = () => {
+    setIsAdmin(false);
+    setIsCaretaker(false);
+    setIsOwner(false);
     userApi.logout();
     navigate("/");
     loadUsers();
   };
-  const settings = ["Profile", "Account", "Dashboard", "Logout"];
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(
     null
   );
@@ -174,14 +215,46 @@ const Navbar = ({
                   textColor="inherit"
                   onChange={handleChange}
                 >
-                  {guestLinksArray.map((link: any, index: any) => (
-                    <Link
-                      style={{ textDecoration: "none", color: "white" }}
-                      to={link.route}
-                    >
-                      <Tab value={link.name} key={link.id} label={link.name} />
-                    </Link>
-                  ))}
+                  {isCaretaker &&
+                    caretakerLeftLinksArray.map((link: any, index: any) => (
+                      <Link
+                        style={{ textDecoration: "none", color: "white" }}
+                        to={link.route}
+                      >
+                        <Tab
+                          value={link.name}
+                          key={link.id}
+                          label={link.name}
+                        />
+                      </Link>
+                    ))}
+                  {isOwner &&
+                    ownerLeftLinksArray.map((link: any, index: any) => (
+                      <Link
+                        style={{ textDecoration: "none", color: "white" }}
+                        to={link.route}
+                      >
+                        <Tab
+                          value={link.name}
+                          key={link.id}
+                          label={link.name}
+                        />
+                      </Link>
+                    ))}
+                  {!isCaretaker &&
+                    !isOwner &&
+                    guestLinksArray.map((link: any, index: any) => (
+                      <Link
+                        style={{ textDecoration: "none", color: "white" }}
+                        to={link.route}
+                      >
+                        <Tab
+                          value={link.name}
+                          key={link.id}
+                          label={link.name}
+                        />
+                      </Link>
+                    ))}
                   <>
                     {!isEmpty(currentUser) && isCaretaker && (
                       <>
@@ -232,59 +305,115 @@ const Navbar = ({
               <div className="right_div">
                 {!isEmpty(currentUser) ? (
                   <>
-                    <Box sx={{ flexGrow: 0 }}>
-                      <Tooltip title="Open settings">
-                        <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                          <Avatar
-                            sx={{ width: 40, height: 40 }}
-                            alt="User"
-                            src={userIcon}
-                          />
-                        </IconButton>
-                      </Tooltip>
-                      <Menu
-                        sx={{ mt: "45px" }}
-                        id="menu-appbar"
-                        anchorEl={anchorElUser}
-                        anchorOrigin={{
-                          vertical: "top",
-                          horizontal: "right",
-                        }}
-                        keepMounted
-                        transformOrigin={{
-                          vertical: "top",
-                          horizontal: "right",
-                        }}
-                        open={Boolean(anchorElUser)}
-                        onClose={handleCloseUserMenu}
-                      >
-                        {settings.map((setting) => (
-                          <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                            <Typography textAlign="center">
-                              {setting}
-                            </Typography>
+                    {isCaretaker && (
+                      <Box sx={{ flexGrow: 0 }}>
+                        <Tooltip title="Open settings">
+                          <IconButton
+                            onClick={handleOpenUserMenu}
+                            sx={{ p: 0 }}
+                          >
+                            <Avatar
+                              sx={{ width: 50, height: 50 }}
+                              alt="User"
+                              src={userIcon}
+                            />
+                          </IconButton>
+                        </Tooltip>
+                        <Menu
+                          sx={{ mt: "45px" }}
+                          id="menu-appbar"
+                          anchorEl={anchorElUser}
+                          anchorOrigin={{
+                            vertical: "top",
+                            horizontal: "right",
+                          }}
+                          keepMounted
+                          transformOrigin={{
+                            vertical: "top",
+                            horizontal: "right",
+                          }}
+                          open={Boolean(anchorElUser)}
+                          onClose={handleCloseUserMenu}
+                        >
+                          {careTakerLinks.map((caretakerLink) => (
+                            <MenuItem
+                              key={caretakerLink.id}
+                              onClick={handleCloseUserMenu}
+                            >
+                              <Link
+                                style={{
+                                  textDecoration: "none",
+                                  color: "black",
+                                }}
+                                to={caretakerLink.route + `/${currentUser.id}`}
+                              >
+                                <Typography textAlign="center">
+                                  {caretakerLink.name}
+                                </Typography>
+                              </Link>
+                            </MenuItem>
+                          ))}
+                          <MenuItem onClick={logOut}>
+                            <Typography textAlign="center">Logout</Typography>
                           </MenuItem>
-                        ))}
-                      </Menu>
-                    </Box>
-                    <a>{currentUser.email}</a>
-                    <Link to="/MyAdverts" style={{ textDecoration: "none" }}>
-                      <Button
-                        sx={{ background: "rgba(121,50,9,1)" }}
-                        variant="contained"
-                      >
-                        My Adverts
-                      </Button>
-                    </Link>
-                    <Link to="/" style={{ textDecoration: "none" }}>
-                      <Button
-                        sx={{ marginLeft: 1, background: "rgba(121,50,9,1)" }}
-                        variant="contained"
-                        onClick={logOut}
-                      >
-                        LogOut
-                      </Button>
-                    </Link>
+                        </Menu>
+                      </Box>
+                    )}
+
+                    {isOwner && (
+                      <Box sx={{ flexGrow: 0 }}>
+                        <Tooltip title="Open settings">
+                          <IconButton
+                            onClick={handleOpenUserMenu}
+                            sx={{ p: 0 }}
+                          >
+                            <Avatar
+                              sx={{ width: 50, height: 50 }}
+                              alt="User"
+                              src={userIcon}
+                            />
+                          </IconButton>
+                        </Tooltip>
+                        <Menu
+                          sx={{ mt: "45px" }}
+                          id="menu-appbar"
+                          anchorEl={anchorElUser}
+                          anchorOrigin={{
+                            vertical: "top",
+                            horizontal: "right",
+                          }}
+                          keepMounted
+                          transformOrigin={{
+                            vertical: "top",
+                            horizontal: "right",
+                          }}
+                          open={Boolean(anchorElUser)}
+                          onClose={handleCloseUserMenu}
+                        >
+                          {ownerLinks.map((ownerLink) => (
+                            <MenuItem
+                              key={ownerLink.id}
+                              onClick={handleCloseUserMenu}
+                            >
+                              <Link
+                                style={{
+                                  textDecoration: "none",
+                                  color: "black",
+                                }}
+                                to={ownerLink.route + `/${currentUser.id}`}
+                              >
+                                <Typography textAlign="center">
+                                  {ownerLink.name}
+                                </Typography>
+                              </Link>
+                            </MenuItem>
+                          ))}
+                          <MenuItem onClick={logOut}>
+                            <Typography textAlign="center">Logout</Typography>
+                          </MenuItem>
+                        </Menu>
+                      </Box>
+                    )}
                   </>
                 ) : (
                   <>

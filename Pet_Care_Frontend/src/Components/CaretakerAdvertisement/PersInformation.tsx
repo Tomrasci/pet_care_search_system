@@ -231,7 +231,7 @@ export default function PersInformation({
           <Grid item xs={12}>
             <input type="file" onChange={onSelectFile} className="fileInput" />
             {(selectedFile || isEdit) && (
-              <img src={preview} width="150" height="100" />
+              <img src={preview} width="250" height="150" />
             )}
           </Grid>
           <Grid item xs={12} sx={{ mt: 3 }}>

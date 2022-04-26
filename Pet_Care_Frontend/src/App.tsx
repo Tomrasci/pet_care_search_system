@@ -11,7 +11,6 @@ import { IUser } from "./Interfaces/User/IUser";
 import Footer from "./Layout/Footer";
 import Navbar from "./Layout/Navbar";
 import CaretakerAdvertList from "./Components/CaretakerAdvertisement/CaretakerAdvertList";
-import MyCaretakerAdvertisements from "./Components/CaretakerAdvertisement/MyCaretakerAdvertisements";
 import AdvertiseBaseEdit from "./Components/CaretakerAdvertisement/AdvertBaseEdit";
 import CaretakerCalendar from "./Components/CaretakerAdvertisement/CaretakerCalendar";
 import "bootstrap/dist/css/bootstrap.css";
@@ -22,6 +21,9 @@ import OwnerAdvertiseBase from "./Components/OwnerAdvert/OwnerAdvertBase";
 import OwnerAdvertiseBaseEdit from "./Components/OwnerAdvert/OwnerAdvertBaseEdit";
 import { ICurrentUser } from "./Interfaces/User/ICurrentUser";
 import CaretakerAdvertisement from "./Components/CaretakerAdvertisement/CaretakerAdvertismentLayout";
+import MyOwnerAdvertisement from "./Components/OwnerAdvert/MyOwnerAdvertisement";
+import MyCaretakerAdvertisement from "./Components/CaretakerAdvertisement/MyCaretakerAdvertisement";
+import OwnerAdvertList from "./Components/OwnerAdvert/OwnerAdvertList";
 
 const guestLinksArray = [
   {
@@ -84,8 +86,16 @@ export default function App() {
           element={<CaretakerAdvertList currentUser={currentUser} />}
         ></Route>
         <Route
-          path={"/MyAdverts"}
-          element={<MyCaretakerAdvertisements currentUser={currentUser} />}
+          path={"/OwnerAdvertList"}
+          element={<OwnerAdvertList currentUser={currentUser} />}
+        ></Route>
+        <Route
+          path={"/MyCaretakerAdvert/:id"}
+          element={<MyCaretakerAdvertisement currentUser={currentUser} />}
+        ></Route>
+        <Route
+          path={"/MyOwnerAdvert/:id"}
+          element={<MyOwnerAdvertisement currentUser={currentUser} />}
         ></Route>
         <Route
           path={"/caretakerUpdate/:id"}
@@ -93,7 +103,7 @@ export default function App() {
         ></Route>
         <Route
           path={"/caretakerCalendar/:id"}
-          element={<CaretakerCalendar />}
+          element={<CaretakerCalendar currentUser={currentUser} />}
         ></Route>
         <Route
           path={"/ReserveFromCalendar/:id"}
@@ -101,7 +111,7 @@ export default function App() {
         ></Route>
         <Route
           path={"/ReservationsTable/:id"}
-          element={<ReservationsTable />}
+          element={<ReservationsTable currentUser={currentUser} />}
         ></Route>
         <Route path={"Register"} element={<Register />}></Route>
         <Route path={"Login"} element={<Login loadUsers={loadUsers} />}></Route>

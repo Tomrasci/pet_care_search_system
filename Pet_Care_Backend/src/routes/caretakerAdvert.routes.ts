@@ -38,8 +38,8 @@ router.get(
 );
 
 router.get(
-  '/myAdverts/:userId',
-  caretakerAdvertController.getUserCaretakerAdverts
+  '/myCaretakerAdvertisement/:userId',
+  caretakerAdvertController.getUserCaretakerAdvert
 );
 
 router.put(

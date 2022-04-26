@@ -29,7 +29,7 @@ router.get('/ownerAdverts', ownerAdvertController.getOwnerAdverts);
 
 router.get('/ownerAdverts/:id', ownerAdvertController.getOwnerAdvert);
 
-router.get('/myAdverts/:userId', ownerAdvertController.getUserOwnerAdverts);
+router.get('/myOwnerAdvert/:userId', ownerAdvertController.getUserOwnerAdvert);
 
 router.put('/ownerAdverts/:id', ownerAdvertController.updateOwnerAdvert);
 

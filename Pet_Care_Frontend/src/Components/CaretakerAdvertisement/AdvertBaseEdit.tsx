@@ -65,6 +65,7 @@ export default function AdvertiseBaseEdit({ currentUser }: any) {
   const [selectedFile, setSelectedFile] = React.useState<File | null>();
   const [preview, setPreview] = React.useState<string>();
   const [isEdit, setIsEdit] = React.useState(true);
+  const [newFileAdded, setNewFileAdded] = React.useState(false);
 
   const [advertDetails, setAdvertDetails] = React.useState<ICaretakerAdvert>();
 
@@ -348,11 +349,14 @@ export default function AdvertiseBaseEdit({ currentUser }: any) {
       Number(id),
       newAdvert
     );
-    const imageUpload = await caretakerAdvertisementApi.uploadCaretakerImage(
-      Number(id),
-      selectedFile
-    );
-    if (result.status !== 200 || imageUpload !== 200) {
+    let imageUpload;
+    if (newFileAdded) {
+      imageUpload = await caretakerAdvertisementApi.uploadCaretakerImage(
+        Number(id),
+        selectedFile
+      );
+    }
+    if (result.status !== 200 || (imageUpload && imageUpload !== 200)) {
       toast.error("Advertisement update failed");
     } else {
       toast.success("Advertisement updated successful");
@@ -378,6 +382,7 @@ export default function AdvertiseBaseEdit({ currentUser }: any) {
     }
 
     setSelectedFile(e.target.files[0]);
+    setNewFileAdded(true);
   };
 
   const daysObject: IDaysObject = {

@@ -10,8 +10,8 @@ const getOwnerAdvertById = async (id: number) => {
   return await ownerAdvertModel.getOwnerAdvertById(id);
 };
 
-const getUserOwnerAdverts = async (userId: number) => {
-  return await ownerAdvertModel.getUserOwnerAdverts(userId);
+const getUserOwnerAdvert = async (userId: number) => {
+  return await ownerAdvertModel.getUserOwnerAdvert(userId);
 };
 
 const getOwnersAdverts = async () => {
@@ -34,6 +34,6 @@ export default {
   getOwnersAdverts,
   updateOwnerAdvert,
   deleteOwnerAdvert,
-  getUserOwnerAdverts,
+  getUserOwnerAdvert,
   uploadOwnerImage
 };

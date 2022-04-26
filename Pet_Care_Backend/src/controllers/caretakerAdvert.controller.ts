@@ -214,16 +214,16 @@ const getCareTakerAdverts = async (
   return res.status(ResponseCodes.OK).json(cAdverts);
 };
 
-const getUserCaretakerAdverts = async (
+const getUserCaretakerAdvert = async (
   req: Request,
   res: Response,
   next: NextFunction
 ) => {
-  const cAdverts = await caretakerAdvertService.getUserCaretakerAdverts(
+  const cAdvert = await caretakerAdvertService.getUserCaretakerAdvert(
     Number(req.params.userId)
   );
 
-  return res.status(ResponseCodes.OK).json(cAdverts);
+  return res.status(ResponseCodes.OK).json(cAdvert);
 };
 
 const getCaretakerAvailability = async (
@@ -501,7 +501,7 @@ export default {
   getCareTakerAdverts,
   updateCareTakerAdvert,
   deleteCareTakerAdvert,
-  getUserCaretakerAdverts,
+  getUserCaretakerAdvert,
   getCaretakerLanguages,
   getCaretakerPets,
   getCaretakerServices,

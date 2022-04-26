@@ -32,13 +32,14 @@ const getCaretakerAdvertById = async (
   }
 };
 
-const getUserCaretakerAdverts = async (
+const getUserCaretakerAdvert = async (
   userId: number
 ): Promise<ICaretakerAdvert[]> => {
   try {
     return await database('caretaker_advertisement')
       .where({ user_id: userId })
-      .select();
+      .select()
+      .first();
   } catch (err) {
     console.log(err.message);
   }
@@ -124,7 +125,7 @@ export default {
   getCaretakerAdverts,
   updateCareTakerAdvert,
   deleteCareTakerAdvert,
-  getUserCaretakerAdverts,
+  getUserCaretakerAdvert,
   getCaretakerAvailability,
   insertCaretakerAvailability,
   deleteCaretakerAvailability,

@@ -149,16 +149,16 @@ const getOwnerAdverts = async (
   return res.status(ResponseCodes.OK).json(cAdverts);
 };
 
-const getUserOwnerAdverts = async (
+const getUserOwnerAdvert = async (
   req: Request,
   res: Response,
   next: NextFunction
 ) => {
-  const cAdverts = await ownerAdvertService.getUserOwnerAdverts(
+  const oAdvert = await ownerAdvertService.getUserOwnerAdvert(
     Number(req.params.userId)
   );
 
-  return res.status(ResponseCodes.OK).json(cAdverts);
+  return res.status(ResponseCodes.OK).json(oAdvert);
 };
 
 const updateOwnerAdvert = async (
@@ -356,7 +356,7 @@ export default {
   getOwnerAdverts,
   updateOwnerAdvert,
   deleteOwnerAdvert,
-  getUserOwnerAdverts,
+  getUserOwnerAdvert,
   getOwnerLanguages,
   getOwnerPets,
   getOwnerServices,

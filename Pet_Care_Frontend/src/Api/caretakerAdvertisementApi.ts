@@ -12,8 +12,10 @@ const getCaretakerAdvertisements = async () => {
   return data;
 };
 
-const getUserCaretakerAdvertisements = async (userId: number) => {
-  const { data, status } = await http.get(`/myAdverts/${userId}`);
+const getUserCaretakerAdvertisement = async (userId: number) => {
+  const { data, status } = await http.get(
+    `/myCaretakerAdvertisement/${userId}`
+  );
   return data;
 };
 
@@ -68,7 +70,7 @@ export default {
   getCaretakerAdvertisements,
   editCaretakerAdvertisement,
   deleteCaretakerAdvertisement,
-  getUserCaretakerAdvertisements,
+  getUserCaretakerAdvertisement,
   getCaretakerPets,
   getCaretakerServices,
   getCaretakerLanguages,

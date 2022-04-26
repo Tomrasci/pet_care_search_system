@@ -11,8 +11,8 @@ const getCareTakerAdvertById = async (id: number) => {
   return await caretakerAdvertModel.getCaretakerAdvertById(id);
 };
 
-const getUserCaretakerAdverts = async (userId: number) => {
-  return await caretakerAdvertModel.getUserCaretakerAdverts(userId);
+const getUserCaretakerAdvert = async (userId: number) => {
+  return await caretakerAdvertModel.getUserCaretakerAdvert(userId);
 };
 
 const getCareTakersAdverts = async () => {
@@ -55,7 +55,7 @@ export default {
   getCareTakersAdverts,
   updateCareTakerAdvert,
   deleteCareTakerAdvert,
-  getUserCaretakerAdverts,
+  getUserCaretakerAdvert,
   getCaretakerLAvailability,
   insertCaretakerAvailability,
   deleteCaretakerAvailability,

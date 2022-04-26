@@ -11,7 +11,7 @@ const getOwnerAdvertisements = async () => {
 };
 
 const getUserOwnerAdvertisement = async (userId: number) => {
-  const { data, status } = await http.get(`/myAdverts/${userId}`);
+  const { data, status } = await http.get(`/myOwnerAdvert/${userId}`);
   return data;
 };
 

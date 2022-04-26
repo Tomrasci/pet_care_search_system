@@ -167,7 +167,7 @@ export default function OwnerPersInformation({
           <Grid item xs={12}>
             <input type="file" onChange={onSelectFile} className="fileInput" />
             {(selectedFile || isEdit) && (
-              <img src={preview} width="150" height="100" />
+              <img src={preview} width="250" height="150" />
             )}
           </Grid>
 

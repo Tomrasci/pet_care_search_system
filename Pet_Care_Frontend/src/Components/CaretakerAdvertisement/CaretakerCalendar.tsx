@@ -16,12 +16,19 @@ import reservationApi from "../../Api/reservationApi";
 import { IFetchedReservation } from "../../Interfaces/IFetchedReservation";
 import { IReservationEvent } from "../../Interfaces/Caretaker/IReservationEvent";
 import { useParams } from "react-router";
+import { ICurrentUser } from "../../Interfaces/User/ICurrentUser";
 
 interface Props {
   reserving?: boolean;
 }
 
-const CaretakerCalendar = ({ reserving }: Props) => {
+const CaretakerCalendar = ({
+  currentUser,
+  reserving,
+}: {
+  currentUser: ICurrentUser;
+  reserving?: boolean;
+}) => {
   const [availability, setAvailability] = useState<ICaretakerAvailability[]>(
     []
   );
@@ -75,12 +82,16 @@ const CaretakerCalendar = ({ reserving }: Props) => {
   const { id } = useParams();
 
   async function getCaretakerAvailability() {
-    const cAvailablity =
-      await caretakerAdvertisementApi.getCaretakerAvailability(Number(id));
-    setAvailability(cAvailablity);
     const cAdvertisement =
-      await caretakerAdvertisementApi.getCaretakerAdvertisement(Number(id));
+      await caretakerAdvertisementApi.getUserCaretakerAdvertisement(
+        currentUser.id
+      );
     setCaretakerAdvertisement(cAdvertisement);
+    const cAvailablity =
+      await caretakerAdvertisementApi.getCaretakerAvailability(
+        cAdvertisement.id
+      );
+    setAvailability(cAvailablity);
 
     const mondayDatez = CalendarFunctions.getAllSelectedDays(
       cAdvertisement?.startDate || new Date(),

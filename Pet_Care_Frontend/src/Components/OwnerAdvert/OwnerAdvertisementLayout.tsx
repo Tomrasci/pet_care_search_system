@@ -14,22 +14,20 @@ import {
 } from "@mui/material";
 import styled from "styled-components";
 import { ICurrentUser } from "../../Interfaces/User/ICurrentUser";
+import { IOwnerAdvert } from "../../Interfaces/Owner/IOwnerAdvert";
+import ownerAdverisementApi from "../../Api/ownerAdverisementApi";
 
 export const GridBreak = styled.div`
   width: 100%;
 `;
 
-const CaretakerAdvertisement = ({
-  currentUser,
-}: {
-  currentUser: ICurrentUser;
-}) => {
-  const [advertDetails, setAdvertDetails] = useState<ICaretakerAdvert>();
+const OwnerAdvertisement = ({ currentUser }: { currentUser: ICurrentUser }) => {
+  const [advertDetails, setAdvertDetails] = useState<IOwnerAdvert>();
   const { id } = useParams();
 
   useEffect(() => {
     const getAdvert = async () => {
-      const advert = await caretakerAdvertisementApi.getCaretakerAdvertisement(
+      const advert = await ownerAdverisementApi.getOwnerAdvertisement(
         Number(id)
       );
       setAdvertDetails(advert);
@@ -46,10 +44,6 @@ const CaretakerAdvertisement = ({
           alignItems="center"
           justifyContent="center"
         >
-          {/* <Typography align="center" color="inherit" sx={{ fontSize: 32 }}>
-            Caretaker advertisements
-          </Typography>
-          <Box sx={{ mt: 5 }}></Box> */}
           <Grid
             container
             direction="column"
@@ -106,14 +100,7 @@ const CaretakerAdvertisement = ({
                   <GridBreak />
 
                   <Typography sx={{ fontSize: 14 }}>
-                    {advertDetails.age +
-                      " " +
-                      " years old." +
-                      " " +
-                      advertDetails.activity +
-                      ". " +
-                      advertDetails.day_price +
-                      " eur per hour"}
+                    {advertDetails.day_price + " eur per hour"}
                   </Typography>
 
                   <Box marginY={3}></Box>
@@ -314,8 +301,6 @@ const CaretakerAdvertisement = ({
                   <Typography sx={{ fontSize: 16, fontWeight: 600 }}>
                     Email: {currentUser.email}
                     <GridBreak />
-                    <Box marginY={2}></Box>
-                    Experience with pets: {advertDetails.experience}
                     <GridBreak />
                     <Box marginY={2}></Box>
                     Phone: {advertDetails.phone}
@@ -370,6 +355,4 @@ const CaretakerAdvertisement = ({
   );
 };
 
-export default CaretakerAdvertisement;
-
-
+export default OwnerAdvertisement;

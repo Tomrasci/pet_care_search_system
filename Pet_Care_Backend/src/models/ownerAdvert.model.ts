@@ -34,11 +34,12 @@ const getOwnerAdvertById = async (id: number): Promise<IOwnerAdvert> => {
 //   }
 // }
 
-const getUserOwnerAdverts = async (userId: number): Promise<IOwnerAdvert[]> => {
+const getUserOwnerAdvert = async (userId: number): Promise<IOwnerAdvert> => {
   try {
     return await database('owner_advertisement')
       .where({ user_id: userId })
-      .select();
+      .select()
+      .first();
   } catch (err) {
     console.log(err.message);
   }
@@ -92,6 +93,6 @@ export default {
   getOwnerAdverts,
   updateOwnerAdvert,
   deleteOwnerAdvert,
-  getUserOwnerAdverts,
+  getUserOwnerAdvert,
   uploadOwnerAdvertImage
 };
