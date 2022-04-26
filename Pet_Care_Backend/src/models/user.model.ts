@@ -7,6 +7,10 @@ const createUser = async (user: IUser): Promise<IUser> => {
   });
 };
 
+const getUserById = async (id: number): Promise<IUser> => {
+  return await database('user').where({ id }).select().first();
+};
+
 const getUserByEmail = async (email: string): Promise<IUser> => {
   return await database('user').where({ email }).select().first();
 };
@@ -18,5 +22,6 @@ const getUserByUsername = async (username: string): Promise<IUser> => {
 export default {
   createUser,
   getUserByEmail,
-  getUserByUsername
+  getUserByUsername,
+  getUserById
 };

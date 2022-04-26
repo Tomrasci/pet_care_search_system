@@ -3,6 +3,8 @@ import logger from '../../logger';
 import { ResponseCodes } from '../utils/responseCodes';
 import reservationService from '../services/reservation.service';
 import fixReservationTimes from '../utils/fixReservationTimes';
+import { IGotReservation } from '../models/interfaces/IGotReservation';
+import userService from '../services/user.service';
 
 const getReservationById = async (
   req: Request,
@@ -69,13 +71,26 @@ const createReservations = async (
   res: Response,
   next: NextFunction
 ) => {
-  const reservations = req.body.reservations;
+  const reservations: IGotReservation[] = req.body.reservations;
   const fixedReservations = fixReservationTimes(reservations);
 
   try {
     await reservationService.insertReservations(fixedReservations);
     logger.info(
       `Reservations have been inserted ${JSON.stringify(fixedReservations)}`
+    );
+    const user = await userService.getUserById(reservations[0].user_id);
+    for (const reservation of reservations) {
+      await reservationService.sendEmailAboutReservation(
+        'pending',
+        reservation.timeInterval,
+        user.email
+      );
+    }
+    logger.info(
+      `Reservation messages have been sent to the user ${JSON.stringify(
+        user.name
+      )}`
     );
   } catch (err) {
     console.log(err);

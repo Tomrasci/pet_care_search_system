@@ -1,6 +1,8 @@
 import reservationModel from '../models/reservationModel';
 import { IReservation } from '../models/interfaces/IReservation';
 
+const nodemailer = require('nodemailer');
+
 const createReservation = async (reservationArray: IReservation[]) => {
   return await reservationModel.insertReservations(reservationArray);
 };
@@ -48,6 +50,35 @@ const getConfirmedAdvertisementReservations = async (id: number) => {
   return await reservationModel.getConfirmedAdvertisementReservations(id);
 };
 
+const sendEmailAboutReservation = async (
+  status: string,
+  reservationTime: string,
+  recipientEmail: string
+) => {
+  const senderEmail = 'petcaresearchsystem@gmail.com';
+  const message = `Your reservation for ${reservationTime} status is ${status}`;
+  const transporter = nodemailer.createTransport({
+    service: 'Gmail',
+    auth: {
+      user: senderEmail,
+      pass: 'rcjqttnvmedswzms'
+    }
+  });
+  const mailOptons = {
+    from: senderEmail,
+    to: recipientEmail,
+    subject: `Reservation status update`,
+    text: message
+  };
+  transporter.sendMail(mailOptons, function (error, response) {
+    if (error) {
+      console.log(error);
+    } else {
+      console.log('Successfully sent');
+    }
+  });
+};
+
 export default {
   createReservation,
   getReservationById,
@@ -59,5 +90,6 @@ export default {
   insertReservations,
   confirmReservation,
   cancelReservation,
-  getConfirmedAdvertisementReservations
+  getConfirmedAdvertisementReservations,
+  sendEmailAboutReservation
 };

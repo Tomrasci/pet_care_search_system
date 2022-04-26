@@ -13,4 +13,8 @@ const getUserByEmail = async (email: string) => {
   return await userModel.getUserByEmail(email);
 };
 
-export default { registerUser, getUserByUsername, getUserByEmail };
+const getUserById = async (id: number) => {
+  return await userModel.getUserById(id);
+};
+
+export default { registerUser, getUserByUsername, getUserByEmail, getUserById };
