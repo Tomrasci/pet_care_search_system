@@ -95,6 +95,17 @@ const getCaretakerPetNames = async (id: number) => {
   }
 };
 
+const getOwnerPetNames = async (id: number) => {
+  try {
+    return await database(`owner_pets`)
+      .where('advertisement_id', id)
+      .join(`pet_type`, `owner_pets.pet_type_id`, `pet_type.id`)
+      .select('pet_type.name');
+  } catch (err) {
+    console.log(err.message);
+  }
+};
+
 export default {
   getPetTypeById,
   getPetTypes,
@@ -104,5 +115,6 @@ export default {
   getOwnerPets,
   insertOwnerPets,
   deleteOwnerPets,
-  getCaretakerPetNames
+  getCaretakerPetNames,
+  getOwnerPetNames
 };

@@ -90,6 +90,14 @@ const MyCaretakerAdvertisement = ({ currentUser }: any) => {
                   <Button className="leftAlignItem" size="small">
                     More information
                   </Button>
+                  <Link
+                    style={{ textDecoration: "none" }}
+                    to={`/caretakerCalendar/${caretakerAdvert.id}`}
+                  >
+                    <Button className="leftAlignItem" size="small">
+                      My calendar
+                    </Button>
+                  </Link>
                   <Link to={`/caretakerUpdate/${caretakerAdvert.id}`}>
                     <IconButton size="large">
                       <EditIcon />

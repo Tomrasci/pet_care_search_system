@@ -11,4 +11,6 @@ export interface IReservationObject {
   handleReservationDescription: Dispatch<SetStateAction<string>>;
   handleReservation: () => Promise<void>;
   handleChangeMultiple: (event: SelectChangeEvent<string[]>) => void;
+  minDate: Date | undefined;
+  maxDate: Date | undefined;
 }

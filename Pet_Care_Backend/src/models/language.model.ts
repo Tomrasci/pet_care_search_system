@@ -95,6 +95,17 @@ const getCaretakerLanguageNames = async (id: number) => {
   }
 };
 
+const getCOwnerLanguageNames = async (id: number) => {
+  try {
+    return await database(`owner_languages`)
+      .where('advertisement_id', id)
+      .join(`language`, `owner_languages.language_id`, `language.id`)
+      .select('language.name');
+  } catch (err) {
+    console.log(err.message);
+  }
+};
+
 export default {
   getLanguageById,
   getLanguages,
@@ -104,5 +115,6 @@ export default {
   getOwnerLanguages,
   insertOwnerLanguages,
   deleteOwnerLanguages,
-  getCaretakerLanguageNames
+  getCaretakerLanguageNames,
+  getCOwnerLanguageNames
 };

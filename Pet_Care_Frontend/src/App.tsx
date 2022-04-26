@@ -24,6 +24,8 @@ import CaretakerAdvertisement from "./Components/CaretakerAdvertisement/Caretake
 import MyOwnerAdvertisement from "./Components/OwnerAdvert/MyOwnerAdvertisement";
 import MyCaretakerAdvertisement from "./Components/CaretakerAdvertisement/MyCaretakerAdvertisement";
 import OwnerAdvertList from "./Components/OwnerAdvert/OwnerAdvertList";
+import OwnerAdvertisement from "./Components/OwnerAdvert/OwnerAdvertisementLayout";
+import OwnerReservations from "./Components/OwnerAdvert/MyOwnerResrvations";
 
 const guestLinksArray = [
   {
@@ -82,6 +84,10 @@ export default function App() {
           element={<AdvertiseBase currentUser={currentUser} />}
         ></Route>
         <Route
+          path={"/CarCaretakerAdvertisement/:id"}
+          element={<CaretakerAdvertisement currentUser={currentUser} />}
+        ></Route>
+        <Route
           path={"/CaretakerAdvertList"}
           element={<CaretakerAdvertList currentUser={currentUser} />}
         ></Route>
@@ -126,6 +132,14 @@ export default function App() {
         <Route
           path={"/CaretakerAdvertisement/:id"}
           element={<CaretakerAdvertisement currentUser={currentUser} />}
+        ></Route>
+        <Route
+          path={"/OwnerAdvertisement/:id"}
+          element={<OwnerAdvertisement currentUser={currentUser} />}
+        ></Route>
+        <Route
+          path={"/MyReservations/:id"}
+          element={<OwnerReservations currentUser={currentUser} />}
         ></Route>
         <Route path={"/"} element={<Home />}></Route>
         ))

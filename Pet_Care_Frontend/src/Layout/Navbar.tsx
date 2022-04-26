@@ -115,6 +115,11 @@ const ownerLinks = [
     route: "/MyOwnerAdvert",
     id: 0,
   },
+  {
+    name: "My Reservations",
+    route: "/MyReservations",
+    id: 1,
+  },
 ];
 
 const authLinksArray = [
@@ -260,13 +265,7 @@ const Navbar = ({
                       <>
                         <Link
                           style={{ textDecoration: "none", color: "white" }}
-                          to={"/caretakerCalendar"}
-                        >
-                          <Tab label="Caretaker Calendar" />
-                        </Link>
-                        <Link
-                          style={{ textDecoration: "none", color: "white" }}
-                          to={"/ReservationsTable"}
+                          to={`/ReservationsTable/${currentUser.id}`}
                         >
                           <Tab label="Reservations" />
                         </Link>
@@ -283,12 +282,6 @@ const Navbar = ({
 
                     {!isEmpty(currentUser) && (isOwner || isAdmin) && (
                       <>
-                        <Link
-                          style={{ textDecoration: "none", color: "white" }}
-                          to={"/ReserveFromCalendar"}
-                        >
-                          <Tab label="Reserve" />
-                        </Link>
                         {!hasAdvert && (
                           <Link
                             style={{ textDecoration: "none", color: "white" }}

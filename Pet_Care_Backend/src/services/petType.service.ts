@@ -36,6 +36,10 @@ const getCaretakerPetNames = async (id: number) => {
   return await petTypesModel.getCaretakerPetNames(id);
 };
 
+const getOwnerPetNames = async (id: number) => {
+  return await petTypesModel.getOwnerPetNames(id);
+};
+
 export default {
   getPetTypeById,
   getPetTypes,
@@ -45,5 +49,6 @@ export default {
   getOwnerPets,
   insertOwnerPets,
   deleteOwnerPets,
-  getCaretakerPetNames
+  getCaretakerPetNames,
+  getOwnerPetNames
 };

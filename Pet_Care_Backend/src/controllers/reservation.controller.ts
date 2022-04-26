@@ -44,7 +44,7 @@ const getOwnerReservations = async (
   res: Response,
   next: NextFunction
 ) => {
-  const ownerReservations = await reservationService.getUserReservations(
+  const ownerReservations = await reservationService.getOwnerReservations(
     Number(req.params.id)
   );
 

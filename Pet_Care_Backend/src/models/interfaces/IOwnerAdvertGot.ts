@@ -1,4 +1,4 @@
-export interface IOwnerAdvert {
+export interface IOwnerAdvertGot {
   id: number;
   name: string;
   surname: string;
@@ -14,7 +14,7 @@ export interface IOwnerAdvert {
   updated_at: Date;
   startDate: Date;
   endDate: Date | null;
-  time_intervals: string;
+  time_intervals: string[];
   user_id: number;
   services: string[];
   pets: string[];

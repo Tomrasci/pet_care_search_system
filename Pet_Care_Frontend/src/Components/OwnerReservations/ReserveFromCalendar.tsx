@@ -33,12 +33,16 @@ import ReservationForm from "./ReservationForm";
 import CalendarFunctions from "../../Utils/CalendarFunctions";
 import { IReservationEvent } from "../../Interfaces/Caretaker/IReservationEvent";
 import { IFetchedReservation } from "../../Interfaces/IFetchedReservation";
+import { useParams } from "react-router";
+import { ICaretakerAdvert } from "../../Interfaces/Caretaker/ICaretakerAdvert";
 
 const ReserveFromCalendar = ({ currentUser }: any) => {
+  const { id } = useParams();
   const [availability, setAvailability] = useState<ICaretakerAvailability[]>(
     []
   );
   const [value, setValue] = React.useState<Date | null>(null);
+  const [advertDetails, setAdvertDetails] = React.useState<ICaretakerAdvert>();
 
   const [mondayInterval, setMondayInterval] = React.useState<string[]>([]);
   const [tuesdayInterval, setTuesdayInterval] = React.useState<string[]>([]);
@@ -65,7 +69,7 @@ const ReserveFromCalendar = ({ currentUser }: any) => {
   useEffect(() => {
     async function getCaretakerAvailability() {
       const availabilityGet =
-        await caretakerAdvertisementApi.getCaretakerAvailability(31);
+        await caretakerAdvertisementApi.getCaretakerAvailability(Number(id));
       setAvailability(availabilityGet);
 
       const mondayArray = FilterWeekDay(availabilityGet, "Mon");
@@ -77,9 +81,14 @@ const ReserveFromCalendar = ({ currentUser }: any) => {
       const sundayArray = FilterWeekDay(availabilityGet, "Sun");
 
       const advertReservations =
-        await reservationApi.getConfirmedAdvertisementReservations(31);
+        await reservationApi.getConfirmedAdvertisementReservations(Number(id));
 
       setAdvertReservations(advertReservations);
+
+      const advert = await caretakerAdvertisementApi.getCaretakerAdvertisement(
+        Number(id)
+      );
+      setAdvertDetails(advert);
 
       setMondayInterval(mondayArray);
       setTuesdayInterval(tuesdayArray);
@@ -211,7 +220,7 @@ const ReserveFromCalendar = ({ currentUser }: any) => {
         date: value || new Date(),
         timeInterval: time,
         user_id: currentUser.id,
-        advertisement_id: 31,
+        advertisement_id: Number(id),
         status: "pending",
         description: reservationDescription,
       });
@@ -241,6 +250,8 @@ const ReserveFromCalendar = ({ currentUser }: any) => {
     reservationDescription: reservationDescription,
     handleReservationDescription: setReservationDescription,
     handleReservation: handleReservation,
+    minDate: advertDetails?.startDate,
+    maxDate: advertDetails?.endDate,
   };
 
   return (

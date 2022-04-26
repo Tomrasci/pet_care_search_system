@@ -9,7 +9,7 @@ const getReservationById = async (id: number) => {
   return await reservationModel.getReservationById(id);
 };
 
-const getUserReservations = async (userId: number) => {
+const getOwnerReservations = async (userId: number) => {
   return await reservationModel.getOwnerReservations(userId);
 };
 
@@ -52,7 +52,7 @@ export default {
   createReservation,
   getReservationById,
   getReservations,
-  getUserReservations,
+  getOwnerReservations,
   getAdvertisementReservations,
   deleteAdvertisementReservations,
   deleteOwnerAdvertisementReservations,

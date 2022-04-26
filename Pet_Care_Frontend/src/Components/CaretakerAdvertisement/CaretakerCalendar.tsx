@@ -83,9 +83,7 @@ const CaretakerCalendar = ({
 
   async function getCaretakerAvailability() {
     const cAdvertisement =
-      await caretakerAdvertisementApi.getUserCaretakerAdvertisement(
-        currentUser.id
-      );
+      await caretakerAdvertisementApi.getCaretakerAdvertisement(Number(id));
     setCaretakerAdvertisement(cAdvertisement);
     const cAvailablity =
       await caretakerAdvertisementApi.getCaretakerAvailability(
@@ -208,7 +206,7 @@ const CaretakerCalendar = ({
     setEvents(getEvents);
 
     const advertReservations =
-      await reservationApi.getConfirmedAdvertisementReservations(31);
+      await reservationApi.getConfirmedAdvertisementReservations(Number(id));
     let eventReservations = null;
     if (reserving) {
       eventReservations =
@@ -234,6 +232,10 @@ const CaretakerCalendar = ({
           bootstrap5Plugin,
           momentPlugin,
         ]}
+        validRange={{
+          start: caretakerAdvertisement?.startDate,
+          end: caretakerAdvertisement?.endDate,
+        }}
         initialView="timeGridWeek"
         themeSystem="bootstrap5"
         headerToolbar={{

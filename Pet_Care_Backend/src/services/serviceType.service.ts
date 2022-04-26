@@ -36,6 +36,10 @@ const getCaretakerServiceNames = async (id: number) => {
   return await serviceTypeModel.getCaretakerServiceNames(id);
 };
 
+const getOwnerServiceNames = async (id: number) => {
+  return await serviceTypeModel.getOwnerServiceNames(id);
+};
+
 export default {
   getServiceTypeById,
   getServiceTypes,
@@ -45,5 +49,6 @@ export default {
   getOwnerServices,
   insertOwnerServices,
   deleteOwnerServices,
-  getCaretakerServiceNames
+  getCaretakerServiceNames,
+  getOwnerServiceNames
 };

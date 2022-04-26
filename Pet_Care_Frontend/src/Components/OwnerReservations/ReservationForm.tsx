@@ -20,6 +20,7 @@ import reservationApi from "../../Api/reservationApi";
 import { IReservation } from "../../Interfaces/IReservation";
 import { IReservationObject } from "../../Interfaces/IReservationObject";
 import { enGB } from "date-fns/locale";
+import moment from "moment";
 
 interface Props {
   reservationObject: IReservationObject;
@@ -64,6 +65,8 @@ const ReservationForm = ({ reservationObject, onSave }: Props) => {
       onSave();
     }
   };
+  console.log(`min date is ${reservationObject.minDate}`);
+  console.log(`max date is ${reservationObject.maxDate}`);
 
   return (
     <Box sx={{ mt: 5 }}>
@@ -77,6 +80,8 @@ const ReservationForm = ({ reservationObject, onSave }: Props) => {
           >
             <Grid item xs={12}>
               <DatePicker
+                minDate={moment(reservationObject.minDate).toDate()}
+                maxDate={moment(reservationObject.maxDate).toDate()}
                 disablePast
                 inputFormat="yyyy-MM-dd"
                 mask="____-__-__"

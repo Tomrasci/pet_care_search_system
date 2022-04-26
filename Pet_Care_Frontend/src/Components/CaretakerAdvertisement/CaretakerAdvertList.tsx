@@ -100,14 +100,25 @@ const CaretakerAdvertList = ({ currentUser }: any) => {
                               </Typography>
                             </CardContent>
                             <CardActions>
-                              <Link
-                                to="/Login"
-                                style={{
-                                  textDecoration: "none",
-                                }}
-                              >
-                                <Button size="small">More information</Button>
-                              </Link>
+                              {currentUser ? (
+                                <Link
+                                  to={`/CaretakerAdvertisement/${advert.id}`}
+                                  style={{
+                                    textDecoration: "none",
+                                  }}
+                                >
+                                  <Button size="small">More information</Button>
+                                </Link>
+                              ) : (
+                                <Link
+                                  to="/Login"
+                                  style={{
+                                    textDecoration: "none",
+                                  }}
+                                >
+                                  <Button size="small">More information</Button>
+                                </Link>
+                              )}
                             </CardActions>
                           </Grid>
                         </Grid>

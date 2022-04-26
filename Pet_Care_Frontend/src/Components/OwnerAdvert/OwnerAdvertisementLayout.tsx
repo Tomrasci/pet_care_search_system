@@ -141,7 +141,7 @@ const OwnerAdvertisement = ({ currentUser }: { currentUser: ICurrentUser }) => {
                     color="inherit"
                     sx={{ fontSize: 20, fontWeight: 600 }}
                   >
-                    Caretaker available services
+                    Looking for services
                   </Typography>
                 </Grid>
                 <Grid item xs={6}>
@@ -189,7 +189,7 @@ const OwnerAdvertisement = ({ currentUser }: { currentUser: ICurrentUser }) => {
                     color="inherit"
                     sx={{ fontSize: 20, fontWeight: 600 }}
                   >
-                    Available care of pets
+                    Need to take care of pets
                   </Typography>
                 </Grid>
                 <Grid item xs={6}>
@@ -236,7 +236,7 @@ const OwnerAdvertisement = ({ currentUser }: { currentUser: ICurrentUser }) => {
                     color="inherit"
                     sx={{ fontSize: 20, fontWeight: 600 }}
                   >
-                    Languages
+                    Looking for a person speaking language(s)
                   </Typography>
                 </Grid>
                 <Grid item xs={6}>
@@ -316,9 +316,7 @@ const OwnerAdvertisement = ({ currentUser }: { currentUser: ICurrentUser }) => {
             />
             <Box marginY={2}></Box>
             {/* <Box sx={{ maxWidth: 1000 }} > */}
-            <Typography color="inherit" sx={{ fontSize: 20, fontWeight: 600 }}>
-              Schedule/Time reservation
-            </Typography>
+
             <Grid
               container
               item
@@ -329,17 +327,36 @@ const OwnerAdvertisement = ({ currentUser }: { currentUser: ICurrentUser }) => {
                 display: "flex",
               }}
             >
-              <Link
-                style={{ textDecoration: "none", color: "white" }}
-                to={"/caretakerCalendar/" + advertDetails.id}
-              >
-                <Button
-                  style={{ minHeight: 60, fontSize: 20 }}
-                  variant="contained"
+              <Grid item xs={6}>
+                <Typography
+                  color="inherit"
+                  sx={{ fontSize: 20, fontWeight: 600 }}
                 >
-                  Check schedule and reserve
-                </Button>
-              </Link>
+                  Required for date(s) and time(s)
+                </Typography>
+              </Grid>
+              <Grid item xs={6}>
+                {advertDetails.endDate ? (
+                  <Typography>
+                    Date:
+                    {" " +
+                      new Date(advertDetails.startDate).toDateString() +
+                      " " +
+                      " - " +
+                      new Date(advertDetails.endDate).toDateString()}
+                  </Typography>
+                ) : (
+                  <Typography>
+                    Date:
+                    {" " + new Date(advertDetails.startDate).toDateString()}
+                  </Typography>
+                )}
+                <GridBreak />
+                Time(s):
+                {advertDetails.time_intervals.map((time) => {
+                  return <Typography>{" " + time}</Typography>;
+                })}
+              </Grid>
             </Grid>
             <Box marginY={2}></Box>
             <Divider

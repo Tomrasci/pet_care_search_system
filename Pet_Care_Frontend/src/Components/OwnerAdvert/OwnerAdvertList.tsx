@@ -96,14 +96,25 @@ const OwnerAdvertList = ({ currentUser }: any) => {
                               </Typography>
                             </CardContent>
                             <CardActions>
-                              <Link
-                                to="/Login"
-                                style={{
-                                  textDecoration: "none",
-                                }}
-                              >
-                                <Button size="small">More information</Button>
-                              </Link>
+                              {currentUser ? (
+                                <Link
+                                  to={`/OwnerAdvertisement/${advert.id}`}
+                                  style={{
+                                    textDecoration: "none",
+                                  }}
+                                >
+                                  <Button size="small">More information</Button>
+                                </Link>
+                              ) : (
+                                <Link
+                                  to="/Login"
+                                  style={{
+                                    textDecoration: "none",
+                                  }}
+                                >
+                                  <Button size="small">More information</Button>
+                                </Link>
+                              )}
                             </CardActions>
                           </Grid>
                         </Grid>

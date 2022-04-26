@@ -346,7 +346,7 @@ const CaretakerAdvertisement = ({
             >
               <Link
                 style={{ textDecoration: "none", color: "white" }}
-                to={"/caretakerCalendar/" + advertDetails.id}
+                to={"/ReserveFromCalendar/" + advertDetails.id}
               >
                 <Button
                   style={{ minHeight: 60, fontSize: 20 }}
@@ -371,5 +371,3 @@ const CaretakerAdvertisement = ({
 };
 
 export default CaretakerAdvertisement;
-
-

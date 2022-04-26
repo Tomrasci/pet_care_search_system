@@ -14,6 +14,9 @@ import languageService from '../services/language.service';
 import { IOwnerAdvertCreate } from '../models/interfaces/IOwnerAdvertCreate';
 import ownerAdvertService from '../services/ownerAdvert.service';
 import fixJSONType from '../utils/fixJsonType';
+import { INamesObject } from '../models/interfaces/INamesObject';
+import MapObjectNamesToStringArray from '../utils/MapObjectNamesToStringArray';
+import { IOwnerAdvertGot } from '../models/interfaces/IOwnerAdvertGot';
 
 const createOwnerAdvertisement = async (
   req: Request,
@@ -125,18 +128,33 @@ const getOwnerAdvert = async (
   res: Response,
   next: NextFunction
 ) => {
-  const cAdvert = await ownerAdvertService.getOwnerAdvertById(
+  const oAdvert = await ownerAdvertService.getOwnerAdvertById(
     Number(req.params.id)
   );
 
-  const newInterv: string[] = fixJSONType(cAdvert.time_intervals);
-  console.log(`newInterv is ${newInterv}`);
-  const newAdvert = {
-    ...cAdvert,
+  const newInterv: string[] = fixJSONType(oAdvert.time_intervals);
+  const ownerLanguages: INamesObject[] =
+    await languageService.getOwnerLanguageNames(oAdvert.id);
+  const ownerPets: INamesObject[] = await petTypeService.getOwnerPetNames(
+    oAdvert.id
+  );
+  const ownerServices: INamesObject[] =
+    await serviceTypeService.getOwnerServiceNames(oAdvert.id);
+
+  const languages = MapObjectNamesToStringArray(ownerLanguages);
+  const pets = MapObjectNamesToStringArray(ownerPets);
+  const services = MapObjectNamesToStringArray(ownerServices);
+
+  const fullAdvert: IOwnerAdvertGot = {
+    ...oAdvert,
+    languages: languages,
+    services: services,
+    pets: pets,
     time_intervals: newInterv
   };
+
   logger.info(`Owner advert has been retrieved with id  ${req.params.id}`);
-  return res.status(ResponseCodes.OK).json(newAdvert);
+  return res.status(ResponseCodes.OK).json(fullAdvert);
 };
 
 const getOwnerAdverts = async (
