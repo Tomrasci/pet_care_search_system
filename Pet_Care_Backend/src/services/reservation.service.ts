@@ -1,5 +1,6 @@
 import reservationModel from '../models/reservationModel';
 import { IReservation } from '../models/interfaces/IReservation';
+import moment from 'moment';
 
 const nodemailer = require('nodemailer');
 
@@ -53,15 +54,26 @@ const getConfirmedAdvertisementReservations = async (id: number) => {
 const sendEmailAboutReservation = async (
   status: string,
   reservationTime: string,
-  recipientEmail: string
+  recipientEmail: string,
+  reservationDate: Date,
+  reservationDescription: string
 ) => {
   const senderEmail = 'petcaresearchsystem@gmail.com';
-  const message = `Your reservation for ${reservationTime} status is ${status}`;
+  const message =
+    `Your reservation for` +
+    '\n' +
+    `${moment(reservationDate).format(`YYYY-MM-DD`)}` +
+    '\n' +
+    `${reservationTime}` +
+    '\n' +
+    `${reservationDescription}` +
+    '\n' +
+    `status is ${status}`;
   const transporter = nodemailer.createTransport({
     service: 'Gmail',
     auth: {
       user: senderEmail,
-      pass: 'rcjqttnvmedswzms'
+      pass: process.env.SYSTEM_EMAIL_PASS
     }
   });
   const mailOptons = {

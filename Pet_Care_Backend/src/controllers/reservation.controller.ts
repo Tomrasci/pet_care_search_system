@@ -84,7 +84,9 @@ const createReservations = async (
       await reservationService.sendEmailAboutReservation(
         'pending',
         reservation.timeInterval,
-        user.email
+        user.email,
+        reservation.date,
+        reservation.description
       );
     }
     logger.info(
@@ -121,6 +123,19 @@ const confirmReservation = async (
 ) => {
   try {
     await reservationService.confirmReservation(Number(req.params.id));
+    const confirmedReservation = await reservationService.getReservationById(
+      Number(req.params.id)
+    );
+    const user = await userService.getUserById(confirmedReservation.user_id);
+    await reservationService.sendEmailAboutReservation(
+      'confirmed',
+      `${confirmedReservation.startTime}` +
+        ' -' +
+        `${confirmedReservation.endTime}`,
+      user.email,
+      confirmedReservation.date,
+      confirmedReservation.description
+    );
   } catch (err) {
     logger.error(err.message);
   }
@@ -134,6 +149,19 @@ const cancelReservation = async (
 ) => {
   try {
     await reservationService.cancelReservation(Number(req.params.id));
+    const cancelledReservation = await reservationService.getReservationById(
+      Number(req.params.id)
+    );
+    const user = await userService.getUserById(cancelledReservation.user_id);
+    await reservationService.sendEmailAboutReservation(
+      'cancelled',
+      `${cancelledReservation.startTime}` +
+        ' -' +
+        `${cancelledReservation.endTime}`,
+      user.email,
+      cancelledReservation.date,
+      cancelledReservation.description
+    );
   } catch (err) {
     logger.error(err.message);
   }
