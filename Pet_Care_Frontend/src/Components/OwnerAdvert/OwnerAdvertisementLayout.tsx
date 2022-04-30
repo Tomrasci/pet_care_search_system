@@ -1,21 +1,11 @@
-import React, { useEffect } from "react";
-import { useState } from "react";
-import caretakerAdvertisementApi from "../../Api/caretakerAdvertisementApi";
-import { ICaretakerAdvert } from "../../Interfaces/Caretaker/ICaretakerAdvert";
-import { Link, useParams } from "react-router-dom";
-import {
-  Box,
-  Button,
-  ButtonProps,
-  Divider,
-  Grid,
-  Paper,
-  Typography,
-} from "@mui/material";
+import { Box, Divider, Grid, Typography } from "@mui/material";
+import React, { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
 import styled from "styled-components";
-import { ICurrentUser } from "../../Interfaces/User/ICurrentUser";
-import { IOwnerAdvert } from "../../Interfaces/Owner/IOwnerAdvert";
 import ownerAdverisementApi from "../../Api/ownerAdverisementApi";
+import { IOwnerAdvert } from "../../Interfaces/Owner/IOwnerAdvert";
+import { ICurrentUser } from "../../Interfaces/User/ICurrentUser";
+import "../CaretakerAdvertisement/CaretakerAdvertList.css";
 
 export const GridBreak = styled.div`
   width: 100%;
@@ -74,9 +64,10 @@ const OwnerAdvertisement = ({ currentUser }: { currentUser: ICurrentUser }) => {
                   }}
                 >
                   <img
+                    className="cardImage"
                     src={"http://localhost:3002/" + advertDetails.photo_link}
                     width="250"
-                    height="150"
+                    height="250"
                   />
                 </Grid>
                 <Grid

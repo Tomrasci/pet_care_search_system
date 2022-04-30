@@ -59,9 +59,10 @@ const OwnerAdvertList = ({ currentUser }: any) => {
                         <Grid item>
                           <CardMedia
                             component="img"
+                            className="cardImage"
                             sx={{
                               width: 150,
-                              height: 100,
+                              height: 150,
                               marginLeft: 2,
                             }}
                             image={"http://localhost:3002/" + advert.photo_link}

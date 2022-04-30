@@ -16,6 +16,7 @@ import styled from "styled-components";
 import { ICurrentUser } from "../../Interfaces/User/ICurrentUser";
 import Comments from "./Comments";
 import "./CommentStyles.css";
+import "./CaretakerAdvertList.css";
 
 export const GridBreak = styled.div`
   width: 100%;
@@ -82,9 +83,10 @@ const CaretakerAdvertisement = ({
                   }}
                 >
                   <img
+                    className="cardImage"
                     src={"http://localhost:3002/" + advertDetails.photo_link}
                     width="250"
-                    height="150"
+                    height="250"
                   />
                 </Grid>
                 <Grid
