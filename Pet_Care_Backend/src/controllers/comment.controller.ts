@@ -83,11 +83,7 @@ const updateComment = async (
       ApiError.badRequestError(`Body validation failed ${error.message}`)
     );
   }
-
-  const editedComment = await commentService.updateComment(
-    gottenComment,
-    Number(req.params.id)
-  );
+  await commentService.updateComment(gottenComment, Number(req.params.id));
 
   logger.info(`Comment has been edited`);
 

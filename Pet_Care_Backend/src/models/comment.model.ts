@@ -46,7 +46,19 @@ const insertComment = async (comment: IComment) => {
         ...comment
       })
       .then((id) => {
-        return database('comment').where({ id }).first().select();
+        return database('comment')
+          .where('comment.id', id)
+          .join(`user`, `comment.user_id`, `user.id`)
+          .first()
+          .select(
+            'comment.id',
+            'comment.description',
+            'comment.created_at',
+            'comment.updated_at',
+            'comment.user_id',
+            'comment.advertisement_id',
+            'user.name as user_name'
+          );
       });
   } catch (err) {
     console.log(err.message);

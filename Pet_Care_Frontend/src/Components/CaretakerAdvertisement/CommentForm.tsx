@@ -20,9 +20,11 @@ const CommentForm = ({
       <TextField
         multiline
         rows={4}
+        fullWidth
         label="Comment"
         variant="outlined"
-        className="comment-form-textarea"
+        // className="comment-form-textarea"
+        sx={{ width: "100%" }}
         value={text}
         onChange={(e) => setText(e.target.value)}
       />

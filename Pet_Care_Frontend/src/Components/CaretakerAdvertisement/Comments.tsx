@@ -28,7 +28,6 @@ const Comments = ({ currentUser, currentAdvertisement }: any) => {
       advertisement_id: currentAdvertisement.id,
       user_id: currentUser.id,
     };
-    // /const comment: IFetchedComment =
     await commentApi.createComment(newComment).then((comment) => {
       setFetchedComments([...fetchedComments, comment]);
     });
