@@ -2,6 +2,7 @@ import { IUser } from '../models/interfaces/IUser';
 import Joi from 'joi';
 import { ICaretakerAdvertCreate } from '../models/interfaces/ICaretakerAdvertCreate';
 import { IOwnerAdvertCreate } from '../models/interfaces/IOwnerAdvertCreate';
+import { IComment } from '../models/interfaces/IComment';
 
 const validateUser = (user: IUser) => {
   const schema = Joi.object().keys({
@@ -56,4 +57,18 @@ const validateOwnerAdvert = (ownerAdvert: IOwnerAdvertCreate) => {
   return schema.validate(ownerAdvert);
 };
 
-export default { validateUser, validateCaretakerAdvert, validateOwnerAdvert };
+const validateComment = (comment: IComment) => {
+  const schema = Joi.object().keys({
+    description: Joi.string().required(),
+    user_id: Joi.number().required(),
+    advertisement_id: Joi.number().required()
+  });
+  return schema.validate(comment);
+};
+
+export default {
+  validateUser,
+  validateCaretakerAdvert,
+  validateOwnerAdvert,
+  validateComment
+};

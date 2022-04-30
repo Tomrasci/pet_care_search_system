@@ -38,7 +38,6 @@ const Register = () => {
 
   const registerUser = async () => {
     if (!role) {
-      console.log(`role is empty and value is ${role}`);
       setShowRoleError(true);
     } else {
       const userInfo: IUser = {

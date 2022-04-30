@@ -11,12 +11,14 @@ import { ICaretakerAdvert } from "../../Interfaces/Caretaker/ICaretakerAdvert";
 import { CardMedia, Grid } from "@mui/material";
 import { Link } from "react-router-dom";
 import "./CaretakerAdvertList.css";
+import isEmpty from "../../Utils/Empty";
 
 const CaretakerAdvertList = ({ currentUser }: any) => {
   const [caretakerAdverts, setCaretakerAdverts] = useState<ICaretakerAdvert[]>(
     []
   );
 
+  console.log(`current user is ${JSON.stringify(currentUser)}`);
   useEffect(() => {
     async function getAdverts() {
       const cAdverts =
@@ -100,7 +102,7 @@ const CaretakerAdvertList = ({ currentUser }: any) => {
                               </Typography>
                             </CardContent>
                             <CardActions>
-                              {currentUser ? (
+                              {currentUser && !isEmpty(currentUser) ? (
                                 <Link
                                   to={`/CaretakerAdvertisement/${advert.id}`}
                                   style={{

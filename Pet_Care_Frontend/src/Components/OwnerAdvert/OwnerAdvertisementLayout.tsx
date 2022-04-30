@@ -354,7 +354,7 @@ const OwnerAdvertisement = ({ currentUser }: { currentUser: ICurrentUser }) => {
                 <GridBreak />
                 Time(s):
                 {advertDetails.time_intervals.map((time) => {
-                  return <Typography>{" " + time}</Typography>;
+                  return <Typography>{time}</Typography>;
                 })}
               </Grid>
             </Grid>

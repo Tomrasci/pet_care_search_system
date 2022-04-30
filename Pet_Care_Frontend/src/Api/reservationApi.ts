@@ -32,13 +32,6 @@ const getReservation = async (id: number) => {
   return data;
 };
 
-// const editReservation= async (
-//   id: number,
-//   caretakerAdvert: ICaretakerAdvertCreate
-// ) => {
-//   return await http.put(`/caretakerAdverts/${id}`, caretakerAdvert);
-// };
-
 const deleteReservations = async (uid: number, aid: number) => {
   return await http.delete(`/caretakerAdverts/${uid}/${aid}`);
 };

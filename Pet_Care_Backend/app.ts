@@ -8,6 +8,8 @@ import serviceTypes from './src/routes/serviceType.routes';
 import languages from './src/routes/language.routes';
 import reservations from './src/routes/reservation.routes';
 import ownerAdvertisements from './src/routes/ownerAdvert.routes';
+import comments from './src/routes/comment.routes';
+
 import path from 'path';
 
 require('dotenv').config();
@@ -30,6 +32,7 @@ app.use(serviceTypes);
 app.use(languages);
 app.use(reservations);
 app.use(ownerAdvertisements);
+app.use(comments);
 app.use(apiErrorHandler);
 
 app.get('/', (req: Request, res: Response) => {

@@ -14,6 +14,8 @@ import {
 } from "@mui/material";
 import styled from "styled-components";
 import { ICurrentUser } from "../../Interfaces/User/ICurrentUser";
+import Comments from "./Comments";
+import "./CommentStyles.css";
 
 export const GridBreak = styled.div`
   width: 100%;
@@ -361,6 +363,32 @@ const CaretakerAdvertisement = ({
               style={{ color: "#793209" }}
               sx={{ borderBottomWidth: 3 }}
             />
+            <Box marginY={2}></Box>
+            <Grid
+              container
+              item
+              xs={12}
+              style={{
+                justifyContent: "center",
+                alignItems: "center",
+                display: "flex",
+              }}
+            >
+              <Typography
+                color="inherit"
+                sx={{ fontSize: 25, fontWeight: 600 }}
+              >
+                Advertisement comments
+              </Typography>
+            </Grid>
+            <Box marginY={2}></Box>
+            <Grid container item xs={12}>
+              <Comments
+                currentUser={currentUser}
+                currentAdvertisement={advertDetails}
+              />
+              <Divider />
+            </Grid>
           </Grid>
         </Box>
       ) : (
