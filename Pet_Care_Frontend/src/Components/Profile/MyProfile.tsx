@@ -150,9 +150,11 @@ const MyProfile = ({ currentUser }: any) => {
               </Grid>
               <Grid item xs={6} sm={4}>
                 <Box marginY={5}>
-                  <Button type="submit" variant="contained">
-                    Change Password
-                  </Button>
+                  <Link to="/ChangePassword" style={{ textDecoration: "none" }}>
+                    <Button type="submit" variant="contained">
+                      Change Password
+                    </Button>
+                  </Link>
                 </Box>
               </Grid>
               <Grid item xs={0} sm={2}></Grid>

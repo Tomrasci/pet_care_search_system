@@ -27,6 +27,7 @@ import OwnerAdvertisement from "./Components/OwnerAdvert/OwnerAdvertisementLayou
 import OwnerReservations from "./Components/OwnerAdvert/MyOwnerResrvations";
 import MyProfile from "./Components/Profile/MyProfile";
 import EditProfile from "./Components/Profile/EditProfile";
+import ChangePassword from "./Components/Profile/ChangePassword";
 
 const guestLinksArray = [
   {
@@ -146,6 +147,10 @@ export default function App() {
         <Route
           path={"/Editprofile"}
           element={<EditProfile currentUser={currentUser} />}
+        ></Route>
+        <Route
+          path={"/ChangePassword"}
+          element={<ChangePassword currentUser={currentUser} />}
         ></Route>
         <Route path={"/"} element={<Home />}></Route>
         ))

@@ -21,10 +21,15 @@ const updateUser = async (user: IUser, id: number) => {
   return await userModel.updateUser(user, id);
 };
 
+const changePassword = async (password: string, id: number) => {
+  return await userModel.changePassword(password, id);
+};
+
 export default {
   registerUser,
   getUserByUsername,
   getUserByEmail,
   getUserById,
-  updateUser
+  updateUser,
+  changePassword
 };

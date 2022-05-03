@@ -53,6 +53,12 @@ const getUserDetails = async () => {
   return data;
 };
 
+const changeUserPassword = async (passwordObject: any) => {
+  return http.put("/changePassword", passwordObject, {
+    headers: authHeader(),
+  });
+};
+
 export default {
   userRegister,
   login,
@@ -60,4 +66,5 @@ export default {
   getCurrentUser,
   getUserDetails,
   updateUser,
+  changeUserPassword,
 };

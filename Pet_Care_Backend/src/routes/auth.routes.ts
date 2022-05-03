@@ -12,6 +12,11 @@ router.get(
   authJwt.verifyToken,
   userController.getUserDetails
 );
+router.put(
+  '/changePassword',
+  authJwt.verifyToken,
+  userController.changePassword
+);
 
 router.put('/updateProfile', authJwt.verifyToken, userController.updateUser);
 

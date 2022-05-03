@@ -32,10 +32,21 @@ const updateUser = async (user: IUser, id: number) => {
   }
 };
 
+const changePassword = async (password: string, id: number) => {
+  try {
+    return await database('user').where({ id }).update({
+      password: password
+    });
+  } catch (err) {
+    console.log(err.message);
+  }
+};
+
 export default {
   createUser,
   getUserByEmail,
   getUserByUsername,
   getUserById,
-  updateUser
+  updateUser,
+  changePassword
 };

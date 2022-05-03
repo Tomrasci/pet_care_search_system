@@ -138,7 +138,30 @@ const updateUser = async (req: Request, res: Response, next: NextFunction) => {
 
     return res.status(ResponseCodes.OK).json(updatedUser);
   } else {
-    next(ApiError.badRequestError(`Something went wrong`));
+    return next(ApiError.badRequestError(`Something went wrong`));
+  }
+};
+
+const changePassword = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  const user: IUser = await userService.getUserById(req.body.user.id);
+  if (user) {
+    const passwordIsValid = bcrypt.compareSync(
+      req.body.password,
+      user.password as string
+    );
+    if (!passwordIsValid) {
+      return next(ApiError.unauthorizedError(`Invalid username or password`));
+    }
+    const newPassword = bcrypt.hashSync(req.body.newPassword, 10);
+    const changed = await userService.changePassword(
+      newPassword,
+      req.body.user.id
+    );
+    return res.status(ResponseCodes.OK).json(changed);
   }
 };
 
@@ -161,4 +184,4 @@ function generateAccessToken(user) {
   });
 }
 
-export default { register, login, updateUser, getUserDetails };
+export default { register, login, updateUser, getUserDetails, changePassword };
