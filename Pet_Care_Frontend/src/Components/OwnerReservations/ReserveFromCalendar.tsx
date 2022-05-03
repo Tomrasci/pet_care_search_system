@@ -35,6 +35,7 @@ import { IReservationEvent } from "../../Interfaces/Caretaker/IReservationEvent"
 import { IFetchedReservation } from "../../Interfaces/IFetchedReservation";
 import { useParams } from "react-router";
 import { ICaretakerAdvert } from "../../Interfaces/Caretaker/ICaretakerAdvert";
+import { IFixedReservation } from "../../Interfaces/IFixedReservation";
 
 const ReserveFromCalendar = ({ currentUser }: any) => {
   const { id } = useParams();
@@ -61,7 +62,7 @@ const ReserveFromCalendar = ({ currentUser }: any) => {
     React.useState("");
 
   const [advertReservations, setAdvertReservations] = useState<
-    IFetchedReservation[]
+    IFixedReservation[]
   >([]);
 
   const reserving = true;
@@ -82,8 +83,9 @@ const ReserveFromCalendar = ({ currentUser }: any) => {
 
       const advertReservations =
         await reservationApi.getConfirmedAdvertisementReservations(Number(id));
-
-      setAdvertReservations(advertReservations);
+      const fixedReservations =
+        CalendarFunctions.fixReservationTimes(advertReservations);
+      setAdvertReservations(fixedReservations);
 
       const advert = await caretakerAdvertisementApi.getCaretakerAdvertisement(
         Number(id)
@@ -213,24 +215,33 @@ const ReserveFromCalendar = ({ currentUser }: any) => {
   };
 
   const handleReservation = async () => {
-    let reservations: IReservation[] = [];
+    // let reservations: IReservation[] = [];
 
-    function getValues(time: string, index: number) {
-      reservations.push({
-        date: value || new Date(),
-        timeInterval: time,
-        user_id: currentUser.id,
-        advertisement_id: Number(id),
-        status: "pending",
-        description: reservationDescription,
-      });
-    }
-    selectInterval.forEach(getValues);
-    let reservs = {
-      reservations: reservations,
+    // function getValues(time: string, index: number) {
+    //   reservations.push({
+    //     date: value || new Date(),
+    //     timeInterval: time,
+    //     user_id: currentUser.id,
+    //     advertisement_id: Number(id),
+    //     status: "pending",
+    //     description: reservationDescription,
+    //   });
+    // }
+    // selectInterval.forEach(getValues);
+    // let reservs = {
+    //   reservations: reservations,
+    // };
+
+    const reservation: IReservation = {
+      date: value || new Date(),
+      timeInterval: selectInterval.toString(),
+      user_id: currentUser.id,
+      advertisement_id: Number(id),
+      status: "pending",
+      description: reservationDescription,
     };
 
-    const result = await reservationApi.createReservations(reservs);
+    const result = await reservationApi.createReservations(reservation);
     if (result.status !== 201) {
       toast.error("Reservation creation failed");
     } else {

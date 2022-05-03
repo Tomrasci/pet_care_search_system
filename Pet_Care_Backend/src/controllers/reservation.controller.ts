@@ -2,9 +2,9 @@ import { Request, Response, NextFunction } from 'express';
 import logger from '../../logger';
 import { ResponseCodes } from '../utils/responseCodes';
 import reservationService from '../services/reservation.service';
-import fixReservationTimes from '../utils/fixReservationTimes';
 import { IGotReservation } from '../models/interfaces/IGotReservation';
 import userService from '../services/user.service';
+import { IReservation } from '../models/interfaces/IReservation';
 
 const getReservationById = async (
   req: Request,
@@ -71,24 +71,32 @@ const createReservations = async (
   res: Response,
   next: NextFunction
 ) => {
-  const reservations: IGotReservation[] = req.body.reservations;
-  const fixedReservations = fixReservationTimes(reservations);
+  // const reservations: IGotReservation[] = req.body.reservations;
+  const reservation: IReservation = {
+    advertisement_id: req.body.advertisement_id,
+    date: req.body.date,
+    description: req.body.description,
+    status: req.body.status,
+    time_intervals: req.body.timeInterval,
+    user_id: req.body.user_id
+  };
+  // const fixedReservations = fixReservationTimes(reservations);
 
   try {
-    await reservationService.insertReservations(fixedReservations);
+    await reservationService.insertReservation(reservation);
     logger.info(
-      `Reservations have been inserted ${JSON.stringify(fixedReservations)}`
+      `Reservations have been inserted ${JSON.stringify(reservation)}`
     );
-    const user = await userService.getUserById(reservations[0].user_id);
-    for (const reservation of reservations) {
-      await reservationService.sendEmailAboutReservation(
-        'pending',
-        reservation.timeInterval,
-        user.email,
-        reservation.date,
-        reservation.description
-      );
-    }
+    const user = await userService.getUserById(reservation.user_id);
+
+    await reservationService.sendEmailAboutReservation(
+      'pending',
+      reservation.time_intervals,
+      user.email,
+      reservation.date,
+      reservation.description
+    );
+
     logger.info(
       `Reservation messages have been sent to the user ${JSON.stringify(
         user.name
@@ -97,7 +105,7 @@ const createReservations = async (
   } catch (err) {
     console.log(err);
   }
-  return res.status(ResponseCodes.CREATED).json(fixReservationTimes);
+  return res.status(ResponseCodes.CREATED).json(reservation);
 };
 
 const deleteReservations = async (

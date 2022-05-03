@@ -3,6 +3,7 @@ import { ICaretakerAvailability } from "../Interfaces/Caretaker/ICaretakerAvaila
 import { IDatesTimesInterface } from "../Interfaces/Caretaker/IDatesTimesInterface";
 import { IFetchedReservation } from "../Interfaces/IFetchedReservation";
 import { IReservationEvent } from "../Interfaces/Caretaker/IReservationEvent";
+import { IFixedReservation } from "../Interfaces/IFixedReservation";
 
 const matchingDaysBetween = function (start: Date, end: Date, test: any) {
   var days = [];
@@ -67,7 +68,7 @@ const getAllDaysWithTimes = (
   return newArr;
 };
 
-const makeReservationsToEvents = (reservationArray: IFetchedReservation[]) => {
+const makeReservationsToEvents = (reservationArray: IFixedReservation[]) => {
   const reservations = reservationArray.map((res) => {
     return {
       ...res,
@@ -90,7 +91,7 @@ const makeReservationsToEvents = (reservationArray: IFetchedReservation[]) => {
 };
 
 const makeReservationsToEventsForOwner = (
-  reservationArray: IFetchedReservation[]
+  reservationArray: IFixedReservation[]
 ) => {
   const reservations = reservationArray.map((res) => {
     return {
@@ -114,7 +115,7 @@ const makeReservationsToEventsForOwner = (
 };
 
 const filterExistingReservationsFromTImes = (
-  reservationArray: IFetchedReservation[],
+  reservationArray: IFixedReservation[],
   weekdayInterval: string[],
   day: number,
   date: Date | null
@@ -141,6 +142,34 @@ const filterExistingReservationsFromTImes = (
   }
   return weekdayInterval;
 };
+function fixReservationTimes(reservationArray: IFetchedReservation[]) {
+  // const fixedArray: IFixedReservation[] = reservationArray.map((reservation) => ({
+  //   startTime: reservation.timeInterval.split('-')[0],
+  //   endTime: reservation.timeInterval.split('-')[1],
+  //   date: reservation.date,
+  //   user_id: reservation.user_id,
+  //   advertisement_id: reservation.advertisement_id,
+  //   status: reservation.status,
+  //   description: reservation.description
+  // }));
+  // return fixedArray;
+  const fixedArray: IFixedReservation[] = [];
+  for (var i = 0; i < reservationArray.length; i++) {
+    const timeArray = reservationArray[i].timeInterval.split(",");
+    for (var j = 0; j < timeArray.length; j++) {
+      fixedArray.push({
+        startTime: timeArray[i].split("-")[0],
+        endTime: timeArray[i].split("-")[1],
+        date: reservationArray[i].date,
+        user_id: reservationArray[i].user_id,
+        advertisement_id: reservationArray[i].advertisement_id,
+        status: reservationArray[i].status,
+        description: reservationArray[i].description,
+      });
+    }
+  }
+  return fixedArray;
+}
 
 export default {
   matchingDaysBetween,
@@ -150,4 +179,5 @@ export default {
   makeReservationsToEvents,
   makeReservationsToEventsForOwner,
   filterExistingReservationsFromTImes,
+  fixReservationTimes,
 };

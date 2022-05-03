@@ -58,9 +58,9 @@ const getConfirmedAdvertisementReservations = async (
   }
 };
 
-const insertReservations = async (reservationArray: IReservation[]) => {
+const insertReservation = async (reservation: IReservation) => {
   try {
-    return await database('reservation').insert(reservationArray);
+    return await database('reservation').insert(reservation);
   } catch (err) {
     console.log(err.message);
   }
@@ -112,7 +112,7 @@ export default {
   getReservations,
   getOwnerReservations,
   getAdvertisementReservations,
-  insertReservations,
+  insertReservation,
   deleteAdvertisementReservations,
   deleteOwnerAdvertisementReservations,
   confirmReservation,

@@ -4,8 +4,8 @@ import moment from 'moment';
 
 const nodemailer = require('nodemailer');
 
-const createReservation = async (reservationArray: IReservation[]) => {
-  return await reservationModel.insertReservations(reservationArray);
+const createReservation = async (reservation: IReservation) => {
+  return await reservationModel.insertReservation(reservation);
 };
 
 const getReservationById = async (id: number) => {
@@ -35,8 +35,8 @@ const deleteAdvertisementReservations = async (aid: number) => {
   return await reservationModel.deleteAdvertisementReservations(aid);
 };
 
-const insertReservations = async (reservationArray: IReservation[]) => {
-  return await reservationModel.insertReservations(reservationArray);
+const insertReservation = async (reservation: IReservation) => {
+  return await reservationModel.insertReservation(reservation);
 };
 
 const confirmReservation = async (id: number) => {
@@ -99,7 +99,7 @@ export default {
   getAdvertisementReservations,
   deleteAdvertisementReservations,
   deleteOwnerAdvertisementReservations,
-  insertReservations,
+  insertReservation,
   confirmReservation,
   cancelReservation,
   getConfirmedAdvertisementReservations,
