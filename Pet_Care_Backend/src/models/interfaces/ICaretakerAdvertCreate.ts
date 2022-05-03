@@ -7,6 +7,7 @@ export interface ICaretakerAdvertCreate {
   experience: string;
   activity: string;
   day_price: number;
+  city: string;
   description: string;
   extra_information: string;
   title: string;

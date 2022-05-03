@@ -16,29 +16,26 @@ import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import * as yup from "yup";
 import caretakerAdvertisementApi from "../../Api/caretakerAdvertisementApi";
+import languageApi from "../../Api/languageApi";
+import petTypeApi from "../../Api/petTypeApi";
+import serviceTypeApi from "../../Api/serviceTypeApi";
+import { ICaretakerAdvert } from "../../Interfaces/Caretaker/ICaretakerAdvert";
 import { ICaretakerAdvertCreate } from "../../Interfaces/Caretaker/ICaretakerAdvertCreate";
-import { useFormHook } from "../../Utils/useFormHook";
+import { IDaysObject } from "../../Interfaces/Caretaker/IDaysObject";
+import { ILanguage } from "../../Interfaces/Caretaker/ILanguage";
+import { ILanguageCheck } from "../../Interfaces/Caretaker/ILanguageCheck";
+import { ILanguageType } from "../../Interfaces/Caretaker/ILanguageType";
+import { IPet } from "../../Interfaces/Caretaker/IPet";
+import { IPetCheck } from "../../Interfaces/Caretaker/IPetCheck";
+import { IPetType } from "../../Interfaces/Caretaker/IPetType";
+import { IService } from "../../Interfaces/Caretaker/IService";
+import { IServiceCheck } from "../../Interfaces/Caretaker/IServiceCheck";
+import { IServiceType } from "../../Interfaces/Caretaker/IServiceType";
+import FilterWeekDay from "../../Utils/FilterWeekday";
 import AdvertForm from "./AdvertForm";
 import PersInformation from "./PersInformation";
 import PriceandDates from "./PriceandDates";
-import useState from "react";
-import { IPetType } from "../../Interfaces/Caretaker/IPetType";
-import { IServiceType } from "../../Interfaces/Caretaker/IServiceType";
-import petTypeApi from "../../Api/petTypeApi";
-import serviceTypeApi from "../../Api/serviceTypeApi";
-import languageApi from "../../Api/languageApi";
-import { ILanguageType } from "../../Interfaces/Caretaker/ILanguageType";
-import isEmpty from "../../Utils/Empty";
-import { ICaretakerAdvert } from "../../Interfaces/Caretaker/ICaretakerAdvert";
-import { IPet } from "../../Interfaces/Caretaker/IPet";
-import { IPetCheck } from "../../Interfaces/Caretaker/IPetCheck";
-import { IServiceCheck } from "../../Interfaces/Caretaker/IServiceCheck";
-import { IService } from "../../Interfaces/Caretaker/IService";
-import { ILanguageCheck } from "../../Interfaces/Caretaker/ILanguageCheck";
-import { ILanguage } from "../../Interfaces/Caretaker/ILanguage";
 import interval from "./TimeIntervals";
-import { IDaysObject } from "../../Interfaces/Caretaker/IDaysObject";
-import FilterWeekDay from "../../Utils/FilterWeekday";
 
 const steps = [
   "Personal information",
@@ -85,6 +82,7 @@ export default function AdvertiseBaseEdit({ currentUser }: any) {
     title: advertDetails?.title || "",
     description: advertDetails?.description || "",
     extra_information: advertDetails?.extra_information || "",
+    city: advertDetails?.city || "",
   };
 
   const [timeInterv, setTimeInterv] = React.useState(timeInterval);
@@ -220,7 +218,8 @@ export default function AdvertiseBaseEdit({ currentUser }: any) {
       phone: yup.string().required("Phone is required"),
       age: yup.number().required("Age is required"),
       activity: yup.string().required("Work or activity is required"),
-      experience: yup.string().required("Experience is required"),
+      experience: yup.string().required("Experience field is required"),
+      city: yup.string().required("City is required"),
     }),
     yup.object({
       startDate: yup
@@ -262,7 +261,6 @@ export default function AdvertiseBaseEdit({ currentUser }: any) {
         await caretakerAdvertisementApi.getCaretakerAvailability(
           Number(advertInfo.id)
         );
-      console.log(`preview is ${preview}`);
 
       const mondayArray = FilterWeekDay(availabilityGet, "Mon");
       const tuesdayArray = FilterWeekDay(availabilityGet, "Tue");
@@ -323,6 +321,7 @@ export default function AdvertiseBaseEdit({ currentUser }: any) {
       name: getValues("name"),
       surname: getValues("surname"),
       address: getValues("address"),
+      city: getValues("city"),
       phone: getValues("phone"),
       age: Number(getValues("age")),
       activity: getValues("activity"),

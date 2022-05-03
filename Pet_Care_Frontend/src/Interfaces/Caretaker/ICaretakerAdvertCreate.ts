@@ -6,6 +6,7 @@ export interface ICaretakerAdvertCreate {
   address: string;
   experience: string;
   activity: string;
+  city: string;
   day_price: number;
   description: string;
   extra_information: string;

@@ -49,10 +49,6 @@ const CaretakerAdvertisement = ({
           alignItems="center"
           justifyContent="center"
         >
-          {/* <Typography align="center" color="inherit" sx={{ fontSize: 32 }}>
-            Caretaker advertisements
-          </Typography>
-          <Box sx={{ mt: 5 }}></Box> */}
           <Grid
             container
             direction="column"
@@ -384,12 +380,11 @@ const CaretakerAdvertisement = ({
               </Typography>
             </Grid>
             <Box marginY={2}></Box>
-            <Grid container item xs={12}>
+            <Grid item xs={12}>
               <Comments
                 currentUser={currentUser}
                 currentAdvertisement={advertDetails}
               />
-              <Divider />
             </Grid>
           </Grid>
         </Box>

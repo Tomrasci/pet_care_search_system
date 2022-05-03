@@ -122,6 +122,26 @@ export default function PersInformation({
           </Grid>
           <Grid item xs={12} sm={6}>
             <Controller
+              name="city"
+              control={control}
+              render={({ field }) => (
+                <TextField
+                  {...field}
+                  required
+                  id="city"
+                  name="city"
+                  label="City"
+                  fullWidth
+                  autoComplete="family-name"
+                  variant="standard"
+                  error={!!errors.city}
+                  helperText={errors.city ? errors.city?.message : ""}
+                />
+              )}
+            />
+          </Grid>
+          <Grid item xs={12} sm={6}>
+            <Controller
               name="address"
               control={control}
               render={({ field }) => (
@@ -203,7 +223,7 @@ export default function PersInformation({
               )}
             />
           </Grid>
-          <Grid item xs={12}>
+          <Grid item xs={12} sm={6}>
             <Controller
               name="experience"
               control={control}
@@ -239,7 +259,7 @@ export default function PersInformation({
           </Grid>
           {languages.map((language: ILanguageType, index: number) => {
             return (
-              <Grid item xs={2}>
+              <Grid item sm={2} xs={4}>
                 <FormControlLabel
                   control={
                     <Checkbox

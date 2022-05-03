@@ -70,6 +70,7 @@ export default function OwnerAdvertiseBaseEdit({ currentUser }: any) {
     title: advertDetails?.title || "",
     description: advertDetails?.description || "",
     extra_information: advertDetails?.extra_information || "",
+    city: advertDetails?.city || "",
   };
 
   const [timeInterv, setTimeInterv] = React.useState(timeInterval);
@@ -192,11 +193,9 @@ export default function OwnerAdvertiseBaseEdit({ currentUser }: any) {
 
   React.useEffect(() => {
     async function getAdvert() {
-      console.log(`calling advert`);
       const advertInfo = await ownerAdverisementApi.getOwnerAdvertisement(
         Number(id)
       );
-      console.log(`advertInfo is ${advertInfo}`);
       setAdvertDetails(advertInfo);
       reset(advertInfo);
       setPreview("http://localhost:3002/" + advertInfo.photo_link);
@@ -224,6 +223,7 @@ export default function OwnerAdvertiseBaseEdit({ currentUser }: any) {
       surname: yup.string().required("Last name is required"),
       address: yup.string().required("Address is required"),
       phone: yup.string().required("Phone is required"),
+      city: yup.string().required("City is required"),
     }),
     yup.object({
       startDate: yup
@@ -289,6 +289,7 @@ export default function OwnerAdvertiseBaseEdit({ currentUser }: any) {
       name: getValues("name"),
       surname: getValues("surname"),
       address: getValues("address"),
+      city: getValues("city"),
       phone: getValues("phone"),
       title: getValues("title"),
       description: getValues("description"),

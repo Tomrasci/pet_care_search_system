@@ -8,7 +8,6 @@ export default function fixWeekDayArray(
     startTime: interval.split('-')[0],
     endTime: interval.split('-')[1],
     day_of_week: day,
-    available: true,
     advertisement_id: cAdvertId
   }));
   return fixedArray;

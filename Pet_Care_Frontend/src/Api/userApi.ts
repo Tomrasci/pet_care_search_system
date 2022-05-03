@@ -1,6 +1,7 @@
 import { IUser } from "../Interfaces/User/IUser";
 import http from "../Utils/httpRequestBody";
 import { toast } from "react-toastify";
+import authHeader from "../Authentication/authHeader";
 
 const userRegister = async (user: IUser) => {
   return http.post("/register", user);
@@ -38,4 +39,25 @@ const getCurrentUser = () => {
   }
 };
 
-export default { userRegister, login, logout, getCurrentUser };
+const updateUser = async (user: IUser) => {
+  return http.put("/updateProfile", user, {
+    headers: authHeader(),
+  });
+};
+
+const getUserDetails = async () => {
+  const { data, status } = await http.get("/getUserDetails", {
+    headers: authHeader(),
+  });
+
+  return data;
+};
+
+export default {
+  userRegister,
+  login,
+  logout,
+  getCurrentUser,
+  getUserDetails,
+  updateUser,
+};

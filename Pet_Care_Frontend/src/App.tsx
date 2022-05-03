@@ -4,7 +4,6 @@ import { Route, Routes } from "react-router";
 import userApi from "./Api/userApi";
 import Login from "./Authentication/Login";
 import Register from "./Authentication/Register";
-import Aboutus from "./Components/Aboutus";
 import AdvertiseBase from "./Components/CaretakerAdvertisement/AdvertiseBase";
 import Home from "./Components/Home";
 import { IUser } from "./Interfaces/User/IUser";
@@ -26,16 +25,15 @@ import MyCaretakerAdvertisement from "./Components/CaretakerAdvertisement/MyCare
 import OwnerAdvertList from "./Components/OwnerAdvert/OwnerAdvertList";
 import OwnerAdvertisement from "./Components/OwnerAdvert/OwnerAdvertisementLayout";
 import OwnerReservations from "./Components/OwnerAdvert/MyOwnerResrvations";
+import MyProfile from "./Components/Profile/MyProfile";
+import EditProfile from "./Components/Profile/EditProfile";
 
 const guestLinksArray = [
   {
     path: "/",
     component: <Home />,
   },
-  {
-    path: "/About",
-    component: <Aboutus />,
-  },
+
   {
     path: "/CaretakerAdvertCreate",
     component: <AdvertiseBase />,
@@ -140,6 +138,14 @@ export default function App() {
         <Route
           path={"/MyReservations/:id"}
           element={<OwnerReservations currentUser={currentUser} />}
+        ></Route>
+        <Route
+          path={"/Myprofile"}
+          element={<MyProfile currentUser={currentUser} />}
+        ></Route>
+        <Route
+          path={"/Editprofile"}
+          element={<EditProfile currentUser={currentUser} />}
         ></Route>
         <Route path={"/"} element={<Home />}></Route>
         ))

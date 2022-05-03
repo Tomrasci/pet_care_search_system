@@ -90,7 +90,7 @@ const RegistrationBody = ({
     <>
       <Box marginY={5}>
         <Grid container alignItems="center" justifyContent="center">
-          <Paper elevation={5} sx={{ maxWidth: 700 }}>
+          <Paper elevation={5} sx={{ maxWidth: 900 }}>
             <Box marginY={2}>
               <Typography
                 align="center"

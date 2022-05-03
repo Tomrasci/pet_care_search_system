@@ -28,6 +28,7 @@ const createOwnerAdvertisement = async (
     surname: req.body.surname,
     address: req.body.address,
     phone: req.body.phone,
+    city: req.body.city,
     title: req.body.title,
     description: req.body.description,
     extra_information: req.body.extra_information,
@@ -187,6 +188,7 @@ const updateOwnerAdvert = async (
   const editedOwnerAdvert: IOwnerAdvertCreate = {
     name: req.body.name,
     surname: req.body.surname,
+    city: req.body.city,
     address: req.body.address,
     phone: req.body.phone,
     title: req.body.title,

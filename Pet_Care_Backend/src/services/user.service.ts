@@ -17,4 +17,14 @@ const getUserById = async (id: number) => {
   return await userModel.getUserById(id);
 };
 
-export default { registerUser, getUserByUsername, getUserByEmail, getUserById };
+const updateUser = async (user: IUser, id: number) => {
+  return await userModel.updateUser(user, id);
+};
+
+export default {
+  registerUser,
+  getUserByUsername,
+  getUserByEmail,
+  getUserById,
+  updateUser
+};

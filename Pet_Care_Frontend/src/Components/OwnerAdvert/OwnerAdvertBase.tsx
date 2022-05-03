@@ -65,6 +65,7 @@ export default function OwnerAdvertiseBase({ currentUser }: any) {
     title: "",
     description: "",
     extra_information: "",
+    city: "",
   };
 
   const [timeInterv, setTimeInterv] = React.useState(timeInterval);
@@ -157,6 +158,7 @@ export default function OwnerAdvertiseBase({ currentUser }: any) {
       surname: yup.string().required("Last name is required"),
       address: yup.string().required("Address is required"),
       phone: yup.string().required("Phone is required"),
+      city: yup.string().required("City is required"),
     }),
     yup.object({
       startDate: yup
@@ -224,6 +226,7 @@ export default function OwnerAdvertiseBase({ currentUser }: any) {
       name: getValues("name"),
       surname: getValues("surname"),
       address: getValues("address"),
+      city: getValues("city"),
       phone: getValues("phone"),
       title: getValues("title"),
       description: getValues("description"),

@@ -1,21 +1,25 @@
-export interface IOwnerAdvert {
+export interface ICaretakerAdvertForMap {
   id: number;
   name: string;
   surname: string;
+  age: number;
   phone: string;
   address: string;
+  experience: string;
+  activity: string;
+  city: string;
   day_price: number;
   description: string;
-  city: string;
   extra_information: string;
   title: string;
   languages: string[];
   photo_link: string;
   startDate: Date;
-  endDate: Date | null;
+  endDate: Date;
   startTime: Date;
   endTime: Date;
   pets: string[];
   services: string[];
-  time_intervals: string[];
+  latitude: string;
+  longitude: string;
 }

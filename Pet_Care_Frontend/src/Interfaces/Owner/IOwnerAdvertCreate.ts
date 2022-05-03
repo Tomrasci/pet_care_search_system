@@ -5,6 +5,7 @@ export interface IOwnerAdvertCreate {
   address: string;
   day_price: number;
   description: string;
+  city: string;
   extra_information: string;
   title: string;
   startDate: Date;

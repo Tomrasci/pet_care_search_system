@@ -7,6 +7,7 @@ export interface IOwnerAdvertCreate {
   description: string;
   extra_information: string;
   title: string;
+  city: string;
   startDate: Date;
   endDate: Date | null;
   time_intervals: string;

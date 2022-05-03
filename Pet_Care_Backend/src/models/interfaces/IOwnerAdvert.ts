@@ -6,6 +6,7 @@ export interface IOwnerAdvert {
   address: string;
   activity: string;
   day_price: number;
+  city: string;
   description: string;
   extra_information: string;
   title: string;

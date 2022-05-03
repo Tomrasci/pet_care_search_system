@@ -346,6 +346,19 @@ const Navbar = ({
                               </Link>
                             </MenuItem>
                           ))}
+                          <MenuItem onClick={handleCloseUserMenu}>
+                            <Link
+                              style={{
+                                textDecoration: "none",
+                                color: "black",
+                              }}
+                              to={`/MyProfile`}
+                            >
+                              <Typography textAlign="center">
+                                My Profile
+                              </Typography>
+                            </Link>
+                          </MenuItem>
                           <MenuItem onClick={logOut}>
                             <Typography textAlign="center">Logout</Typography>
                           </MenuItem>
@@ -401,6 +414,20 @@ const Navbar = ({
                               </Link>
                             </MenuItem>
                           ))}
+                          <MenuItem onClick={handleCloseUserMenu}>
+                            <Link
+                              style={{
+                                textDecoration: "none",
+                                color: "black",
+                              }}
+                              to={`/MyProfile`}
+                            >
+                              <Typography textAlign="center">
+                                My Profile
+                              </Typography>
+                            </Link>
+                          </MenuItem>
+
                           <MenuItem onClick={logOut}>
                             <Typography textAlign="center">Logout</Typography>
                           </MenuItem>

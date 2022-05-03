@@ -72,6 +72,7 @@ export default function AdvertiseBase({ currentUser }: any) {
     title: "",
     description: "",
     extra_information: "",
+    city: "",
   };
 
   const [timeInterv, setTimeInterv] = React.useState(timeInterval);
@@ -168,7 +169,8 @@ export default function AdvertiseBase({ currentUser }: any) {
       phone: yup.string().required("Phone is required"),
       age: yup.number().required("Age is required"),
       activity: yup.string().required("Work or activity is required"),
-      experience: yup.string().required("Experience is required"),
+      experience: yup.string().required("Experience field is required"),
+      city: yup.string().required("City is required"),
     }),
     yup.object({
       startDate: yup
@@ -237,6 +239,7 @@ export default function AdvertiseBase({ currentUser }: any) {
       name: getValues("name"),
       surname: getValues("surname"),
       address: getValues("address"),
+      city: getValues("city"),
       phone: getValues("phone"),
       age: Number(getValues("age")),
       activity: getValues("activity"),

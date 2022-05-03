@@ -7,6 +7,12 @@ router.post('/register', userController.register);
 
 router.post('/login', userController.login);
 
-router.get('/userPage', authJwt.verifyToken, userController.usersPage);
+router.get(
+  '/getUserDetails',
+  authJwt.verifyToken,
+  userController.getUserDetails
+);
+
+router.put('/updateProfile', authJwt.verifyToken, userController.updateUser);
 
 module.exports = router;

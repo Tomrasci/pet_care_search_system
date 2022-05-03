@@ -5,6 +5,7 @@ import validation from '../validation/validation';
 import bcrypt from 'bcryptjs';
 import ApiError from '../../error/ApiError';
 import { ResponseCodes } from '../utils/responseCodes';
+import { IUser } from '../models/interfaces/IUser';
 
 const jwt = require('jsonwebtoken');
 
@@ -95,8 +96,63 @@ const login = async (req: Request, res: Response, next: NextFunction) => {
   });
 };
 
-const usersPage = (req: Request, res: Response, next: NextFunction) => {
-  res.status(ResponseCodes.OK).send('Authenticated. Welcome to users page.');
+const updateUser = async (req: Request, res: Response, next: NextFunction) => {
+  const user: IUser = await userService.getUserById(req.body.user.id);
+  if (req.body.email && req.body.email !== user.email) {
+    const testUserEmail = await userService.getUserByEmail(req.body.email);
+    if (testUserEmail) {
+      next(
+        ApiError.duplicateEntryError(
+          `User with email ${req.body.email} already exists`
+        )
+      );
+      return;
+    }
+  }
+  if (req.body.username && req.body.username !== user.username) {
+    const testUserUsername = await userService.getUserByUsername(
+      req.body.username
+    );
+    if (testUserUsername) {
+      next(
+        ApiError.duplicateEntryError(
+          `User with username ${req.body.username} already exists`
+        )
+      );
+      return;
+    }
+  }
+  if (user) {
+    const newUser = {
+      ...user,
+      name: req.body.name || user.name,
+      surname: req.body.surname || user.surname,
+      phone: req.body.phone || user.phone,
+      city: req.body.city || user.city,
+      address: req.body.address || user.address,
+      username: req.body.username || user.username,
+      email: req.body.email || user.email
+    };
+
+    const updatedUser = await userService.updateUser(newUser, req.body.user.id);
+
+    return res.status(ResponseCodes.OK).json(updatedUser);
+  } else {
+    next(ApiError.badRequestError(`Something went wrong`));
+  }
+};
+
+const getUserDetails = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  const user: IUser = await userService.getUserById(req.body.user.id);
+  if (user) {
+    return res.status(ResponseCodes.OK).json(user);
+  } else {
+    next(ApiError.notFoundError(`User not found`));
+  }
 };
 
 function generateAccessToken(user) {
@@ -105,4 +161,4 @@ function generateAccessToken(user) {
   });
 }
 
-export default { register, login, usersPage };
+export default { register, login, updateUser, getUserDetails };

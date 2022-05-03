@@ -17,6 +17,8 @@ import fixWeekDayArray from '../utils/mapWeekdayArray';
 import MapObjectNamesToStringArray from '../utils/MapObjectNamesToStringArray';
 import { INamesObject } from '../models/interfaces/INamesObject';
 import { ICaretakerAdvert } from '../models/interfaces/ICaretakerAdvert';
+import commentService from '../services/comment.service';
+import reservationService from '../services/reservation.service';
 
 const createCaretakerAdvertisement = async (
   req: Request,
@@ -36,6 +38,7 @@ const createCaretakerAdvertisement = async (
     extra_information: req.body.extra_information,
     startDate: req.body.startDate,
     endDate: req.body.endDate,
+    city: req.body.city,
     day_price: req.body.day_price,
     user_id: req.body.user_id
   };
@@ -256,6 +259,7 @@ const updateCareTakerAdvert = async (
     extra_information: req.body.extra_information,
     startDate: req.body.startDate,
     endDate: req.body.endDate,
+    city: req.body.city,
     day_price: req.body.day_price,
     user_id: req.body.user_id
   };
@@ -432,12 +436,21 @@ const deleteCareTakerAdvert = async (
       )
     );
   }
+  const comments = await commentService.getAdvertisementComments(
+    Number(req.params.id)
+  );
+  comments.forEach(async function (comment) {
+    await commentService.deleteComment(comment.id);
+  });
   await caretakerAdvertService.deleteCaretakerAvailability(
     Number(req.params.id)
   );
   await petTypeService.deleteCaretakerPets(Number(req.params.id));
   await serviceTypeService.deleteCaretakerServices(Number(req.params.id));
   await languageService.deleteCaretakerLangauges(Number(req.params.id));
+  await reservationService.deleteAdvertisementReservations(
+    Number(req.params.id)
+  );
 
   await caretakerAdvertService.deleteCareTakerAdvert(Number(req.params.id));
 
