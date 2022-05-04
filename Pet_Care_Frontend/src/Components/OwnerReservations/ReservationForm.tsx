@@ -65,8 +65,8 @@ const ReservationForm = ({ reservationObject, onSave }: Props) => {
       onSave();
     }
   };
-  console.log(`min date is ${reservationObject.minDate}`);
-  console.log(`max date is ${reservationObject.maxDate}`);
+  // console.log(`min date is ${reservationObject.minDate}`);
+  // console.log(`max date is ${reservationObject.maxDate}`);
 
   return (
     <Box sx={{ mt: 5 }}>

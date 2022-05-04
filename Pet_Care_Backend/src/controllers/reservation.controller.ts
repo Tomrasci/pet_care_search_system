@@ -71,7 +71,6 @@ const createReservations = async (
   res: Response,
   next: NextFunction
 ) => {
-  // const reservations: IGotReservation[] = req.body.reservations;
   const reservation: IReservation = {
     advertisement_id: req.body.advertisement_id,
     date: req.body.date,
@@ -80,7 +79,6 @@ const createReservations = async (
     time_intervals: req.body.timeInterval,
     user_id: req.body.user_id
   };
-  // const fixedReservations = fixReservationTimes(reservations);
 
   try {
     await reservationService.insertReservation(reservation);
@@ -131,15 +129,12 @@ const confirmReservation = async (
 ) => {
   try {
     await reservationService.confirmReservation(Number(req.params.id));
-    const confirmedReservation = await reservationService.getReservationById(
-      Number(req.params.id)
-    );
+    const confirmedReservation: IReservation =
+      await reservationService.getReservationById(Number(req.params.id));
     const user = await userService.getUserById(confirmedReservation.user_id);
     await reservationService.sendEmailAboutReservation(
       'confirmed',
-      `${confirmedReservation.startTime}` +
-        ' -' +
-        `${confirmedReservation.endTime}`,
+      `${confirmedReservation.time_intervals}`,
       user.email,
       confirmedReservation.date,
       confirmedReservation.description
@@ -157,15 +152,12 @@ const cancelReservation = async (
 ) => {
   try {
     await reservationService.cancelReservation(Number(req.params.id));
-    const cancelledReservation = await reservationService.getReservationById(
-      Number(req.params.id)
-    );
+    const cancelledReservation: IReservation =
+      await reservationService.getReservationById(Number(req.params.id));
     const user = await userService.getUserById(cancelledReservation.user_id);
     await reservationService.sendEmailAboutReservation(
       'cancelled',
-      `${cancelledReservation.startTime}` +
-        ' -' +
-        `${cancelledReservation.endTime}`,
+      `${cancelledReservation.time_intervals}`,
       user.email,
       cancelledReservation.date,
       cancelledReservation.description

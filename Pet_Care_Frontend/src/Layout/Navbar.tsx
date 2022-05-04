@@ -102,11 +102,6 @@ const careTakerLinks = [
     route: "/ReservationsTable",
     id: 1,
   },
-  {
-    name: "My Calendar",
-    route: "/caretakerCalendar",
-    id: 2,
-  },
 ];
 
 const ownerLinks = [
@@ -263,12 +258,6 @@ const Navbar = ({
                   <>
                     {!isEmpty(currentUser) && isCaretaker && (
                       <>
-                        <Link
-                          style={{ textDecoration: "none", color: "white" }}
-                          to={`/ReservationsTable/${currentUser.id}`}
-                        >
-                          <Tab label="Reservations" />
-                        </Link>
                         {!hasAdvert && (
                           <Link
                             style={{ textDecoration: "none", color: "white" }}

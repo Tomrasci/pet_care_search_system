@@ -68,6 +68,7 @@ export default function ReservationsTable({
           advertDetails.id
         );
       }
+      console.log(`advert reservs are ${JSON.stringify(advertReservs)}`);
       setAdvertReservations(advertReservs);
     }
     getReservations();
@@ -83,23 +84,11 @@ export default function ReservationsTable({
         new Date(value.value as string).toLocaleDateString(),
     },
     {
-      field: "startTime",
-      headerName: "Start Time",
+      field: "time_intervals",
+      headerName: "Reserved times",
+      flex: 2,
     },
-    {
-      field: "endTime",
-      headerName: "End Time",
-    },
-    // {
-    //   field: "user_id",
-    //   headerName: "User ID",
-    //   flex: 1,
-    // },
-    // {
-    //   field: "advertisement_id",
-    //   headerName: "Advertisement ID",
-    //   flex: 1,
-    // },
+
     {
       field: "created_at",
       headerName: "Date created",

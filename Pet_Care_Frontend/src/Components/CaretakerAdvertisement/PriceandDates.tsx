@@ -281,8 +281,7 @@ export default function PriceandDates({
               )}
             />
           </Grid>
-          {console.log(`monday values are ${daysObject.mondayValue}`)}
-          {console.log(`tuesday values are ${daysObject.tuesdayValue}`)}
+      
 
           <Grid item xs={12}>
             <FormControl sx={{ minWidth: 802.03 }}>

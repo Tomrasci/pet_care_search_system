@@ -3,7 +3,7 @@ export interface IFetchedReservation {
   date: Date;
   // startTime: string;
   // endTime: string;
-  timeInterval: string;
+  time_intervals: string;
   user_id: number;
   advertisement_id: number;
   status: string;

@@ -207,13 +207,19 @@ const CaretakerCalendar = ({
 
     const advertReservations =
       await reservationApi.getConfirmedAdvertisementReservations(Number(id));
+    console.log(
+      `advert reservations are ${JSON.stringify(advertReservations)}`
+    );
+    const fixedReservations =
+      CalendarFunctions.fixReservationTimes(advertReservations);
+    console.log(`fixed reservations are ${JSON.stringify(fixedReservations)}`);
     let eventReservations = null;
     if (reserving) {
       eventReservations =
-        CalendarFunctions.makeReservationsToEventsForOwner(advertReservations);
+        CalendarFunctions.makeReservationsToEventsForOwner(fixedReservations);
     } else {
       eventReservations =
-        CalendarFunctions.makeReservationsToEvents(advertReservations);
+        CalendarFunctions.makeReservationsToEvents(fixedReservations);
     }
     setAdvertReservations(eventReservations);
   }

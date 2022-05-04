@@ -143,23 +143,13 @@ const filterExistingReservationsFromTImes = (
   return weekdayInterval;
 };
 function fixReservationTimes(reservationArray: IFetchedReservation[]) {
-  // const fixedArray: IFixedReservation[] = reservationArray.map((reservation) => ({
-  //   startTime: reservation.timeInterval.split('-')[0],
-  //   endTime: reservation.timeInterval.split('-')[1],
-  //   date: reservation.date,
-  //   user_id: reservation.user_id,
-  //   advertisement_id: reservation.advertisement_id,
-  //   status: reservation.status,
-  //   description: reservation.description
-  // }));
-  // return fixedArray;
   const fixedArray: IFixedReservation[] = [];
   for (var i = 0; i < reservationArray.length; i++) {
-    const timeArray = reservationArray[i].timeInterval.split(",");
+    const timeArray = reservationArray[i].time_intervals.split(",");
     for (var j = 0; j < timeArray.length; j++) {
       fixedArray.push({
-        startTime: timeArray[i].split("-")[0],
-        endTime: timeArray[i].split("-")[1],
+        startTime: timeArray[j].split("-")[0],
+        endTime: timeArray[j].split("-")[1],
         date: reservationArray[i].date,
         user_id: reservationArray[i].user_id,
         advertisement_id: reservationArray[i].advertisement_id,

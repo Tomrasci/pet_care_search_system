@@ -1,8 +1,7 @@
 import database from '../../database/db';
-import { IFetchedReservation } from './interfaces/IFetchedReservation';
 import { IReservation } from './interfaces/IReservation';
 
-const getReservationById = async (id: number): Promise<IFetchedReservation> => {
+const getReservationById = async (id: number): Promise<IReservation> => {
   try {
     return await database('reservation').where({ id }).first().select();
   } catch (err) {
@@ -10,7 +9,7 @@ const getReservationById = async (id: number): Promise<IFetchedReservation> => {
   }
 };
 
-const getReservations = async (): Promise<IFetchedReservation[]> => {
+const getReservations = async (): Promise<IReservation[]> => {
   try {
     return await database('reservation').select();
   } catch (err) {
@@ -20,7 +19,7 @@ const getReservations = async (): Promise<IFetchedReservation[]> => {
 
 const getAdvertisementReservations = async (
   id: number
-): Promise<IFetchedReservation[]> => {
+): Promise<IReservation[]> => {
   try {
     return await database('reservation')
       .where({
@@ -32,9 +31,7 @@ const getAdvertisementReservations = async (
   }
 };
 
-const getOwnerReservations = async (
-  id: number
-): Promise<IFetchedReservation[]> => {
+const getOwnerReservations = async (id: number): Promise<IReservation[]> => {
   try {
     return await database('reservation')
       .where({
@@ -48,7 +45,7 @@ const getOwnerReservations = async (
 
 const getConfirmedAdvertisementReservations = async (
   id: number
-): Promise<IFetchedReservation[]> => {
+): Promise<IReservation[]> => {
   try {
     return await database('reservation')
       .where({ status: 'confirmed', advertisement_id: id })
