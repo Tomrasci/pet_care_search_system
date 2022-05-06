@@ -112,7 +112,7 @@ const CaretakerAdvertisement = ({
                       " " +
                       advertDetails.activity +
                       ". " +
-                      advertDetails.day_price +
+                      advertDetails.hour_price +
                       " eur per hour"}
                   </Typography>
 

@@ -7,9 +7,17 @@ router.post('/register', userController.register);
 
 router.post('/login', userController.login);
 
-router.get('/getUserDetails', userController.getUserDetails);
-router.put('/changePassword', userController.changePassword);
+router.get(
+  '/getUserDetails',
+  authJwt.verifyToken,
+  userController.getUserDetails
+);
+router.put(
+  '/changePassword',
+  authJwt.verifyToken,
+  userController.changePassword
+);
 
-router.put('/updateProfile', userController.updateUser);
+router.put('/updateProfile', authJwt.verifyToken, userController.updateUser);
 
 module.exports = router;

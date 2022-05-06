@@ -12,7 +12,6 @@ const login = async (email: string, password: string) => {
     .post("/login", { email, password })
     .then((response) => {
       if (response.data.accessToken) {
-        console.log(`response data is ${JSON.stringify(response.data)}`);
         localStorage.setItem("user", JSON.stringify(response.data));
       }
       return "Success";

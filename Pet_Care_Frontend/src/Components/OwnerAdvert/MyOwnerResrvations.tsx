@@ -52,12 +52,9 @@ export default function OwnerReservations({
         new Date(value.value as string).toLocaleDateString(),
     },
     {
-      field: "startTime",
-      headerName: "Start Time",
-    },
-    {
-      field: "endTime",
-      headerName: "End Time",
+      field: "time_intervals",
+      headerName: "Time",
+      flex: 1,
     },
     {
       field: "created_at",

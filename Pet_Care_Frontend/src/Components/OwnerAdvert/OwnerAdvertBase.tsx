@@ -206,6 +206,7 @@ export default function OwnerAdvertiseBase({ currentUser }: any) {
     } else {
       const isValid = await trigger();
       if (isValid) {
+        console.log("VALID");
         setActiveStep(activeStep + 1);
       }
     }
@@ -219,8 +220,6 @@ export default function OwnerAdvertiseBase({ currentUser }: any) {
     const checkedLanguages = selected.map((language) => language.value.id);
     const checkedPets = selectedPet.map((pet) => pet.value.id);
     const checkedServices = selectedService.map((service) => service.value.id);
-
-    console.log(`start date selected is ${getValues("startDate")}`);
 
     const newAdvert: IOwnerAdvertCreate = {
       name: getValues("name"),
@@ -359,7 +358,7 @@ export default function OwnerAdvertiseBase({ currentUser }: any) {
                       {activeStep === steps.length - 1 ? (
                         <Button
                           variant="contained"
-                          onClick={createAdvertisement}
+                          onClick={handleSubmit(createAdvertisement)}
                           sx={{ mt: 3, ml: 1 }}
                         >
                           Submit

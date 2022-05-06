@@ -13,6 +13,7 @@ import { Link } from "react-router-dom";
 import "../CaretakerAdvertisement/CaretakerAdvertList.css";
 import { IOwnerAdvert } from "../../Interfaces/Owner/IOwnerAdvert";
 import ownerAdverisementApi from "../../Api/ownerAdverisementApi";
+import isEmpty from "../../Utils/Empty";
 
 const OwnerAdvertList = ({ currentUser }: any) => {
   const [ownerAdverts, setOwnerAdverts] = useState<IOwnerAdvert[]>([]);
@@ -98,7 +99,7 @@ const OwnerAdvertList = ({ currentUser }: any) => {
                               </Typography>
                             </CardContent>
                             <CardActions>
-                              {currentUser ? (
+                              {currentUser && !isEmpty(currentUser) ? (
                                 <Link
                                   to={`/OwnerAdvertisement/${advert.id}`}
                                   style={{

@@ -91,7 +91,7 @@ const OwnerAdvertisement = ({ currentUser }: { currentUser: ICurrentUser }) => {
                   <GridBreak />
 
                   <Typography sx={{ fontSize: 14 }}>
-                    {advertDetails.day_price + " eur per hour"}
+                    {advertDetails.hour_price + " eur per hour"}
                   </Typography>
 
                   <Box marginY={3}></Box>

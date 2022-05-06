@@ -393,7 +393,7 @@ export default function AdvertiseBase({ currentUser }: any) {
                       {activeStep === steps.length - 1 ? (
                         <Button
                           variant="contained"
-                          onClick={createAdvertisement}
+                          onClick={handleSubmit(createAdvertisement)}
                           sx={{ mt: 3, ml: 1 }}
                         >
                           Submit
