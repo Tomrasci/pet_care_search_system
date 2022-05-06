@@ -82,13 +82,7 @@ const sendEmailAboutReservation = async (
     subject: `Reservation status update`,
     text: message
   };
-  transporter.sendMail(mailOptons, function (error, response) {
-    if (error) {
-      console.log(error);
-    } else {
-      console.log('Successfully sent');
-    }
-  });
+  transporter.sendMail(mailOptons);
 };
 
 export default {

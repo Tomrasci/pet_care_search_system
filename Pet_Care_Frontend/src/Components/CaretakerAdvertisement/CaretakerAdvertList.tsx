@@ -40,9 +40,7 @@ const CaretakerAdvertList = ({ currentUser }: any) => {
           </Typography>
           <Box sx={{ mt: 5 }}></Box>
           <Grid container>
-            <Grid item xs={2}>
-              <div>Hello</div>
-            </Grid>
+            <Grid item xs={2}></Grid>
             <Grid item xs={7}>
               <Grid
                 container

@@ -61,8 +61,8 @@ const OwnerAdvertList = ({ currentUser }: any) => {
                             component="img"
                             className="cardImage"
                             sx={{
-                              width: 150,
-                              height: 150,
+                              width: 100,
+                              height: 100,
                               marginLeft: 2,
                             }}
                             image={"http://localhost:3002/" + advert.photo_link}
@@ -83,11 +83,12 @@ const OwnerAdvertList = ({ currentUser }: any) => {
                                 gutterBottom
                                 component="div"
                               >
-                                {advert.name +
+                                {advert.city +
                                   "." +
                                   " " +
-                                  advert.time_intervals +
-                                  "."}
+                                  advert.hour_price +
+                                  " " +
+                                  "eur per hour."}
                               </Typography>
                               <Typography
                                 sx={{ fontSize: 16 }}

@@ -1,22 +1,11 @@
-import { Request, Response, NextFunction } from 'express';
+import { NextFunction, Request, Response } from 'express';
+import ApiError from '../../error/ApiError';
 import logger from '../../logger';
-import { ResponseCodes } from '../utils/responseCodes';
-import reservationService from '../services/reservation.service';
-import { IGotReservation } from '../models/interfaces/IGotReservation';
-import userService from '../services/user.service';
 import { IReservation } from '../models/interfaces/IReservation';
-
-const getReservationById = async (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
-  const reservation = await reservationService.getReservationById(
-    Number(req.params.id)
-  );
-
-  return res.status(ResponseCodes.OK).json(reservation);
-};
+import reservationService from '../services/reservation.service';
+import userService from '../services/user.service';
+import isEmpty from '../utils/Empty';
+import { ResponseCodes } from '../utils/responseCodes';
 
 const getReservations = async (
   req: Request,
@@ -37,6 +26,13 @@ const getConfirmedAdvertisementReservations = async (
     await reservationService.getConfirmedAdvertisementReservations(
       Number(req.params.id)
     );
+  if (!reservations || isEmpty(reservations)) {
+    return next(
+      ApiError.notFoundError(
+        `Reservation was not found with advertisement id  ${req.params.id}`
+      )
+    );
+  }
 
   return res.status(ResponseCodes.OK).json(reservations);
 };
@@ -80,46 +76,25 @@ const createReservations = async (
     user_id: req.body.user_id
   };
 
-  try {
-    await reservationService.insertReservation(reservation);
-    logger.info(
-      `Reservations have been inserted ${JSON.stringify(reservation)}`
-    );
-    const user = await userService.getUserById(reservation.user_id);
+  await reservationService.insertReservation(reservation);
+  logger.info(`Reservations have been inserted ${JSON.stringify(reservation)}`);
+  const user = await userService.getUserById(reservation.user_id);
 
-    await reservationService.sendEmailAboutReservation(
-      'pending',
-      reservation.time_intervals,
-      user.email,
-      reservation.date,
-      reservation.description
-    );
+  await reservationService.sendEmailAboutReservation(
+    'pending',
+    reservation.time_intervals,
+    user.email,
+    reservation.date,
+    reservation.description
+  );
 
-    logger.info(
-      `Reservation messages have been sent to the user ${JSON.stringify(
-        user.name
-      )}`
-    );
-  } catch (err) {
-    console.log(err);
-  }
+  logger.info(
+    `Reservation messages have been sent to the user ${JSON.stringify(
+      user.name
+    )}`
+  );
+
   return res.status(ResponseCodes.CREATED).json(reservation);
-};
-
-const deleteReservations = async (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
-  try {
-    await reservationService.deleteOwnerAdvertisementReservations(
-      req.body.userId,
-      req.body.ownerId
-    );
-  } catch (err) {
-    logger.error(err.message);
-  }
-  return res.status(ResponseCodes.OK).json('Reservations deleted sucessfully');
 };
 
 const confirmReservation = async (
@@ -128,16 +103,25 @@ const confirmReservation = async (
   next: NextFunction
 ) => {
   try {
-    await reservationService.confirmReservation(Number(req.params.id));
-    const confirmedReservation: IReservation =
+    const reservation: IReservation =
       await reservationService.getReservationById(Number(req.params.id));
-    const user = await userService.getUserById(confirmedReservation.user_id);
+    if (!reservation || isEmpty(reservation)) {
+      return next(
+        ApiError.notFoundError(
+          `Reservation was not found with advertisement id  ${req.params.id}`
+        )
+      );
+    }
+    await reservationService.confirmReservation(Number(req.params.id));
+    // const confirmedReservation: IReservation =
+    //   await reservationService.getReservationById(Number(req.params.id));
+    const user = await userService.getUserById(reservation.user_id);
     await reservationService.sendEmailAboutReservation(
       'confirmed',
-      `${confirmedReservation.time_intervals}`,
+      `${reservation.time_intervals}`,
       user.email,
-      confirmedReservation.date,
-      confirmedReservation.description
+      reservation.date,
+      reservation.description
     );
   } catch (err) {
     logger.error(err.message);
@@ -151,16 +135,25 @@ const cancelReservation = async (
   next: NextFunction
 ) => {
   try {
-    await reservationService.cancelReservation(Number(req.params.id));
-    const cancelledReservation: IReservation =
+    const reservation: IReservation =
       await reservationService.getReservationById(Number(req.params.id));
-    const user = await userService.getUserById(cancelledReservation.user_id);
+    if (!reservation || isEmpty(reservation)) {
+      return next(
+        ApiError.notFoundError(
+          `Reservation was not found with advertisement id  ${req.params.id}`
+        )
+      );
+    }
+    await reservationService.cancelReservation(Number(req.params.id));
+    // const cancelledReservation: IReservation =
+    //   await reservationService.getReservationById(Number(req.params.id));
+    const user = await userService.getUserById(reservation.user_id);
     await reservationService.sendEmailAboutReservation(
       'cancelled',
-      `${cancelledReservation.time_intervals}`,
+      `${reservation.time_intervals}`,
       user.email,
-      cancelledReservation.date,
-      cancelledReservation.description
+      reservation.date,
+      reservation.description
     );
   } catch (err) {
     logger.error(err.message);
@@ -171,10 +164,8 @@ const cancelReservation = async (
 export default {
   getOwnerReservations,
   getAdvertisementReservations,
-  getReservationById,
   getReservations,
   createReservations,
-  deleteReservations,
   confirmReservation,
   cancelReservation,
   getConfirmedAdvertisementReservations

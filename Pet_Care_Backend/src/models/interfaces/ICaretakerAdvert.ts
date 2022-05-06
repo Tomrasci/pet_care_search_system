@@ -7,7 +7,7 @@ export interface ICaretakerAdvert {
   address: string;
   experience: string;
   activity: string;
-  day_price: number;
+  hour_price: number;
   description: string;
   extra_information: string;
   title: string;
@@ -16,7 +16,7 @@ export interface ICaretakerAdvert {
   updated_at: Date;
   startDate: Date;
   endDate: Date;
-  city : string;
+  city: string;
   user_id: number;
   services: string[];
   pets: string[];

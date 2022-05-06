@@ -4,7 +4,7 @@ export interface IOwnerAdvert {
   surname: string;
   phone: string;
   address: string;
-  day_price: number;
+  hour_price: number;
   description: string;
   city: string;
   extra_information: string;

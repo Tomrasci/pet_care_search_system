@@ -3,26 +3,28 @@ module.exports = {
     browser: true,
     es2021: true,
     node: true,
+    jest: true
   },
-  extends: ["standard", "prettier"],
-  parser: "@typescript-eslint/parser",
+  extends: ['standard', 'prettier'],
+  parser: '@typescript-eslint/parser',
   parserOptions: {
     ecmaFeatures: {
-      jsx: true,
+      jsx: true
     },
-    ecmaVersion: "latest",
+    ecmaVersion: 'latest'
   },
-  plugins: ["react", "@typescript-eslint"],
+
+  plugins: ['react', '@typescript-eslint'],
   rules: {
-    camelcase: "off",
-    "no-console": "warn",
-    "no-restricted-syntax": [
-      "error",
+    camelcase: 'off',
+    'no-console': 'warn',
+    'no-restricted-syntax': [
+      'error',
       {
         selector:
           "CallExpression[callee.object.name='console'][callee.property.name!=/^(log|warn|error|info|trace)$/]",
-        message: "Unexpected property on console object was called",
-      },
-    ],
-  },
+        message: 'Unexpected property on console object was called'
+      }
+    ]
+  }
 };

@@ -39,7 +39,7 @@ const createCaretakerAdvertisement = async (
     startDate: req.body.startDate,
     endDate: req.body.endDate,
     city: req.body.city,
-    day_price: req.body.day_price,
+    hour_price: req.body.hour_price,
     user_id: req.body.user_id
   };
   const { error } = validation.validateCaretakerAdvert(caretakerAdvert);
@@ -62,14 +62,10 @@ const createCaretakerAdvertisement = async (
     advertisement_id: cAdvertId
   }));
 
-  try {
-    await petTypeService.insertCaretakerPets(caretakerPets);
-    logger.info(
-      `Caretaker pets have been inserted  ${JSON.stringify(caretakerPets)}`
-    );
-  } catch (err) {
-    logger.error(err);
-  }
+  await petTypeService.insertCaretakerPets(caretakerPets);
+  logger.info(
+    `Caretaker pets have been inserted  ${JSON.stringify(caretakerPets)}`
+  );
 
   const mondayArray = req.body.monday;
   const fixedMondayArray = fixWeekDayArray(mondayArray, 'Mon', cAdvertId);
@@ -92,25 +88,15 @@ const createCaretakerAdvertisement = async (
   const sundayArray = req.body.sunday;
   const fixedSundayArray = fixWeekDayArray(sundayArray, 'Sun', cAdvertId);
 
-  try {
-    await caretakerAdvertService.insertCaretakerAvailability(fixedMondayArray);
-    await caretakerAdvertService.insertCaretakerAvailability(fixedTuesdayArray);
-    await caretakerAdvertService.insertCaretakerAvailability(
-      fixedWednesdayArray
-    );
-    await caretakerAdvertService.insertCaretakerAvailability(
-      fixedThursdayArray
-    );
-    await caretakerAdvertService.insertCaretakerAvailability(fixedFridayArray);
-    await caretakerAdvertService.insertCaretakerAvailability(
-      fixedSaturdayArray
-    );
-    await caretakerAdvertService.insertCaretakerAvailability(fixedSundayArray);
+  await caretakerAdvertService.insertCaretakerAvailability(fixedMondayArray);
+  await caretakerAdvertService.insertCaretakerAvailability(fixedTuesdayArray);
+  await caretakerAdvertService.insertCaretakerAvailability(fixedWednesdayArray);
+  await caretakerAdvertService.insertCaretakerAvailability(fixedThursdayArray);
+  await caretakerAdvertService.insertCaretakerAvailability(fixedFridayArray);
+  await caretakerAdvertService.insertCaretakerAvailability(fixedSaturdayArray);
+  await caretakerAdvertService.insertCaretakerAvailability(fixedSundayArray);
 
-    logger.info(`Caretaker times have been inserted`);
-  } catch (err) {
-    console.log(err);
-  }
+  logger.info(`Caretaker times have been inserted`);
 
   const serviceTypesArray = req.body.services;
   const caretakerServices: ICaretakerService[] = serviceTypesArray.map(
@@ -120,16 +106,13 @@ const createCaretakerAdvertisement = async (
     })
   );
 
-  try {
-    await serviceTypeService.insertCaretakerServices(caretakerServices);
-    logger.info(
-      `Caretaker services have been inserted  ${JSON.stringify(
-        caretakerServices
-      )}`
-    );
-  } catch (err) {
-    console.log(err);
-  }
+  await serviceTypeService.insertCaretakerServices(caretakerServices);
+  logger.info(
+    `Caretaker services have been inserted  ${JSON.stringify(
+      caretakerServices
+    )}`
+  );
+
   const languagesArray = req.body.languages;
   const caretakerLanguages: ICaretakerLanguage[] = languagesArray.map(
     (language: number) => ({
@@ -138,16 +121,12 @@ const createCaretakerAdvertisement = async (
     })
   );
 
-  try {
-    await languageService.insertCaretakerLanguages(caretakerLanguages);
-    logger.info(
-      `Caretaker languages have been inserted  ${JSON.stringify(
-        caretakerLanguages
-      )}`
-    );
-  } catch (err) {
-    console.log(err);
-  }
+  await languageService.insertCaretakerLanguages(caretakerLanguages);
+  logger.info(
+    `Caretaker languages have been inserted  ${JSON.stringify(
+      caretakerLanguages
+    )}`
+  );
 
   return res.status(ResponseCodes.CREATED).send(insertedCaretakerAdvertisement);
 };
@@ -260,7 +239,7 @@ const updateCareTakerAdvert = async (
     startDate: req.body.startDate,
     endDate: req.body.endDate,
     city: req.body.city,
-    day_price: req.body.day_price,
+    hour_price: req.body.hour_price,
     user_id: req.body.user_id
   };
   const { error } = validation.validateCaretakerAdvert(editedCaretakerAdvert);
@@ -273,7 +252,7 @@ const updateCareTakerAdvert = async (
   const cAdvertId = Number(req.params.id);
   const neededCareTakerAdvert =
     await caretakerAdvertService.getCareTakerAdvertById(cAdvertId);
-  if (isEmpty(neededCareTakerAdvert)) {
+  if (!neededCareTakerAdvert || isEmpty(neededCareTakerAdvert)) {
     logger.info(
       `Caretaker advert with id  ${cAdvertId}  was not found to update`
     );
@@ -284,39 +263,18 @@ const updateCareTakerAdvert = async (
     );
   }
 
-  try {
-    await caretakerAdvertService.updateCareTakerAdvert(
-      editedCaretakerAdvert,
-      cAdvertId
-    );
-  } catch (err) {
-    logger.error(err);
-    throw err;
-  }
-  try {
-    await caretakerAdvertService.deleteCaretakerAvailability(cAdvertId);
-  } catch (err) {
-    logger.error(err);
-    throw err;
-  }
-  try {
-    await petTypeService.deleteCaretakerPets(cAdvertId);
-  } catch (err) {
-    logger.error(err);
-    throw err;
-  }
-  try {
-    await languageService.deleteCaretakerLangauges(cAdvertId);
-  } catch (err) {
-    logger.error(err);
-    throw err;
-  }
-  try {
-    await serviceTypeService.deleteCaretakerServices(cAdvertId);
-  } catch (err) {
-    logger.error(err);
-    throw err;
-  }
+  await caretakerAdvertService.updateCareTakerAdvert(
+    editedCaretakerAdvert,
+    cAdvertId
+  );
+
+  await caretakerAdvertService.deleteCaretakerAvailability(cAdvertId);
+
+  await petTypeService.deleteCaretakerPets(cAdvertId);
+
+  await languageService.deleteCaretakerLangauges(cAdvertId);
+
+  await serviceTypeService.deleteCaretakerServices(cAdvertId);
 
   const mondayArray = req.body.monday;
   const fixedMondayArray = fixWeekDayArray(mondayArray, 'Mon', cAdvertId);
@@ -339,41 +297,28 @@ const updateCareTakerAdvert = async (
   const sundayArray = req.body.sunday;
   const fixedSundayArray = fixWeekDayArray(sundayArray, 'Sun', cAdvertId);
 
-  try {
-    await caretakerAdvertService.insertCaretakerAvailability(fixedMondayArray);
-    await caretakerAdvertService.insertCaretakerAvailability(fixedTuesdayArray);
-    await caretakerAdvertService.insertCaretakerAvailability(
-      fixedWednesdayArray
-    );
-    await caretakerAdvertService.insertCaretakerAvailability(
-      fixedThursdayArray
-    );
-    await caretakerAdvertService.insertCaretakerAvailability(fixedFridayArray);
-    await caretakerAdvertService.insertCaretakerAvailability(
-      fixedSaturdayArray
-    );
-    await caretakerAdvertService.insertCaretakerAvailability(fixedSundayArray);
+  await caretakerAdvertService.insertCaretakerAvailability(fixedMondayArray);
+  await caretakerAdvertService.insertCaretakerAvailability(fixedTuesdayArray);
+  await caretakerAdvertService.insertCaretakerAvailability(fixedWednesdayArray);
+  await caretakerAdvertService.insertCaretakerAvailability(fixedThursdayArray);
+  await caretakerAdvertService.insertCaretakerAvailability(fixedFridayArray);
+  await caretakerAdvertService.insertCaretakerAvailability(fixedSaturdayArray);
+  await caretakerAdvertService.insertCaretakerAvailability(fixedSundayArray);
 
-    logger.info(`Caretaker times have been inserted`);
-  } catch (err) {
-    console.log(err);
-  }
+  logger.info(`Caretaker times have been inserted`);
 
   const petTypesArray = req.body.pets;
   const caretakerPets: ICaretakerPet[] = petTypesArray.map((pet: number) => ({
     pet_type_id: pet,
     advertisement_id: cAdvertId
   }));
-  try {
-    await petTypeService.insertCaretakerPets(caretakerPets);
-    logger.info(
-      `Caretaker pets have been inserted after edit ${JSON.stringify(
-        caretakerPets
-      )}`
-    );
-  } catch (err) {
-    console.log(err);
-  }
+
+  await petTypeService.insertCaretakerPets(caretakerPets);
+  logger.info(
+    `Caretaker pets have been inserted after edit ${JSON.stringify(
+      caretakerPets
+    )}`
+  );
 
   const serviceTypesArray = req.body.services;
   const caretakerServices: ICaretakerService[] = serviceTypesArray.map(
@@ -383,16 +328,13 @@ const updateCareTakerAdvert = async (
     })
   );
 
-  try {
-    await serviceTypeService.insertCaretakerServices(caretakerServices);
-    logger.info(
-      `Caretaker services have been inserted after edit ${JSON.stringify(
-        caretakerServices
-      )}`
-    );
-  } catch (err) {
-    console.log(err);
-  }
+  await serviceTypeService.insertCaretakerServices(caretakerServices);
+  logger.info(
+    `Caretaker services have been inserted after edit ${JSON.stringify(
+      caretakerServices
+    )}`
+  );
+
   const languagesArray = req.body.languages;
   const caretakerLanguages: ICaretakerLanguage[] = languagesArray.map(
     (language: number) => ({
@@ -400,16 +342,13 @@ const updateCareTakerAdvert = async (
       advertisement_id: cAdvertId
     })
   );
-  try {
-    await languageService.insertCaretakerLanguages(caretakerLanguages);
-    logger.info(
-      `Caretaker languages have been inserted  ${JSON.stringify(
-        caretakerLanguages
-      )}`
-    );
-  } catch (err) {
-    console.log(err);
-  }
+
+  await languageService.insertCaretakerLanguages(caretakerLanguages);
+  logger.info(
+    `Caretaker languages have been inserted  ${JSON.stringify(
+      caretakerLanguages
+    )}`
+  );
 
   const updatedCareTakerAdvert =
     await caretakerAdvertService.getCareTakerAdvertById(cAdvertId);
@@ -426,9 +365,9 @@ const deleteCareTakerAdvert = async (
 ) => {
   const neededCareTakerAdvert =
     await caretakerAdvertService.getCareTakerAdvertById(Number(req.params.id));
-  if (isEmpty(neededCareTakerAdvert)) {
+  if (!neededCareTakerAdvert || isEmpty(neededCareTakerAdvert)) {
     logger.info(
-      `Caretaker advert with id  ${req.params.id}  was not found to update`
+      `Caretaker advert with id  ${req.params.id}  was not found to delete`
     );
     return next(
       ApiError.notFoundError(

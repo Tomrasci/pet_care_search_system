@@ -27,26 +27,7 @@ const getServiceTypes = async (
   return res.status(ResponseCodes.OK).json(serviceTypes);
 };
 
-const insertCaretakerServices = async (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
-  try {
-    await serviceTypeService.insertCaretakerServices(req.body.services);
-    logger.info(
-      `Caretaker services have been inserted  ${JSON.stringify(
-        req.body.services
-      )}`
-    );
-    return res.status(ResponseCodes.OK).json(req.body.services);
-  } catch (err) {
-    console.log(err);
-  }
-};
-
 export default {
   getServiceType,
-  getServiceTypes,
-  insertCaretakerServices
+  getServiceTypes
 };

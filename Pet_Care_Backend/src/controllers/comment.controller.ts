@@ -12,8 +12,15 @@ const getCommentById = async (
   next: NextFunction
 ) => {
   const comment = await commentService.getCommentById(Number(req.params.id));
+  if (!comment) {
+    return next(
+      ApiError.notFoundError(
+        `Caretaker advert was not found with id  ${req.params.id}`
+      )
+    );
+  }
 
-  return res.status(ResponseCodes.OK).json(comment);
+  return res.sendStatus(ResponseCodes.OK);
 };
 
 const getAdvertisementComments = async (

@@ -5,8 +5,6 @@ const router = express.Router();
 
 router.get('/reservations', reservationController.getReservations);
 
-router.get('/reservations/:id', reservationController.getReservationById);
-
 router.get(
   '/ownerReservations/:id',
   reservationController.getOwnerReservations
@@ -18,11 +16,6 @@ router.get(
 );
 
 router.post('/reservations', reservationController.createReservations);
-
-router.delete(
-  '/reservations/:uid/:aid',
-  reservationController.deleteReservations
-);
 
 router.post(
   '/reservations/confirm/:id',

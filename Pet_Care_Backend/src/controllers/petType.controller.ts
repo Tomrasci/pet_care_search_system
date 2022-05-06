@@ -15,23 +15,7 @@ const getPetTypes = async (req: Request, res: Response, next: NextFunction) => {
   return res.status(ResponseCodes.OK).json(petTypes);
 };
 
-const insertCaretakerPets = async (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
-  try {
-    await petTypeService.insertCaretakerPets(req.body.pets);
-    logger.info(
-      `Caretaker pets have been inserted  ${JSON.stringify(req.body.pets)}`
-    );
-    return res.status(ResponseCodes.OK).json(req.body.pets);
-  } catch (err) {
-    console.log(err);
-  }
-};
 export default {
   getPetType,
-  getPetTypes,
-  insertCaretakerPets
+  getPetTypes
 };

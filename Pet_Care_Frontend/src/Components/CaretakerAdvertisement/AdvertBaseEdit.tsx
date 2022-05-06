@@ -78,7 +78,7 @@ export default function AdvertiseBaseEdit({ currentUser }: any) {
     endDate: advertDetails?.endDate || "",
     startTime: advertDetails?.startTime || "",
     endTime: advertDetails?.endTime || "",
-    day_price: advertDetails?.day_price || "",
+    hour_price: advertDetails?.hour_price || "",
     title: advertDetails?.title || "",
     description: advertDetails?.description || "",
     extra_information: advertDetails?.extra_information || "",
@@ -231,7 +231,7 @@ export default function AdvertiseBaseEdit({ currentUser }: any) {
         .typeError("End date must be valid")
         .required("End date is required"),
 
-      day_price: yup.number().required("Price is required"),
+      hour_price: yup.number().required("Price is required"),
     }),
     yup.object({
       title: yup.string().required("Title is required"),
@@ -331,7 +331,7 @@ export default function AdvertiseBaseEdit({ currentUser }: any) {
       extra_information: getValues("extra_information"),
       startDate: new Date(getValues("startDate")),
       endDate: new Date(getValues("endDate")),
-      day_price: Number(getValues("day_price")),
+      hour_price: Number(getValues("hour_price")),
       pets: checkedPets,
       services: checkedServices,
       languages: checkedLanguages,

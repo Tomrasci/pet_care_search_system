@@ -49,13 +49,9 @@ const register = async (req: Request, res: Response, next: NextFunction) => {
     city: req.body.city,
     advert_count: 0
   };
-  try {
-    await userService.registerUser(user);
-    res.status(ResponseCodes.CREATED).send(req.body);
-  } catch (err) {
-    logger.error('Registering user failed' + err);
-    next(ApiError.internalError('Registering failed'));
-  }
+
+  await userService.registerUser(user);
+  res.status(ResponseCodes.CREATED).send(req.body);
 };
 
 const login = async (req: Request, res: Response, next: NextFunction) => {

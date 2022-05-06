@@ -5,7 +5,7 @@ export interface IOwnerAdvertGot {
   phone: string;
   address: string;
   activity: string;
-  day_price: number;
+  hour_price: number;
   description: string;
   extra_information: string;
   title: string;

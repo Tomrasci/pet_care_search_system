@@ -2,73 +2,45 @@ import database from '../../database/db';
 import { IReservation } from './interfaces/IReservation';
 
 const getReservationById = async (id: number): Promise<IReservation> => {
-  try {
-    return await database('reservation').where({ id }).first().select();
-  } catch (err) {
-    console.log(err.message);
-  }
+  return await database('reservation').where({ id }).first().select();
 };
 
 const getReservations = async (): Promise<IReservation[]> => {
-  try {
-    return await database('reservation').select();
-  } catch (err) {
-    console.log(err.message);
-  }
+  return await database('reservation').select();
 };
 
 const getAdvertisementReservations = async (
   id: number
 ): Promise<IReservation[]> => {
-  try {
-    return await database('reservation')
-      .where({
-        advertisement_id: id
-      })
-      .select();
-  } catch (err) {
-    console.log(err.message);
-  }
+  return await database('reservation')
+    .where({
+      advertisement_id: id
+    })
+    .select();
 };
 
 const getOwnerReservations = async (id: number): Promise<IReservation[]> => {
-  try {
-    return await database('reservation')
-      .where({
-        user_id: id
-      })
-      .select();
-  } catch (err) {
-    console.log(err.message);
-  }
+  return await database('reservation')
+    .where({
+      user_id: id
+    })
+    .select();
 };
 
 const getConfirmedAdvertisementReservations = async (
   id: number
 ): Promise<IReservation[]> => {
-  try {
-    return await database('reservation')
-      .where({ status: 'confirmed', advertisement_id: id })
-      .select();
-  } catch (err) {
-    console.log(err.message);
-  }
+  return await database('reservation')
+    .where({ status: 'confirmed', advertisement_id: id })
+    .select();
 };
 
 const insertReservation = async (reservation: IReservation) => {
-  try {
-    return await database('reservation').insert(reservation);
-  } catch (err) {
-    console.log(err.message);
-  }
+  return await database('reservation').insert(reservation);
 };
 
 const deleteAdvertisementReservations = async (id: number) => {
-  try {
-    return await database('reservation').where({ advertisement_id: id }).del();
-  } catch (err) {
-    console.log(err.message);
-  }
+  return await database('reservation').where({ advertisement_id: id }).del();
 };
 
 const deleteOwnerAdvertisementReservations = async (
@@ -85,23 +57,15 @@ const deleteOwnerAdvertisementReservations = async (
 };
 
 const confirmReservation = async (id: number) => {
-  try {
-    return await database('reservation')
-      .where({ id: id })
-      .update('status', 'confirmed');
-  } catch (err) {
-    console.log(err.message);
-  }
+  return await database('reservation')
+    .where({ id: id })
+    .update('status', 'confirmed');
 };
 
 const cancelReservation = async (id: number) => {
-  try {
-    return await database('reservation')
-      .where({ id: id })
-      .update('status', 'cancelled');
-  } catch (err) {
-    console.log(err.message);
-  }
+  return await database('reservation')
+    .where({ id: id })
+    .update('status', 'cancelled');
 };
 
 export default {

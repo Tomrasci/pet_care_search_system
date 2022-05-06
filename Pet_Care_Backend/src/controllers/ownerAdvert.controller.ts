@@ -34,7 +34,7 @@ const createOwnerAdvertisement = async (
     extra_information: req.body.extra_information,
     startDate: req.body.startDate,
     endDate: req.body.endDate || null,
-    day_price: req.body.day_price,
+    hour_price: req.body.hour_price,
     user_id: req.body.user_id,
     time_intervals: req.body.time_intervals.toString()
   };
@@ -59,12 +59,8 @@ const createOwnerAdvertisement = async (
     advertisement_id: oAdvertId
   }));
 
-  try {
-    await petTypeService.insertOwnerPets(ownerPets);
-    logger.info(`Owner pets have been inserted  ${JSON.stringify(ownerPets)}`);
-  } catch (err) {
-    logger.error(err);
-  }
+  await petTypeService.insertOwnerPets(ownerPets);
+  logger.info(`Owner pets have been inserted  ${JSON.stringify(ownerPets)}`);
 
   const serviceTypesArray = req.body.services;
   const ownerServices: ICaretakerService[] = serviceTypesArray.map(
@@ -74,14 +70,11 @@ const createOwnerAdvertisement = async (
     })
   );
 
-  try {
-    await serviceTypeService.insertOwnerServices(ownerServices);
-    logger.info(
-      `Owner services have been inserted  ${JSON.stringify(ownerServices)}`
-    );
-  } catch (err) {
-    console.log(err);
-  }
+  await serviceTypeService.insertOwnerServices(ownerServices);
+  logger.info(
+    `Owner services have been inserted  ${JSON.stringify(ownerServices)}`
+  );
+
   const languagesArray = req.body.languages;
   const ownerLanguages: ICaretakerLanguage[] = languagesArray.map(
     (language: number) => ({
@@ -89,19 +82,15 @@ const createOwnerAdvertisement = async (
       advertisement_id: oAdvertId
     })
   );
-
-  try {
-    await languageService.insertOwnerLanguages(ownerLanguages);
-    logger.info(
-      `Owner languages have been inserted  ${JSON.stringify(ownerLanguages)}`
-    );
-  } catch (err) {
-    console.log(err);
-  }
+  await languageService.insertOwnerLanguages(ownerLanguages);
+  logger.info(
+    `Owner languages have been inserted  ${JSON.stringify(ownerLanguages)}`
+  );
 
   return res.status(ResponseCodes.CREATED).send(insertedOwnerAdvertisement);
 };
 
+/* istanbul ignore next */
 const uploadOwnerPhoto = async (
   req: Request,
   res: Response,
@@ -196,7 +185,7 @@ const updateOwnerAdvert = async (
     extra_information: req.body.extra_information,
     startDate: req.body.startDate,
     endDate: req.body.endDate || null,
-    day_price: req.body.day_price,
+    hour_price: req.body.hour_price,
     user_id: req.body.user_id,
     time_intervals: req.body.time_intervals.toString()
   };
@@ -211,52 +200,31 @@ const updateOwnerAdvert = async (
   const neededOwnerAdvert = await ownerAdvertService.getOwnerAdvertById(
     oAdvertId
   );
-  if (isEmpty(neededOwnerAdvert)) {
+  if (!neededOwnerAdvert || isEmpty(neededOwnerAdvert)) {
     logger.info(`Owner advert with id  ${oAdvertId}  was not found to update`);
     return next(
       ApiError.notFoundError(`Owner advert was not found with id  ${oAdvertId}`)
     );
   }
 
-  try {
-    await ownerAdvertService.updateOwnerAdvert(editedOwnerAdvert, oAdvertId);
-  } catch (err) {
-    logger.error(err);
-    throw err;
-  }
+  await ownerAdvertService.updateOwnerAdvert(editedOwnerAdvert, oAdvertId);
 
-  try {
-    await petTypeService.deleteOwnerPets(oAdvertId);
-  } catch (err) {
-    logger.error(err);
-    throw err;
-  }
-  try {
-    await languageService.deleteOwnerLangauges(oAdvertId);
-  } catch (err) {
-    logger.error(err);
-    throw err;
-  }
-  try {
-    await serviceTypeService.deleteOwnerServices(oAdvertId);
-  } catch (err) {
-    logger.error(err);
-    throw err;
-  }
+  await petTypeService.deleteOwnerPets(oAdvertId);
+
+  await languageService.deleteOwnerLangauges(oAdvertId);
+
+  await serviceTypeService.deleteOwnerServices(oAdvertId);
 
   const petTypesArray = req.body.pets;
   const ownerPets: ICaretakerPet[] = petTypesArray.map((pet: number) => ({
     pet_type_id: pet,
     advertisement_id: oAdvertId
   }));
-  try {
-    await petTypeService.insertOwnerPets(ownerPets);
-    logger.info(
-      `Owner pets have been inserted after edit ${JSON.stringify(ownerPets)}`
-    );
-  } catch (err) {
-    console.log(err);
-  }
+
+  await petTypeService.insertOwnerPets(ownerPets);
+  logger.info(
+    `Owner pets have been inserted after edit ${JSON.stringify(ownerPets)}`
+  );
 
   const serviceTypesArray = req.body.services;
   const ownerServices: ICaretakerService[] = serviceTypesArray.map(
@@ -266,16 +234,13 @@ const updateOwnerAdvert = async (
     })
   );
 
-  try {
-    await serviceTypeService.insertOwnerServices(ownerServices);
-    logger.info(
-      `Owner services have been inserted after edit ${JSON.stringify(
-        ownerServices
-      )}`
-    );
-  } catch (err) {
-    console.log(err);
-  }
+  await serviceTypeService.insertOwnerServices(ownerServices);
+  logger.info(
+    `Owner services have been inserted after edit ${JSON.stringify(
+      ownerServices
+    )}`
+  );
+
   const languagesArray = req.body.languages;
   const ownerLanguages: ICaretakerLanguage[] = languagesArray.map(
     (language: number) => ({
@@ -283,14 +248,11 @@ const updateOwnerAdvert = async (
       advertisement_id: oAdvertId
     })
   );
-  try {
-    await languageService.insertOwnerLanguages(ownerLanguages);
-    logger.info(
-      `Owner languages have been inserted  ${JSON.stringify(ownerLanguages)}`
-    );
-  } catch (err) {
-    console.log(err);
-  }
+
+  await languageService.insertOwnerLanguages(ownerLanguages);
+  logger.info(
+    `Owner languages have been inserted  ${JSON.stringify(ownerLanguages)}`
+  );
 
   const updatedOwnerAdvert = await ownerAdvertService.getOwnerAdvertById(
     oAdvertId
@@ -309,7 +271,7 @@ const deleteOwnerAdvert = async (
   const neededOwnerAdvert = await ownerAdvertService.getOwnerAdvertById(
     Number(req.params.id)
   );
-  if (isEmpty(neededOwnerAdvert)) {
+  if (!neededOwnerAdvert || isEmpty(neededOwnerAdvert)) {
     logger.info(
       `Owner advert with id  ${req.params.id}  was not found to update`
     );

@@ -244,22 +244,22 @@ export default function OwnerPriceandDates({
 
           <Grid item xs={6} md={3}>
             <Controller
-              name="day_price"
+              name="hour_price"
               control={control}
               render={({ field }) => (
                 <TextField
                   {...field}
-                  id="day_price"
-                  name="day_price"
-                  label="Price"
+                  id="hour_price"
+                  name="hour_price"
+                  label="Hour price"
                   type="number"
                   fullWidth
                   autoComplete="family-name"
                   variant="standard"
-                  error={!!errors.day_price}
+                  error={!!errors.hour_price}
                   helperText={
-                    errors.day_price
-                      ? "Price is required and must be a number"
+                    errors.hour_price
+                      ? "Hour price is required and must be a number"
                       : ""
                   }
                 />

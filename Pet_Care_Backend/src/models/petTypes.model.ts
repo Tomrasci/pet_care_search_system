@@ -3,107 +3,65 @@ import { ICaretakerPet } from './interfaces/ICareTakerPet';
 import { IPetType } from './interfaces/IPetType';
 
 const getPetTypeById = async (id: number): Promise<IPetType> => {
-  try {
-    return await database('pet_type').where({ id }).first().select();
-  } catch (err) {
-    console.log(err.message);
-  }
+  return await database('pet_type').where({ id }).first().select();
 };
 
 const getPetTypes = async (): Promise<IPetType[]> => {
-  try {
-    return await database('pet_type').select();
-  } catch (err) {
-    console.log(err.message);
-  }
+  return await database('pet_type').select();
 };
 
 const getCaretakerPets = async (aid: number): Promise<ICaretakerPet[]> => {
-  try {
-    return await database('caretaker_pets')
-      .where({
-        advertisement_id: aid
-      })
-      .select();
-  } catch (err) {
-    console.log(err.message);
-  }
+  return await database('caretaker_pets')
+    .where({
+      advertisement_id: aid
+    })
+    .select();
 };
 
 const insertCaretakerPets = async (petArray: ICaretakerPet[]) => {
-  try {
-    const fieldsToInsert = petArray.map((field) => ({
-      pet_type_id: field.pet_type_id,
-      advertisement_id: field.advertisement_id
-    }));
-    return await database('caretaker_pets').insert(fieldsToInsert);
-  } catch (err) {
-    console.log(err.message);
-  }
+  const fieldsToInsert = petArray.map((field) => ({
+    pet_type_id: field.pet_type_id,
+    advertisement_id: field.advertisement_id
+  }));
+  return await database('caretaker_pets').insert(fieldsToInsert);
 };
 
 const deleteCaretakerPets = async (id: number) => {
-  try {
-    return await database('caretaker_pets')
-      .where({ advertisement_id: id })
-      .del();
-  } catch (err) {
-    console.log(err.message);
-  }
+  return await database('caretaker_pets').where({ advertisement_id: id }).del();
 };
 
 const getOwnerPets = async (aid: number): Promise<ICaretakerPet[]> => {
-  try {
-    return await database('owner_pets')
-      .where({
-        advertisement_id: aid
-      })
-      .select();
-  } catch (err) {
-    console.log(err.message);
-  }
+  return await database('owner_pets')
+    .where({
+      advertisement_id: aid
+    })
+    .select();
 };
 
 const insertOwnerPets = async (petArray: ICaretakerPet[]) => {
-  try {
-    const fieldsToInsert = petArray.map((field) => ({
-      pet_type_id: field.pet_type_id,
-      advertisement_id: field.advertisement_id
-    }));
-    return await database('owner_pets').insert(fieldsToInsert);
-  } catch (err) {
-    console.log(err.message);
-  }
+  const fieldsToInsert = petArray.map((field) => ({
+    pet_type_id: field.pet_type_id,
+    advertisement_id: field.advertisement_id
+  }));
+  return await database('owner_pets').insert(fieldsToInsert);
 };
 
 const deleteOwnerPets = async (id: number) => {
-  try {
-    return await database('owner_pets').where({ advertisement_id: id }).del();
-  } catch (err) {
-    console.log(err.message);
-  }
+  return await database('owner_pets').where({ advertisement_id: id }).del();
 };
 
 const getCaretakerPetNames = async (id: number) => {
-  try {
-    return await database(`caretaker_pets`)
-      .where('advertisement_id', id)
-      .join(`pet_type`, `caretaker_pets.pet_type_id`, `pet_type.id`)
-      .select('pet_type.name');
-  } catch (err) {
-    console.log(err.message);
-  }
+  return await database(`caretaker_pets`)
+    .where('advertisement_id', id)
+    .join(`pet_type`, `caretaker_pets.pet_type_id`, `pet_type.id`)
+    .select('pet_type.name');
 };
 
 const getOwnerPetNames = async (id: number) => {
-  try {
-    return await database(`owner_pets`)
-      .where('advertisement_id', id)
-      .join(`pet_type`, `owner_pets.pet_type_id`, `pet_type.id`)
-      .select('pet_type.name');
-  } catch (err) {
-    console.log(err.message);
-  }
+  return await database(`owner_pets`)
+    .where('advertisement_id', id)
+    .join(`pet_type`, `owner_pets.pet_type_id`, `pet_type.id`)
+    .select('pet_type.name');
 };
 
 export default {

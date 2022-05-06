@@ -20,26 +20,18 @@ const getUserByUsername = async (username: string): Promise<IUser> => {
 };
 
 const updateUser = async (user: IUser, id: number) => {
-  try {
-    return await database('user')
-      .where({ id })
-      .update({
-        ...user,
-        updated_at: database.fn.now()
-      });
-  } catch (err) {
-    console.log(err.message);
-  }
+  return await database('user')
+    .where({ id })
+    .update({
+      ...user,
+      updated_at: database.fn.now()
+    });
 };
 
 const changePassword = async (password: string, id: number) => {
-  try {
-    return await database('user').where({ id }).update({
-      password: password
-    });
-  } catch (err) {
-    console.log(err.message);
-  }
+  return await database('user').where({ id }).update({
+    password: password
+  });
 };
 
 export default {

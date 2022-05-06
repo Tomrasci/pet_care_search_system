@@ -7,9 +7,4 @@ router.get('/serviceTypes', serviceTypeController.getServiceTypes);
 
 router.get('/serviceTypes/:id', serviceTypeController.getServiceType);
 
-router.post(
-  '/caretakerServices',
-  serviceTypeController.insertCaretakerServices
-);
-
 export default router;
