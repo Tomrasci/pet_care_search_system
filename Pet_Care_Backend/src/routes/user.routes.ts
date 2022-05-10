@@ -18,6 +18,27 @@ router.put(
   userController.changePassword
 );
 
-router.put('/updateProfile', authJwt.verifyToken, userController.updateUser);
+router.put('/updateProfile', authJwt.verifyToken, userController.changeProfile);
+
+router.get(
+  '/getUsers',
+  authJwt.verifyToken,
+  authJwt.isAdmin,
+  userController.getNonAdminUsers
+);
+
+router.put(
+  '/updateUser',
+  authJwt.verifyToken,
+  authJwt.isAdmin,
+  userController.updateUser
+);
+
+router.delete(
+  '/deleteUser/:id',
+  authJwt.verifyToken,
+  authJwt.isAdmin,
+  userController.deleteUser
+);
 
 module.exports = router;

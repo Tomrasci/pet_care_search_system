@@ -1,13 +1,14 @@
-export interface ICurrentUser {
+export interface IUserGet {
+  id?: number;
   username: string;
   email: string;
   phone: string;
-  surname: string;
-  city: string;
   address: string;
   name: string;
-  id: number;
+  surname: string;
   role: number;
+  city: string;
+  updated_at?: Date;
+  created_at?: Date;
   advert_count: number;
-  accessToken: string;
 }

@@ -266,12 +266,12 @@ export default function OwnerPriceandDates({
               )}
             />
           </Grid>
-          <Grid item xs={2} md={1}>
-            <p>Eur</p>
+          <Grid item xs={2} md={2}>
+            <Typography>Eur</Typography>
           </Grid>
-          <Grid item xs={4} md={8}></Grid>
+          <Grid item xs={4} md={7}></Grid>
           <Grid item xs={12} sx={{ mt: 3 }}>
-            <Typography>Accepted pets</Typography>
+            <Typography>Pets needing care</Typography>
           </Grid>
           {petTypes.map((pet: IPetType, index: number) => {
             return (
@@ -306,6 +306,11 @@ export default function OwnerPriceandDates({
           {serviceTypes.map((service: IServiceType, index: number) => {
             const labelText =
               service.name === "house_sitting" ? "house sitting" : service.name;
+            console.log(`service name is ${service.name}`);
+            service.name === "medication_giving"
+              ? "medication giving"
+              : service.name;
+
             return (
               <Grid item xs={4}>
                 <FormControlLabel

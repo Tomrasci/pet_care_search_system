@@ -8,10 +8,6 @@ import { useFormHook } from "../../Utils/useFormHook";
 import UserValidation from "./PasswordValidation";
 
 const ChangePassword = ({ currentUser }: any) => {
-  //   const [currentPassword, setCurrentPassword] = useState("");
-  //   const [newPassword, setNewPassword] = useState("");
-  //   const [confirmNewPassword, setConfirmNewPassword] = useState("");
-
   const navigate = useNavigate();
 
   const [values, handleChange] = useFormHook({

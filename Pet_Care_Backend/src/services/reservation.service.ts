@@ -20,6 +20,10 @@ const getAdvertisementReservations = async (adId: number) => {
   return await reservationModel.getAdvertisementReservations(adId);
 };
 
+const getAdvertisementReservationsWithUser = async (adId: number) => {
+  return await reservationModel.getAdvertisementReservationsWithUser(adId);
+};
+
 const getReservations = async () => {
   return await reservationModel.getReservations();
 };
@@ -97,5 +101,6 @@ export default {
   confirmReservation,
   cancelReservation,
   getConfirmedAdvertisementReservations,
-  sendEmailAboutReservation
+  sendEmailAboutReservation,
+  getAdvertisementReservationsWithUser
 };

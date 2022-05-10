@@ -18,10 +18,6 @@ import { IReservationEvent } from "../../Interfaces/Caretaker/IReservationEvent"
 import { useParams } from "react-router";
 import { ICurrentUser } from "../../Interfaces/User/ICurrentUser";
 
-interface Props {
-  reserving?: boolean;
-}
-
 const CaretakerCalendar = ({
   currentUser,
   reserving,
@@ -207,12 +203,9 @@ const CaretakerCalendar = ({
 
     const advertReservations =
       await reservationApi.getConfirmedAdvertisementReservations(Number(id));
-    console.log(
-      `advert reservations are ${JSON.stringify(advertReservations)}`
-    );
+
     const fixedReservations =
       CalendarFunctions.fixReservationTimes(advertReservations);
-    console.log(`fixed reservations are ${JSON.stringify(fixedReservations)}`);
     let eventReservations = null;
     if (reserving) {
       eventReservations =

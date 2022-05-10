@@ -24,7 +24,7 @@ const getCaretakerAdvertById = async (
 
 const getUserCaretakerAdvert = async (
   userId: number
-): Promise<ICaretakerAdvert[]> => {
+): Promise<ICaretakerAdvert> => {
   return await database('caretaker_advertisement')
     .where({ user_id: userId })
     .select()

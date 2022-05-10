@@ -28,29 +28,7 @@ import OwnerReservations from "./Components/OwnerAdvert/MyOwnerResrvations";
 import MyProfile from "./Components/Profile/MyProfile";
 import EditProfile from "./Components/Profile/EditProfile";
 import ChangePassword from "./Components/Profile/ChangePassword";
-
-const guestLinksArray = [
-  {
-    path: "/",
-    component: <Home />,
-  },
-
-  {
-    path: "/CaretakerAdvertCreate",
-    component: <AdvertiseBase />,
-  },
-  {
-    path: "/CaretakerAdvertList",
-    component: <CaretakerAdvertList />,
-  },
-];
-
-const authLinksArray = [
-  {
-    path: "/Register",
-    component: <Register />,
-  },
-];
+import UserList from "./Components/Users/UserList";
 
 export default function App() {
   const [currentUser, setCurrentUser] = React.useState({} as ICurrentUser);
@@ -75,9 +53,6 @@ export default function App() {
     <>
       <Navbar loadUsers={loadUsers} currentUser={currentUser} />
       <Routes>
-        {/* {guestLinksArray.map((link: any, index: any) => (
-          <Route path={link.path} element={link.component} key={index}></Route>
-        ))} */}
         <Route
           path={"/CaretakerAdvertCreate"}
           element={<AdvertiseBase currentUser={currentUser} />}
@@ -151,6 +126,10 @@ export default function App() {
         <Route
           path={"/ChangePassword"}
           element={<ChangePassword currentUser={currentUser} />}
+        ></Route>
+        <Route
+          path={"/UserList"}
+          element={<UserList currentUser={currentUser} />}
         ></Route>
         <Route path={"/"} element={<Home />}></Route>
         ))

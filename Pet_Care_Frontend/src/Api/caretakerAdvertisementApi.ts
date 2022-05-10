@@ -1,26 +1,34 @@
+import authHeader from "../Authentication/authHeader";
 import { ICaretakerAdvertCreate } from "../Interfaces/Caretaker/ICaretakerAdvertCreate";
 import http from "../Utils/httpRequestBody";
 
 const createCaretakerAdvertisement = async (
   caretakerAdvert: ICaretakerAdvertCreate
 ) => {
-  return await http.post("/caretakerAdverts", caretakerAdvert);
+  return await http.post("/caretakerAdverts", caretakerAdvert, {
+    headers: authHeader(),
+  });
 };
 
 const getCaretakerAdvertisements = async () => {
-  const { data, status } = await http.get("/caretakerAdverts");
+  const { data, status } = await http.get("/caretakerAdverts", {
+    headers: authHeader(),
+  });
   return data;
 };
 
 const getUserCaretakerAdvertisement = async (userId: number) => {
   const { data, status } = await http.get(
-    `/myCaretakerAdvertisement/${userId}`
+    `/myCaretakerAdvertisement/${userId}`,
+    { headers: authHeader() }
   );
   return data;
 };
 
 const getCaretakerAdvertisement = async (id: number) => {
-  const { data, status } = await http.get(`/caretakerAdverts/${id}`);
+  const { data, status } = await http.get(`/caretakerAdverts/${id}`, {
+    headers: authHeader(),
+  });
   return data;
 };
 
@@ -28,28 +36,40 @@ const editCaretakerAdvertisement = async (
   id: number,
   caretakerAdvert: ICaretakerAdvertCreate
 ) => {
-  return await http.put(`/caretakerAdverts/${id}`, caretakerAdvert);
+  return await http.put(`/caretakerAdverts/${id}`, caretakerAdvert, {
+    headers: authHeader(),
+  });
 };
 
 const deleteCaretakerAdvertisement = async (id: number) => {
-  return await http.delete(`/caretakerAdverts/${id}`);
+  return await http.delete(`/caretakerAdverts/${id}`, {
+    headers: authHeader(),
+  });
 };
 
 const getCaretakerPets = async (id: number) => {
-  const { data, status } = await http.get(`/caretakerPets/${id}`);
+  const { data, status } = await http.get(`/caretakerPets/${id}`, {
+    headers: authHeader(),
+  });
   return data;
 };
 const getCaretakerServices = async (id: number) => {
-  const { data, status } = await http.get(`/caretakerServices/${id}`);
+  const { data, status } = await http.get(`/caretakerServices/${id}`, {
+    headers: authHeader(),
+  });
   return data;
 };
 const getCaretakerLanguages = async (id: number) => {
-  const { data, status } = await http.get(`/caretakerLanguages/${id}`);
+  const { data, status } = await http.get(`/caretakerLanguages/${id}`, {
+    headers: authHeader(),
+  });
   return data;
 };
 
 const getCaretakerAvailability = async (id: number) => {
-  const { data } = await http.get(`/caretakerAvailability/${id}`);
+  const { data } = await http.get(`/caretakerAvailability/${id}`, {
+    headers: authHeader(),
+  });
   return data;
 };
 
@@ -58,7 +78,8 @@ const uploadCaretakerImage = async (id: number, file: any) => {
   formData.append("file", file);
   const { data, status } = await http.post(
     `/uploadCaretakerImage/${id}`,
-    formData
+    formData,
+    { headers: authHeader() }
   );
 
   return status;

@@ -18,6 +18,7 @@ import CancelIcon from "@mui/icons-material/Cancel";
 import ThumbUpAltIcon from "@mui/icons-material/ThumbUpAlt";
 import styles from "./caretakerReservations.module.css";
 import { ICurrentUser } from "../../Interfaces/User/ICurrentUser";
+import moment from "moment";
 
 export default function ReservationsTable({
   currentUser,
@@ -64,11 +65,11 @@ export default function ReservationsTable({
     async function getReservations() {
       let advertReservs = null;
       if (advertDetails) {
-        advertReservs = await reservationApi.getAdvertisementReservations(
-          advertDetails.id
-        );
+        advertReservs =
+          await reservationApi.getAdvertisementReservationsWithUser(
+            advertDetails.id
+          );
       }
-      console.log(`advert reservs are ${JSON.stringify(advertReservs)}`);
       setAdvertReservations(advertReservs);
     }
     getReservations();
@@ -80,13 +81,17 @@ export default function ReservationsTable({
       headerName: "Date",
 
       type: "date",
-      valueFormatter: (value) =>
-        new Date(value.value as string).toLocaleDateString(),
+      valueFormatter: (value) => moment(value.value).format("YYYY-MM-DD"),
     },
     {
       field: "time_intervals",
       headerName: "Reserved times",
       flex: 2,
+    },
+    {
+      field: "user_email",
+      headerName: "User",
+      flex: 1,
     },
 
     {
@@ -95,7 +100,7 @@ export default function ReservationsTable({
       flex: 1,
       type: "dateTime",
       valueFormatter: (value) =>
-        new Date(value.value as string).toLocaleString(),
+        moment(value.value).format("YYYY-MM-DD HH:mm:ss"),
     },
     {
       field: "status",
@@ -140,15 +145,16 @@ export default function ReservationsTable({
       <Box marginY={2}></Box>
       <Card elevation={1}>
         <CardContent>
-          <div style={{ height: 700, width: "100%" }}>
+          <Box sx={{ width: "100%" }}>
             <DataGrid
               rows={advertReservations}
               columns={columns}
               getRowId={(row) => row.id}
               pageSize={50}
               disableSelectionOnClick
+              autoHeight
             />
-          </div>
+          </Box>
         </CardContent>
       </Card>
     </Box>

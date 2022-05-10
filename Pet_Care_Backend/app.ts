@@ -18,7 +18,7 @@ const app = express();
 const corsOptions = {
   origin: 'http://localhost:3000'
 };
-const router = require('./src/routes/auth.routes');
+const router = require('./src/routes/user.routes');
 
 app.use(cors(corsOptions));
 app.use('/uploads', express.static(path.resolve(__dirname, './uploads')));

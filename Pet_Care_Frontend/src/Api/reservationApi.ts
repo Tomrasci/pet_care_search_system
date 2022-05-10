@@ -1,9 +1,6 @@
 import http from "../Utils/httpRequestBody";
 import { IReservation } from "../Interfaces/IReservation";
 
-//reservs: {
-//   reservations: IReservation[];
-// }
 const createReservations = async (reservation: IReservation) => {
   return await http.post("/reservations", reservation);
 };
@@ -25,6 +22,13 @@ const getOwnerReservations = async (userId: number) => {
 
 const getAdvertisementReservations = async (adId: number) => {
   const { data, status } = await http.get(`/advertisementReservations/${adId}`);
+  return data;
+};
+
+const getAdvertisementReservationsWithUser = async (adId: number) => {
+  const { data, status } = await http.get(
+    `/advertisementReservationsWithUser/${adId}`
+  );
   return data;
 };
 
@@ -50,4 +54,5 @@ export default {
   confirmReservation,
   cancelReservation,
   getConfirmedAdvertisementReservations,
+  getAdvertisementReservationsWithUser,
 };

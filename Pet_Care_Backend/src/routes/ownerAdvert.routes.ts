@@ -1,5 +1,6 @@
 import express from 'express';
 import ownerAdvertController from '../controllers/ownerAdvert.controller';
+import authJwt from '../middleware/authJwt';
 const router = express.Router();
 
 const multer = require('multer');
@@ -23,22 +24,57 @@ router.post(
   ownerAdvertController.uploadOwnerPhoto
 );
 
-router.post('/ownerAdverts', ownerAdvertController.createOwnerAdvertisement);
+router.post(
+  '/ownerAdverts',
+  authJwt.verifyToken,
+  authJwt.isOwnerOrAdmin,
+  ownerAdvertController.createOwnerAdvertisement
+);
 
 router.get('/ownerAdverts', ownerAdvertController.getOwnerAdverts);
 
 router.get('/ownerAdverts/:id', ownerAdvertController.getOwnerAdvert);
 
-router.get('/myOwnerAdvert/:userId', ownerAdvertController.getUserOwnerAdvert);
+router.get(
+  '/myOwnerAdvert/:userId',
+  authJwt.verifyToken,
+  authJwt.isOwnerOrAdmin,
+  ownerAdvertController.getUserOwnerAdvert
+);
 
-router.put('/ownerAdverts/:id', ownerAdvertController.updateOwnerAdvert);
+router.put(
+  '/ownerAdverts/:id',
+  authJwt.verifyToken,
+  authJwt.isOwnerOrAdmin,
+  ownerAdvertController.updateOwnerAdvert
+);
 
-router.delete('/ownerAdverts/:id', ownerAdvertController.deleteOwnerAdvert);
+router.delete(
+  '/ownerAdverts/:id',
+  authJwt.verifyToken,
+  authJwt.isOwnerOrAdmin,
+  ownerAdvertController.deleteOwnerAdvert
+);
 
-router.get('/ownerPets/:id', ownerAdvertController.getOwnerPets);
+router.get(
+  '/ownerPets/:id',
+  authJwt.verifyToken,
+  authJwt.isOwnerOrAdmin,
+  ownerAdvertController.getOwnerPets
+);
 
-router.get('/ownerServices/:id', ownerAdvertController.getOwnerServices);
+router.get(
+  '/ownerServices/:id',
+  authJwt.verifyToken,
+  authJwt.isOwnerOrAdmin,
+  ownerAdvertController.getOwnerServices
+);
 
-router.get('/ownerLanguages/:id', ownerAdvertController.getOwnerLanguages);
+router.get(
+  '/ownerLanguages/:id',
+  authJwt.verifyToken,
+  authJwt.isOwnerOrAdmin,
+  ownerAdvertController.getOwnerLanguages
+);
 
 export default router;

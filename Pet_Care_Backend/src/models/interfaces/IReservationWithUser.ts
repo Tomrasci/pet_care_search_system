@@ -1,4 +1,4 @@
-export interface IReservation {
+export interface IReservationWithUser {
   id?: number;
   date: Date;
   time_intervals: string;
@@ -6,4 +6,6 @@ export interface IReservation {
   advertisement_id: number;
   status: string;
   description: string;
+  user_email: string;
+  created_at: Date;
 }

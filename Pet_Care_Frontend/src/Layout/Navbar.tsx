@@ -34,10 +34,6 @@ type NavbarProps = {
   route: string;
 };
 
-type Props = {
-  links: NavbarProps[];
-};
-
 const guestLinksArray = [
   {
     name: "Home",
@@ -82,15 +78,6 @@ const ownerLeftLinksArray = [
   },
 ];
 
-// {
-//   name: "MyAdverts",
-//   route: "/MyAdverts",
-// },
-// {
-//   name: "Create Advert",
-//   route: "/CaretakerAdvertCreate",
-// },
-
 const careTakerLinks = [
   {
     name: "My Advertisement",
@@ -117,14 +104,26 @@ const ownerLinks = [
   },
 ];
 
-const authLinksArray = [
+const adminLinks = [
   {
-    name: "Registration",
-    route: "/Registration",
+    name: "My Caretaker Advertisement",
+    route: "/MyCaretakerAdvert",
+    id: 0,
   },
   {
-    name: "Login",
-    route: "/Login",
+    name: "My Owner Advertisement",
+    route: "/MyOwnerAdvert",
+    id: 1,
+  },
+  {
+    name: "Reservation list",
+    route: "/ReservationsTable",
+    id: 2,
+  },
+  {
+    name: "My Reservations",
+    route: "/MyReservations",
+    id: 3,
   },
 ];
 
@@ -399,6 +398,87 @@ const Navbar = ({
                               >
                                 <Typography textAlign="center">
                                   {ownerLink.name}
+                                </Typography>
+                              </Link>
+                            </MenuItem>
+                          ))}
+                          <MenuItem onClick={handleCloseUserMenu}>
+                            <Link
+                              style={{
+                                textDecoration: "none",
+                                color: "black",
+                              }}
+                              to={`/MyProfile`}
+                            >
+                              <Typography textAlign="center">
+                                My Profile
+                              </Typography>
+                            </Link>
+                          </MenuItem>
+
+                          <MenuItem onClick={logOut}>
+                            <Typography textAlign="center">Logout</Typography>
+                          </MenuItem>
+                        </Menu>
+                      </Box>
+                    )}
+                    {isAdmin && (
+                      <Box sx={{ flexGrow: 0 }}>
+                        <Tooltip title="Open settings">
+                          <IconButton
+                            onClick={handleOpenUserMenu}
+                            sx={{ p: 0 }}
+                          >
+                            <Avatar
+                              sx={{ width: 50, height: 50 }}
+                              alt="User"
+                              src={userIcon}
+                            />
+                          </IconButton>
+                        </Tooltip>
+                        <Menu
+                          sx={{ mt: "45px" }}
+                          id="menu-appbar"
+                          anchorEl={anchorElUser}
+                          anchorOrigin={{
+                            vertical: "top",
+                            horizontal: "right",
+                          }}
+                          keepMounted
+                          transformOrigin={{
+                            vertical: "top",
+                            horizontal: "right",
+                          }}
+                          open={Boolean(anchorElUser)}
+                          onClose={handleCloseUserMenu}
+                        >
+                          <MenuItem onClick={handleCloseUserMenu}>
+                            <Link
+                              style={{
+                                textDecoration: "none",
+                                color: "black",
+                              }}
+                              to={`/UserList`}
+                            >
+                              <Typography textAlign="center">
+                                User list
+                              </Typography>
+                            </Link>
+                          </MenuItem>
+                          {adminLinks.map((adminLink) => (
+                            <MenuItem
+                              key={adminLink.id}
+                              onClick={handleCloseUserMenu}
+                            >
+                              <Link
+                                style={{
+                                  textDecoration: "none",
+                                  color: "black",
+                                }}
+                                to={adminLink.route + `/${currentUser.id}`}
+                              >
+                                <Typography textAlign="center">
+                                  {adminLink.name}
                                 </Typography>
                               </Link>
                             </MenuItem>

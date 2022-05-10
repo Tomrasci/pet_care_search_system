@@ -87,6 +87,7 @@ export default function OwnerPersInformation({
               control={control}
               render={({ field }) => (
                 <TextField
+                  required
                   {...field}
                   id="name"
                   name="name"

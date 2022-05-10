@@ -62,6 +62,19 @@ const getAdvertisementReservations = async (
   return res.status(ResponseCodes.OK).json(advertReservations);
 };
 
+const getAdvertisementReservationsWithUser = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  const advertReservations =
+    await reservationService.getAdvertisementReservationsWithUser(
+      Number(req.params.id)
+    );
+
+  return res.status(ResponseCodes.OK).json(advertReservations);
+};
+
 const createReservations = async (
   req: Request,
   res: Response,
@@ -113,8 +126,6 @@ const confirmReservation = async (
       );
     }
     await reservationService.confirmReservation(Number(req.params.id));
-    // const confirmedReservation: IReservation =
-    //   await reservationService.getReservationById(Number(req.params.id));
     const user = await userService.getUserById(reservation.user_id);
     await reservationService.sendEmailAboutReservation(
       'confirmed',
@@ -145,8 +156,6 @@ const cancelReservation = async (
       );
     }
     await reservationService.cancelReservation(Number(req.params.id));
-    // const cancelledReservation: IReservation =
-    //   await reservationService.getReservationById(Number(req.params.id));
     const user = await userService.getUserById(reservation.user_id);
     await reservationService.sendEmailAboutReservation(
       'cancelled',
@@ -168,5 +177,6 @@ export default {
   createReservations,
   confirmReservation,
   cancelReservation,
-  getConfirmedAdvertisementReservations
+  getConfirmedAdvertisementReservations,
+  getAdvertisementReservationsWithUser
 };

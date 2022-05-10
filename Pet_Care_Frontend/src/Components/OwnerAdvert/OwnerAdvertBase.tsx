@@ -15,25 +15,20 @@ import { FormProvider, useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import * as yup from "yup";
-import caretakerAdvertisementApi from "../../Api/caretakerAdvertisementApi";
-import { ICaretakerAdvertCreate } from "../../Interfaces/Caretaker/ICaretakerAdvertCreate";
-import { useFormHook } from "../../Utils/useFormHook";
-import OwnerPriceandDates from "./OwnerPriceAndDates";
-import OwnerPersInformation from "./OwnerPersInformation";
-import OwnerAdvertForm from "./OwnerAdvertForm";
-import useState from "react";
-import { IPetType } from "../../Interfaces/Caretaker/IPetType";
-import { IServiceType } from "../../Interfaces/Caretaker/IServiceType";
+import languageApi from "../../Api/languageApi";
+import ownerAdverisementApi from "../../Api/ownerAdverisementApi";
 import petTypeApi from "../../Api/petTypeApi";
 import serviceTypeApi from "../../Api/serviceTypeApi";
-import languageApi from "../../Api/languageApi";
 import { ILanguageType } from "../../Interfaces/Caretaker/ILanguageType";
+import { IPetType } from "../../Interfaces/Caretaker/IPetType";
+import { IServiceType } from "../../Interfaces/Caretaker/IServiceType";
+import { IOwnerAdvertCreate } from "../../Interfaces/Owner/IOwnerAdvertCreate";
+import { ITimeIntervalsObject } from "../../Interfaces/Owner/ITimeIntervalsObject";
 import isEmpty from "../../Utils/Empty";
 import interval from "../CaretakerAdvertisement/TimeIntervals";
-import { IDaysObject } from "../../Interfaces/Caretaker/IDaysObject";
-import { IOwnerAdvertCreate } from "../../Interfaces/Owner/IOwnerAdvertCreate";
-import ownerAdverisementApi from "../../Api/ownerAdverisementApi";
-import { ITimeIntervalsObject } from "../../Interfaces/Owner/ITimeIntervalsObject";
+import OwnerAdvertForm from "./OwnerAdvertForm";
+import OwnerPersInformation from "./OwnerPersInformation";
+import OwnerPriceandDates from "./OwnerPriceAndDates";
 
 const steps = [
   "Personal information",
@@ -55,17 +50,17 @@ export default function OwnerAdvertiseBase({ currentUser }: any) {
   const timeInterval = interval.getInitialTimeIntervals();
 
   const defaultValues = {
-    name: "",
-    surname: "",
-    address: "",
-    phone: "",
+    name: currentUser.name || "",
+    surname: currentUser.surname || "",
+    address: currentUser.address || "",
+    phone: currentUser.phone || "",
     startDate: "",
     endDate: "",
     hour_price: "",
     title: "",
     description: "",
     extra_information: "",
-    city: "",
+    city: currentUser.city || "",
   };
 
   const [timeInterv, setTimeInterv] = React.useState(timeInterval);

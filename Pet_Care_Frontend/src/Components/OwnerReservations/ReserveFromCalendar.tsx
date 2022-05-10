@@ -150,7 +150,6 @@ const ReserveFromCalendar = ({ currentUser }: any) => {
       setSelectInterval([]);
     }
     if (value?.getDay() === 3) {
-      console.log(`initial wednesdayInterval ${wednesdayInterval}`);
       const wednInterval = [...wednesdayInterval];
       CalendarFunctions.filterExistingReservationsFromTImes(
         advertReservations,
@@ -158,7 +157,6 @@ const ReserveFromCalendar = ({ currentUser }: any) => {
         3,
         value
       );
-      console.log(`new wedneInterval ${wednInterval}`);
 
       setCurrentInterval(wednInterval);
       setSelectInterval([]);
@@ -215,23 +213,6 @@ const ReserveFromCalendar = ({ currentUser }: any) => {
   };
 
   const handleReservation = async () => {
-    // let reservations: IReservation[] = [];
-
-    // function getValues(time: string, index: number) {
-    //   reservations.push({
-    //     date: value || new Date(),
-    //     timeInterval: time,
-    //     user_id: currentUser.id,
-    //     advertisement_id: Number(id),
-    //     status: "pending",
-    //     description: reservationDescription,
-    //   });
-    // }
-    // selectInterval.forEach(getValues);
-    // let reservs = {
-    //   reservations: reservations,
-    // };
-
     const reservation: IReservation = {
       date: value || new Date(),
       timeInterval: selectInterval.toString(),

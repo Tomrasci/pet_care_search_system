@@ -57,10 +57,10 @@ export default function AdvertiseBase({ currentUser }: any) {
   const [isEdit, setIsEdit] = React.useState(false);
 
   const defaultValues = {
-    name: "",
-    surname: "",
-    address: "",
-    phone: "",
+    name: currentUser.name || "",
+    surname: currentUser.surname || "",
+    address: currentUser.address || "",
+    phone: currentUser.phone || "",
     age: "",
     activity: "",
     experience: "",
@@ -72,7 +72,7 @@ export default function AdvertiseBase({ currentUser }: any) {
     title: "",
     description: "",
     extra_information: "",
-    city: "",
+    city: currentUser.city || "",
   };
 
   const [timeInterv, setTimeInterv] = React.useState(timeInterval);

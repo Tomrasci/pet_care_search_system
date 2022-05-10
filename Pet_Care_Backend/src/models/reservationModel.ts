@@ -1,5 +1,6 @@
 import database from '../../database/db';
 import { IReservation } from './interfaces/IReservation';
+import { IReservationWithUser } from './interfaces/IReservationWithUser';
 
 const getReservationById = async (id: number): Promise<IReservation> => {
   return await database('reservation').where({ id }).first().select();
@@ -17,6 +18,31 @@ const getAdvertisementReservations = async (
       advertisement_id: id
     })
     .select();
+};
+
+const getAdvertisementReservationsWithUser = async (
+  id: number
+): Promise<IReservationWithUser[]> => {
+  try {
+    return await database('reservation')
+      .where({
+        advertisement_id: id
+      })
+      .join(`user`, `reservation.user_id`, `user.id`)
+      .select(
+        `reservation.id`,
+        `reservation.date`,
+        `reservation.time_intervals`,
+        `reservation.user_id`,
+        `reservation.advertisement_id`,
+        `reservation.status`,
+        `reservation.description`,
+        `reservation.created_at`,
+        `user.email as user_email`
+      );
+  } catch (err) {
+    console.log(err.message);
+  }
 };
 
 const getOwnerReservations = async (id: number): Promise<IReservation[]> => {
@@ -78,5 +104,6 @@ export default {
   deleteOwnerAdvertisementReservations,
   confirmReservation,
   cancelReservation,
-  getConfirmedAdvertisementReservations
+  getConfirmedAdvertisementReservations,
+  getAdvertisementReservationsWithUser
 };

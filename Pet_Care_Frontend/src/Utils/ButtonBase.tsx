@@ -20,6 +20,7 @@ export default function ButtonBase({
   return (
     <Box mb={2}>
       <Button
+        style={{ minHeight: 60, fontSize: 20 }}
         variant="contained"
         color="primary"
         startIcon={buttonIcon}

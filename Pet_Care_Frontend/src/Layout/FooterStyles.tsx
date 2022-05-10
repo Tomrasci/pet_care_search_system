@@ -16,8 +16,16 @@ export const Container = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
+  align-items: center;
   max-width: 1000px;
   margin: 0 auto;
+`;
+
+export const Centered = styled.div`
+  font-size: 24px;
+  color: #fff;
+  margin-bottom: 80px;
+  font-weight: bold;
 `;
 
 export const Column = styled.div`
@@ -52,6 +60,6 @@ export const FooterLink = styled.a`
 export const Heading = styled.p`
   font-size: 24px;
   color: #fff;
-  margin-bottom: 40px;
+  margin-bottom: 20px;
   font-weight: bold;
 `;

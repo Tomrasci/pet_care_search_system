@@ -2,6 +2,7 @@ import { IUser } from "../Interfaces/User/IUser";
 import http from "../Utils/httpRequestBody";
 import { toast } from "react-toastify";
 import authHeader from "../Authentication/authHeader";
+import { IUserChange } from "../Interfaces/User/IUserChange";
 
 const userRegister = async (user: IUser) => {
   return http.post("/register", user);
@@ -38,7 +39,7 @@ const getCurrentUser = () => {
   }
 };
 
-const updateUser = async (user: IUser) => {
+const changeProfile = async (user: IUser) => {
   return http.put("/updateProfile", user, {
     headers: authHeader(),
   });
@@ -58,12 +59,33 @@ const changeUserPassword = async (passwordObject: any) => {
   });
 };
 
+const getUserList = async () => {
+  const { data, status } = await http.get("/getUsers", {
+    headers: authHeader(),
+  });
+  return data;
+};
+
+const updateUser = async (user: IUserChange) => {
+  return http.put("/updateUser", user, {
+    headers: authHeader(),
+  });
+};
+const deleteUser = async (id: number) => {
+  return http.delete(`/deleteUser/${id}`, {
+    headers: authHeader(),
+  });
+};
+
 export default {
   userRegister,
   login,
   logout,
   getCurrentUser,
   getUserDetails,
-  updateUser,
+  changeProfile,
   changeUserPassword,
+  getUserList,
+  updateUser,
+  deleteUser,
 };

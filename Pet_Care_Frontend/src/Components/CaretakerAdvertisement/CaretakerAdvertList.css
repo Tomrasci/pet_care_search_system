@@ -3,10 +3,10 @@
   text-overflow: ellipsis;
   display: -webkit-box;
   -webkit-box-orient: vertical;
-  -webkit-line-clamp: 2; /* number of lines to show */
+  -webkit-line-clamp: 2; 
   line-clamp: 2;
-  line-height: 1; /* fallback */
-  max-height: 1 * 2; /* fallback */
+  line-height: 1; 
+  max-height: 1 * 2; 
 }
 
 .lineBreakTitle {
@@ -14,10 +14,10 @@
   text-overflow: ellipsis;
   display: -webkit-box;
   -webkit-box-orient: vertical;
-  -webkit-line-clamp: 1; /* number of lines to show */
+  -webkit-line-clamp: 1; 
   line-clamp: 1;
-  line-height: 1; /* fallback */
-  max-height: 1 * 1; /* fallback */
+  line-height: 1; 
+  max-height: 1 * 1; 
 }
 
 .cardImage {

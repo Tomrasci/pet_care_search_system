@@ -18,6 +18,7 @@ import CancelIcon from "@mui/icons-material/Cancel";
 import ThumbUpAltIcon from "@mui/icons-material/ThumbUpAlt";
 import styles from "./caretakerReservations.module.css";
 import { ICurrentUser } from "../../Interfaces/User/ICurrentUser";
+import moment from "moment";
 
 export default function OwnerReservations({
   currentUser,
@@ -46,15 +47,15 @@ export default function OwnerReservations({
     {
       field: "date",
       headerName: "Date",
+      flex: 1,
 
       type: "date",
-      valueFormatter: (value) =>
-        new Date(value.value as string).toLocaleDateString(),
+      valueFormatter: (value) => moment(value.value).format("YYYY-MM-DD"),
     },
     {
       field: "time_intervals",
       headerName: "Time",
-      flex: 1,
+      flex: 2,
     },
     {
       field: "created_at",
@@ -62,7 +63,7 @@ export default function OwnerReservations({
       flex: 1,
       type: "dateTime",
       valueFormatter: (value) =>
-        new Date(value.value as string).toLocaleString(),
+        moment(value.value).format("YYYY-MM-DD HH:mm:ss"),
     },
     {
       field: "status",
@@ -79,15 +80,16 @@ export default function OwnerReservations({
       <Box marginY={2}></Box>
       <Card elevation={1}>
         <CardContent>
-          <div style={{ height: 700, width: "100%" }}>
+          <Box sx={{ width: "100%" }}>
             <DataGrid
               rows={ownerReservations}
               columns={columns}
               getRowId={(row) => row.id}
               pageSize={50}
               disableSelectionOnClick
+              autoHeight
             />
-          </div>
+          </Box>
         </CardContent>
       </Card>
     </Box>

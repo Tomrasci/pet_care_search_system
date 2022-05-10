@@ -2,17 +2,8 @@
   color: white;
   text-decoration: none;
 }
-/* .left_div {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  align-content: flex-start;
-} */
 
 .right_div > * + * {
-  /* display: flex; */
   padding-left: 15px;
-  /* align-items: center; */
   justify-content: center;
-  /* align-content: flex-end; */
 }

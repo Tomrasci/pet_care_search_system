@@ -87,6 +87,7 @@ export default function PersInformation({
               control={control}
               render={({ field }) => (
                 <TextField
+                  required
                   {...field}
                   id="name"
                   name="name"

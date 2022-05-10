@@ -7,37 +7,24 @@ import { useNavigate } from "react-router";
 import { toast } from "react-toastify";
 import userApi from "../../Api/userApi";
 import { IUser } from "../../Interfaces/User/IUser";
+import { IUserChange } from "../../Interfaces/User/IUserChange";
 import isEmpty from "../../Utils/Empty";
 import { useFormHook } from "../../Utils/useFormHook";
-import ProfileValidation from "./ProfileValidaton";
+import ProfileValidation from "../Profile/ProfileValidaton";
 
-const MyProfile = ({ currentUser }: any) => {
-  const [userDetails, setUserDetails] = useState({} as IUser);
+type Props = {
+  onSave(): void;
+  userForEdit?: IUserChange;
+};
 
-  const [username, setUsername] = useState("");
-  const [email, setEmail] = useState("");
-  const [phone, setPhone] = useState("");
-  const [address, setAddress] = useState("");
-  const [name, setName] = useState("");
-  const [surname, setSurname] = useState("");
-  const [city, setCity] = useState("");
-
-  useEffect(() => {
-    async function getUserDetails() {
-      const user = await userApi.getUserDetails().then((userInfo) => {
-        setUserDetails(userInfo);
-        setUsername(userInfo.username);
-        setEmail(userInfo.email);
-        setPhone(userInfo.phone);
-        setAddress(userInfo.address);
-        setName(userInfo.name);
-        setSurname(userInfo.surname);
-        setCity(userInfo.city);
-        reset(userInfo);
-      });
-    }
-    getUserDetails();
-  }, []);
+const UserEdit = ({ onSave, userForEdit }: Props) => {
+  const [username, setUsername] = useState(userForEdit?.username || "");
+  const [email, setEmail] = useState(userForEdit?.email || "");
+  const [phone, setPhone] = useState(userForEdit?.phone || "");
+  const [address, setAddress] = useState(userForEdit?.address || "");
+  const [name, setName] = useState(userForEdit?.name || "");
+  const [surname, setSurname] = useState(userForEdit?.surname || "");
+  const [city, setCity] = useState(userForEdit?.city || "");
 
   const { register, handleSubmit, reset, formState } = useForm(
     ProfileValidation.profileEditFormOptions
@@ -47,7 +34,7 @@ const MyProfile = ({ currentUser }: any) => {
 
   const submitEditedUser = async () => {
     const user = {
-      ...userDetails,
+      ...(userForEdit || ({} as IUserChange)),
       username: username,
       email: email,
       phone: phone,
@@ -56,16 +43,16 @@ const MyProfile = ({ currentUser }: any) => {
       surname: surname,
       city: city,
     };
-    const result = await userApi.changeProfile(user);
+    const result = await userApi.updateUser(user);
     if (result.status !== 200) {
-      toast.error("Profile edit failed");
+      toast.error("User edit failed");
     } else {
-      toast.success("Profile updated successful");
-      navigate("/MyProfile");
+      toast.success("User updated successful");
     }
+    onSave();
   };
 
-  return userDetails && !isEmpty(userDetails) ? (
+  return (
     <>
       <Box marginY={5}>
         <form onSubmit={handleSubmit(submitEditedUser)}>
@@ -221,9 +208,7 @@ const MyProfile = ({ currentUser }: any) => {
         </form>
       </Box>
     </>
-  ) : (
-    <div>No user found</div>
   );
 };
 
-export default MyProfile;
+export default UserEdit;

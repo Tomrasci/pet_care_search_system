@@ -20,9 +20,7 @@ const config: { [key: string]: Knex.Config } = {
       min: 2,
       max: 10
     },
-    migrations: {
-      // tableName: "knex_migrations",
-    }
+    migrations: {}
   }
 };
 

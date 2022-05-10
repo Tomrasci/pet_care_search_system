@@ -29,7 +29,6 @@ const CaretakerAdvertList = ({ currentUser }: any) => {
     getAdverts();
   }, []);
 
-  console.log(`care adverts are ${JSON.stringify(caretakerAdverts)}`);
 
   return (
     <Box marginY={5}>
