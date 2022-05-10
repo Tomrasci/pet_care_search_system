@@ -1,8 +1,11 @@
+import authHeader from "../Authentication/authHeader";
 import { IComment } from "../Interfaces/Caretaker/IComment";
 import http from "../Utils/httpRequestBody";
 
 const createComment = async (comment: IComment) => {
-  const { data, status } = await http.post("/comments", comment);
+  const { data, status } = await http.post("/comments", comment, {
+    headers: authHeader(),
+  });
   return data;
 };
 
@@ -17,12 +20,14 @@ const getComment = async (id: number) => {
 };
 
 const updateComment = async (id: number, editedComment: IComment) => {
-  const { data, status } = await http.put(`/comments/${id}`, editedComment);
+  const { data, status } = await http.put(`/comments/${id}`, editedComment, {
+    headers: authHeader(),
+  });
   return data;
 };
 
 const deleteComment = async (id: number) => {
-  return await http.delete(`/comments/${id}`);
+  return await http.delete(`/comments/${id}`, { headers: authHeader() });
 };
 
 export default {

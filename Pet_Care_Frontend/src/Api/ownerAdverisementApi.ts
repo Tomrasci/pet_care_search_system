@@ -1,5 +1,6 @@
 import http from "../Utils/httpRequestBody";
 import { IOwnerAdvertCreate } from "../Interfaces/Owner/IOwnerAdvertCreate";
+import authHeader from "../Authentication/authHeader";
 
 const createOwnerAdvertisement = async (ownerAdvert: IOwnerAdvertCreate) => {
   return await http.post("/ownerAdverts", ownerAdvert);
@@ -11,12 +12,16 @@ const getOwnerAdvertisements = async () => {
 };
 
 const getUserOwnerAdvertisement = async (userId: number) => {
-  const { data, status } = await http.get(`/myOwnerAdvert/${userId}`);
+  const { data, status } = await http.get(`/myOwnerAdvert/${userId}`, {
+    headers: authHeader(),
+  });
   return data;
 };
 
 const getOwnerAdvertisement = async (id: number) => {
-  const { data, status } = await http.get(`/OwnerAdverts/${id}`);
+  const { data, status } = await http.get(`/OwnerAdverts/${id}`, {
+    headers: authHeader(),
+  });
   return data;
 };
 
@@ -24,35 +29,42 @@ const editOwnerAdvertisement = async (
   id: number,
   ownerAdvert: IOwnerAdvertCreate
 ) => {
-  return await http.put(`/ownerAdverts/${id}`, ownerAdvert);
+  return await http.put(`/ownerAdverts/${id}`, ownerAdvert, {
+    headers: authHeader(),
+  });
 };
 
 const deleteOwnerAdvertisement = async (id: number) => {
-  return await http.delete(`/ownerAdverts/${id}`);
+  return await http.delete(`/ownerAdverts/${id}`, { headers: authHeader() });
 };
 
 const getOwnerPets = async (id: number) => {
-  const { data, status } = await http.get(`/ownerPets/${id}`);
+  const { data, status } = await http.get(`/ownerPets/${id}`, {
+    headers: authHeader(),
+  });
   return data;
 };
 const getOwnerServices = async (id: number) => {
-  const { data, status } = await http.get(`/ownerServices/${id}`);
+  const { data, status } = await http.get(`/ownerServices/${id}`, {
+    headers: authHeader(),
+  });
   return data;
 };
 const getOwnerLanguages = async (id: number) => {
-  const { data, status } = await http.get(`/ownerLanguages/${id}`);
-  return data;
-};
-
-const getOwnerAvailability = async (id: number) => {
-  const { data } = await http.get(`/ownerAvailability/${id}`);
+  const { data, status } = await http.get(`/ownerLanguages/${id}`, {
+    headers: authHeader(),
+  });
   return data;
 };
 
 const uploadOwnerImage = async (id: number, file: any) => {
   const formData = new FormData();
   formData.append("file", file);
-  const { data, status } = await http.post(`/uploadOwnerImage/${id}`, formData);
+  const { data, status } = await http.post(
+    `/uploadOwnerImage/${id}`,
+    formData,
+    { headers: authHeader() }
+  );
 
   return status;
 };
@@ -67,6 +79,5 @@ export default {
   getOwnerPets,
   getOwnerServices,
   getOwnerLanguages,
-  getOwnerAvailability,
   uploadOwnerImage,
 };

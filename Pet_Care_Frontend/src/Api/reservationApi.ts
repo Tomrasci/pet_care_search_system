@@ -1,8 +1,11 @@
 import http from "../Utils/httpRequestBody";
 import { IReservation } from "../Interfaces/IReservation";
+import authHeader from "../Authentication/authHeader";
 
 const createReservations = async (reservation: IReservation) => {
-  return await http.post("/reservations", reservation);
+  return await http.post("/reservations", reservation, {
+    headers: authHeader(),
+  });
 };
 
 const getReservations = async () => {
@@ -16,7 +19,9 @@ const getConfirmedAdvertisementReservations = async (adId: number) => {
 };
 
 const getOwnerReservations = async (userId: number) => {
-  const { data, status } = await http.get(`/ownerReservations/${userId}`);
+  const { data, status } = await http.get(`/ownerReservations/${userId}`, {
+    headers: authHeader(),
+  });
   return data;
 };
 
@@ -27,7 +32,8 @@ const getAdvertisementReservations = async (adId: number) => {
 
 const getAdvertisementReservationsWithUser = async (adId: number) => {
   const { data, status } = await http.get(
-    `/advertisementReservationsWithUser/${adId}`
+    `/advertisementReservationsWithUser/${adId}`,
+    { headers: authHeader() }
   );
   return data;
 };
@@ -38,11 +44,15 @@ const getReservation = async (id: number) => {
 };
 
 const confirmReservation = async (id: number) => {
-  return await http.post(`/reservations/confirm/${id}`);
+  return await http.post(`/reservations/confirm/${id}`, {
+    headers: authHeader(),
+  });
 };
 
 const cancelReservation = async (id: number) => {
-  return await http.post(`/reservations/cancel/${id}`);
+  return await http.post(`/reservations/cancel/${id}`, {
+    headers: authHeader(),
+  });
 };
 
 export default {

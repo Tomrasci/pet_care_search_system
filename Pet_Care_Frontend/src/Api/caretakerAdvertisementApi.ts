@@ -11,9 +11,7 @@ const createCaretakerAdvertisement = async (
 };
 
 const getCaretakerAdvertisements = async () => {
-  const { data, status } = await http.get("/caretakerAdverts", {
-    headers: authHeader(),
-  });
+  const { data, status } = await http.get("/caretakerAdverts");
   return data;
 };
 

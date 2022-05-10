@@ -13,6 +13,7 @@ router.get(
 router.get(
   '/ownerReservations/:id',
   authJwt.verifyToken,
+  authJwt.isOwnerOrAdmin,
   reservationController.getOwnerReservations
 );
 

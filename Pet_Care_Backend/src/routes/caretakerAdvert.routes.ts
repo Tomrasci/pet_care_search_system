@@ -88,7 +88,6 @@ router.get(
 router.get(
   '/caretakerAvailability/:id',
   authJwt.verifyToken,
-  authJwt.isCaretakerOrAdmin,
   caretakerAdvertController.getCaretakerAvailability
 );
 
