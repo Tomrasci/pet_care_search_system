@@ -2,10 +2,7 @@ import AdapterDateFns from "@mui/lab/AdapterDateFns";
 import DatePicker from "@mui/lab/DatePicker";
 import LocalizationProvider from "@mui/lab/LocalizationProvider";
 import {
-  Box,
-  Checkbox,
-  Chip,
-  FormControl,
+  Checkbox, FormControl,
   FormControlLabel,
   InputLabel,
   MenuItem,
@@ -13,7 +10,7 @@ import {
   Select,
   SelectChangeEvent,
   Theme,
-  useTheme,
+  useTheme
 } from "@mui/material";
 import Grid from "@mui/material/Grid";
 import TextField from "@mui/material/TextField";
@@ -24,7 +21,6 @@ import { useEffect } from "react";
 import { Controller, useFormContext } from "react-hook-form";
 import { IPetType } from "../../Interfaces/Caretaker/IPetType";
 import { IServiceType } from "../../Interfaces/Caretaker/IServiceType";
-import { IDaysObject } from "../../Interfaces/Caretaker/IDaysObject";
 import { ITimeIntervalsObject } from "../../Interfaces/Owner/ITimeIntervalsObject";
 
 interface Props {

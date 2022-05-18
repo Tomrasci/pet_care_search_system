@@ -1,24 +1,22 @@
+import CancelIcon from "@mui/icons-material/Cancel";
+import ThumbUpAltIcon from "@mui/icons-material/ThumbUpAlt";
 import {
   Box,
   Button,
   ButtonGroup,
   Card,
   CardContent,
-  Typography,
+  Typography
 } from "@mui/material";
+import { DataGrid, GridColDef } from "@mui/x-data-grid";
+import moment from "moment";
 import React, { useEffect, useState } from "react";
 import { toast } from "react-toastify";
-import { DataGrid, GridColDef } from "@mui/x-data-grid";
-import { IReservation } from "../../Interfaces/IReservation";
-import { ICaretakerAdvert } from "../../Interfaces/Caretaker/ICaretakerAdvert";
 import caretakerAdvertisementApi from "../../Api/caretakerAdvertisementApi";
 import reservationApi from "../../Api/reservationApi";
+import { ICaretakerAdvert } from "../../Interfaces/Caretaker/ICaretakerAdvert";
 import { IFetchedReservation } from "../../Interfaces/IFetchedReservation";
-import CancelIcon from "@mui/icons-material/Cancel";
-import ThumbUpAltIcon from "@mui/icons-material/ThumbUpAlt";
-import styles from "./caretakerReservations.module.css";
 import { ICurrentUser } from "../../Interfaces/User/ICurrentUser";
-import moment from "moment";
 
 export default function ReservationsTable({
   currentUser,

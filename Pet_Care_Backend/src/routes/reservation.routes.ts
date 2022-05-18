@@ -20,7 +20,6 @@ router.get(
 router.get(
   '/advertisementReservations/:id',
   authJwt.verifyToken,
-  authJwt.isCaretakerOrAdmin,
   reservationController.getAdvertisementReservations
 );
 router.get(

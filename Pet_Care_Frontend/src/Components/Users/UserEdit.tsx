@@ -1,15 +1,10 @@
-import { LocationCityOutlined } from "@mui/icons-material";
 import { Box, Button, Grid, Paper, TextField, Typography } from "@mui/material";
-import { userInfo } from "os";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router";
 import { toast } from "react-toastify";
 import userApi from "../../Api/userApi";
-import { IUser } from "../../Interfaces/User/IUser";
 import { IUserChange } from "../../Interfaces/User/IUserChange";
-import isEmpty from "../../Utils/Empty";
-import { useFormHook } from "../../Utils/useFormHook";
 import ProfileValidation from "../Profile/ProfileValidaton";
 
 type Props = {

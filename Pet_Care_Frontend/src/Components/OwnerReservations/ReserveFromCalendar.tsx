@@ -1,41 +1,24 @@
-import { DatePicker, LocalizationProvider } from "@mui/lab";
-import AdapterDateFns from "@mui/lab/AdapterDateFns";
+import BookOnlineIcon from "@mui/icons-material/BookOnline";
 import {
-  Box,
-  Button,
-  FormControl,
-  Grid,
-  InputLabel,
-  MenuItem,
-  OutlinedInput,
-  Select,
-  SelectChangeEvent,
-  TextField,
-  Theme,
-  useTheme,
+  Grid, SelectChangeEvent, Theme,
+  useTheme
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
-import { Controller } from "react-hook-form";
+import { useParams } from "react-router";
+import { toast } from "react-toastify";
 import caretakerAdvertisementApi from "../../Api/caretakerAdvertisementApi";
+import reservationApi from "../../Api/reservationApi";
+import { ICaretakerAdvert } from "../../Interfaces/Caretaker/ICaretakerAdvert";
 import { ICaretakerAvailability } from "../../Interfaces/Caretaker/ICaretakerAvailability";
+import { IFixedReservation } from "../../Interfaces/IFixedReservation";
+import { IReservation } from "../../Interfaces/IReservation";
+import { IReservationObject } from "../../Interfaces/IReservationObject";
+import ButtonBase from "../../Utils/ButtonBase";
+import CalendarFunctions from "../../Utils/CalendarFunctions";
 import FilterWeekDay from "../../Utils/FilterWeekday";
 import CaretakerCalendar from "../CaretakerAdvertisement/CaretakerCalendar";
 import "../CaretakerAdvertisement/CaretakerCalendar.css";
-import { enGB } from "date-fns/locale";
-import FilterAvailableWeekDay from "../../Utils/FilterAvailableWeekday";
-import { IReservation } from "../../Interfaces/IReservation";
-import reservationApi from "../../Api/reservationApi";
-import { toast } from "react-toastify";
-import { IReservationObject } from "../../Interfaces/IReservationObject";
-import ButtonBase from "../../Utils/ButtonBase";
-import BookOnlineIcon from "@mui/icons-material/BookOnline";
 import ReservationForm from "./ReservationForm";
-import CalendarFunctions from "../../Utils/CalendarFunctions";
-import { IReservationEvent } from "../../Interfaces/Caretaker/IReservationEvent";
-import { IFetchedReservation } from "../../Interfaces/IFetchedReservation";
-import { useParams } from "react-router";
-import { ICaretakerAdvert } from "../../Interfaces/Caretaker/ICaretakerAdvert";
-import { IFixedReservation } from "../../Interfaces/IFixedReservation";
 
 const ReserveFromCalendar = ({ currentUser }: any) => {
   const { id } = useParams();

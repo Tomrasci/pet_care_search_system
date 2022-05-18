@@ -14,7 +14,9 @@ const getReservations = async () => {
 };
 
 const getConfirmedAdvertisementReservations = async (adId: number) => {
-  const { data, status } = await http.get(`/reservations/confirmed/${adId}`);
+  const { data, status } = await http.get(`/reservations/confirmed/${adId}`, {
+    headers: authHeader(),
+  });
   return data;
 };
 

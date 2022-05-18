@@ -1,22 +1,19 @@
-import React, { useState } from "react";
 import FullCalendar from "@fullcalendar/react";
-import daygridPlugin from "@fullcalendar/daygrid";
-import timeGridPlugin from "@fullcalendar/timegrid";
 import bootstrap5Plugin from "@fullcalendar/bootstrap5";
-import "./CaretakerCalendar.css";
-import { useEffect } from "react";
-import caretakerAdvertisementApi from "../../Api/caretakerAdvertisementApi";
-import { ICaretakerAvailability } from "../../Interfaces/Caretaker/ICaretakerAvailability";
-import CalendarFunctions from "../../Utils/CalendarFunctions";
-import { ICaretakerAdvert } from "../../Interfaces/Caretaker/ICaretakerAdvert";
-import { IDatesTimesInterface } from "../../Interfaces/Caretaker/IDatesTimesInterface";
-import { IEventAvailableInfo } from "../../Interfaces/Caretaker/IEventAvailableInfo";
+import daygridPlugin from "@fullcalendar/daygrid";
 import momentPlugin from "@fullcalendar/moment";
-import reservationApi from "../../Api/reservationApi";
-import { IFetchedReservation } from "../../Interfaces/IFetchedReservation";
-import { IReservationEvent } from "../../Interfaces/Caretaker/IReservationEvent";
+import timeGridPlugin from "@fullcalendar/timegrid";
+import React, { useEffect, useState } from "react";
 import { useParams } from "react-router";
+import caretakerAdvertisementApi from "../../Api/caretakerAdvertisementApi";
+import reservationApi from "../../Api/reservationApi";
+import { ICaretakerAdvert } from "../../Interfaces/Caretaker/ICaretakerAdvert";
+import { ICaretakerAvailability } from "../../Interfaces/Caretaker/ICaretakerAvailability";
+import { IEventAvailableInfo } from "../../Interfaces/Caretaker/IEventAvailableInfo";
+import { IReservationEvent } from "../../Interfaces/Caretaker/IReservationEvent";
 import { ICurrentUser } from "../../Interfaces/User/ICurrentUser";
+import CalendarFunctions from "../../Utils/CalendarFunctions";
+import "./CaretakerCalendar.css";
 
 const CaretakerCalendar = ({
   currentUser,

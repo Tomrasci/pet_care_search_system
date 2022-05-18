@@ -1,22 +1,20 @@
-import * as React from "react";
+import DeleteIcon from "@mui/icons-material/Delete";
+import EditIcon from "@mui/icons-material/Edit";
+import { Grid, IconButton } from "@mui/material";
 import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
 import Card from "@mui/material/Card";
 import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
-import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
-import { useState, useEffect } from "react";
-import caretakerAdvertisementApi from "../../Api/caretakerAdvertisementApi";
-import { ICaretakerAdvert } from "../../Interfaces/Caretaker/ICaretakerAdvert";
-import { Grid, IconButton, makeStyles } from "@mui/material";
+import * as React from "react";
+import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+import ownerAdverisementApi from "../../Api/ownerAdverisementApi";
+import { IOwnerAdvert } from "../../Interfaces/Owner/IOwnerAdvert";
 import isEmpty from "../../Utils/Empty";
 import "../CaretakerAdvertisement/MyCaretakerAdvertisement.css";
-import EditIcon from "@mui/icons-material/Edit";
-import DeleteIcon from "@mui/icons-material/Delete";
-import { toast } from "react-toastify";
-import { IOwnerAdvert } from "../../Interfaces/Owner/IOwnerAdvert";
-import ownerAdverisementApi from "../../Api/ownerAdverisementApi";
 
 const MyOwnerAdvertisement = ({ currentUser }: any) => {
   const [ownerAdvert, setOwnerAdvert] = useState<IOwnerAdvert>();
