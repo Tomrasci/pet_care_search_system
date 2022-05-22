@@ -1,7 +1,10 @@
 import BookOnlineIcon from "@mui/icons-material/BookOnline";
 import {
-  Grid, SelectChangeEvent, Theme,
-  useTheme
+  Grid,
+  SelectChangeEvent,
+  Theme,
+  Typography,
+  useTheme,
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router";
@@ -231,6 +234,24 @@ const ReserveFromCalendar = ({ currentUser }: any) => {
 
   return (
     <>
+      <Grid
+        container
+        sx={{ mt: 5 }}
+        justifyContent="center"
+        display="flex"
+        alignItems="center"
+      >
+        <Grid item md={1} sm={0}></Grid>
+        <Grid item md={10} sm={12}>
+          <ButtonBase
+            title="Reservation creation"
+            buttonText="Make reservation"
+            buttonIcon={<BookOnlineIcon />}
+            content={<ReservationForm reservationObject={reservationObject} />}
+          />
+        </Grid>
+        <Grid item md={1} sm={0}></Grid>
+      </Grid>
       <CaretakerCalendar reserving={reserving} currentUser={currentUser} />
       <Grid container sx={{ mt: 10 }} justifyContent="center">
         <ButtonBase

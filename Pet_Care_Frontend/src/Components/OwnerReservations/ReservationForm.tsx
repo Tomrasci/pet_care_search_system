@@ -12,7 +12,7 @@ import {
   SelectChangeEvent,
   TextField,
   Theme,
-  useTheme
+  useTheme,
 } from "@mui/material";
 import { enGB } from "date-fns/locale";
 import moment from "moment";
@@ -96,9 +96,9 @@ const ReservationForm = ({ reservationObject, onSave }: Props) => {
               />
             </Grid>
             <Grid item xs={12}>
-              <FormControl sx={{ minWidth: 552.02 }}>
+              <FormControl sx={{ minWidth: 310 }}>
                 <InputLabel id="res_select">
-                  Reservation time(s) (Select a date first)
+                  Reservation time (Select a date first)
                 </InputLabel>
                 <Select
                   labelId="res_select"
@@ -108,7 +108,7 @@ const ReservationForm = ({ reservationObject, onSave }: Props) => {
                   multiple
                   onChange={handleChangeMultiple}
                   input={
-                    <OutlinedInput label="Reservation time(s) (Select a date first)" />
+                    <OutlinedInput label="Reservation time (Select a date first)" />
                   }
                   MenuProps={MenuProps}
                 >

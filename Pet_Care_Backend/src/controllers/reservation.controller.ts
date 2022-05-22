@@ -26,7 +26,7 @@ const getConfirmedAdvertisementReservations = async (
     await reservationService.getConfirmedAdvertisementReservations(
       Number(req.params.id)
     );
-  if (!reservations || isEmpty(reservations)) {
+  if (!reservations) {
     return next(
       ApiError.notFoundError(
         `Reservation was not found with advertisement id  ${req.params.id}`

@@ -14,6 +14,8 @@ import { IReservationEvent } from "../../Interfaces/Caretaker/IReservationEvent"
 import { ICurrentUser } from "../../Interfaces/User/ICurrentUser";
 import CalendarFunctions from "../../Utils/CalendarFunctions";
 import "./CaretakerCalendar.css";
+import { Box, Grid } from "@mui/material";
+import moment from "moment";
 
 const CaretakerCalendar = ({
   currentUser,
@@ -69,6 +71,8 @@ const CaretakerCalendar = ({
   const [advertReservations, setAdvertReservations] = useState<
     IReservationEvent[]
   >([]);
+
+  const [calendarStart, setCalendarStart] = useState<Date | undefined>();
 
   const [events, setEvents] = useState<IEventAvailableInfo[]>([]);
 
@@ -212,6 +216,11 @@ const CaretakerCalendar = ({
         CalendarFunctions.makeReservationsToEvents(fixedReservations);
     }
     setAdvertReservations(eventReservations);
+
+    moment(caretakerAdvertisement?.startDate).format("YYYY-MM-DD") >=
+    moment(new Date()).format("YYYY-MM-DD")
+      ? setCalendarStart(moment(caretakerAdvertisement?.startDate).toDate())
+      : setCalendarStart(moment(new Date()).toDate());
   }
 
   useEffect(() => {
@@ -221,35 +230,49 @@ const CaretakerCalendar = ({
   return (
     events &&
     advertReservations && (
-      <FullCalendar
-        plugins={[
-          daygridPlugin,
-          timeGridPlugin,
-          bootstrap5Plugin,
-          momentPlugin,
-        ]}
-        validRange={{
-          start: caretakerAdvertisement?.startDate,
-          end: caretakerAdvertisement?.endDate,
-        }}
-        initialView="timeGridWeek"
-        themeSystem="bootstrap5"
-        headerToolbar={{
-          left: "prev,next today",
-          center: "title",
-          right: "timeGridWeek,timeGridDay",
-        }}
-        eventTimeFormat={{
-          hour12: false,
-          hour: "2-digit",
-          minute: "2-digit",
-        }}
-        height="auto"
-        locale={"en-GB"}
-        allDaySlot={false}
-        slotLabelFormat={{ hour12: false, hour: "2-digit", minute: "2-digit" }}
-        eventSources={[events, advertReservations]}
-      />
+      <Box marginY={5}>
+        <Grid container>
+          <Grid item md={1} sm={0}></Grid>
+          <Grid item md={10} sm={12}>
+            <Grid container>
+              <FullCalendar
+                plugins={[
+                  daygridPlugin,
+                  timeGridPlugin,
+                  bootstrap5Plugin,
+                  momentPlugin,
+                ]}
+                validRange={{
+                  start: calendarStart,
+                  end: moment(caretakerAdvertisement?.endDate).toDate(),
+                }}
+                initialView="timeGridWeek"
+                themeSystem="bootstrap5"
+                headerToolbar={{
+                  left: "prev,next today",
+                  center: "title",
+                  right: "timeGridWeek,timeGridDay",
+                }}
+                eventTimeFormat={{
+                  hour12: false,
+                  hour: "2-digit",
+                  minute: "2-digit",
+                }}
+                height="auto"
+                locale={"en-GB"}
+                allDaySlot={false}
+                slotLabelFormat={{
+                  hour12: false,
+                  hour: "2-digit",
+                  minute: "2-digit",
+                }}
+                eventSources={[events, advertReservations]}
+              />
+            </Grid>
+          </Grid>
+          <Grid item md={1} sm={0}></Grid>
+        </Grid>
+      </Box>
     )
   );
 };
