@@ -29,7 +29,6 @@ const CaretakerAdvertList = ({ currentUser }: any) => {
     getAdverts();
   }, []);
 
-
   return (
     <Box marginY={5}>
       {caretakerAdverts ? (
@@ -39,8 +38,8 @@ const CaretakerAdvertList = ({ currentUser }: any) => {
           </Typography>
           <Box sx={{ mt: 5 }}></Box>
           <Grid container>
-            <Grid item xs={2}></Grid>
-            <Grid item xs={7}>
+            <Grid item md={2} xs={12}></Grid>
+            <Grid item md={7} xs={12}>
               <Grid
                 container
                 direction="column"
@@ -54,7 +53,16 @@ const CaretakerAdvertList = ({ currentUser }: any) => {
                   return (
                     <>
                       <Grid item xs={12} spacing={4}>
-                        <Card sx={{ minWidth: 700, maxWidth: 700 }}>
+                        <Card
+                          sx={{
+                            width: {
+                              sx: 1.0,
+                              md: 700,
+                              sm: 550,
+                              xs: 350,
+                            },
+                          }}
+                        >
                           <Grid
                             container
                             spacing={6}
@@ -145,7 +153,7 @@ const CaretakerAdvertList = ({ currentUser }: any) => {
               </Grid>
             </Grid>
 
-            <Grid item xs={3}>
+            <Grid item md={3} xs={12}>
               <div style={{ height: "100vh", width: "100%" }}></div>
             </Grid>
           </Grid>
