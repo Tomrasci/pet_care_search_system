@@ -46,15 +46,23 @@ const getReservation = async (id: number) => {
 };
 
 const confirmReservation = async (id: number) => {
-  return await http.post(`/reservations/confirm/${id}`, {
-    headers: authHeader(),
-  });
+  return await http.post(
+    `/reservations/confirm/${id}`,
+    {},
+    {
+      headers: authHeader(),
+    }
+  );
 };
 
 const cancelReservation = async (id: number) => {
-  return await http.post(`/reservations/cancel/${id}`, {
-    headers: authHeader(),
-  });
+  return await http.post(
+    `/reservations/cancel/${id}`,
+    {},
+    {
+      headers: authHeader(),
+    }
+  );
 };
 
 export default {

@@ -47,7 +47,16 @@ const OwnerAdvertList = ({ currentUser }: any) => {
               return (
                 <>
                   <Grid item xs={12} spacing={4}>
-                    <Card sx={{ minWidth: 700, maxWidth: 700 }}>
+                    <Card
+                      sx={{
+                        width: {
+                          sx: 1.0,
+                          md: 700,
+                          sm: 550,
+                          xs: 350,
+                        },
+                      }}
+                    >
                       <Grid
                         container
                         spacing={6}

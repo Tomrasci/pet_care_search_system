@@ -6,7 +6,7 @@ import { IFetchedComment } from "../../Interfaces/Caretaker/IFetchedComment";
 import Comment from "./Comment";
 import CommentForm from "./CommentForm";
 
-const Comments = ({ currentUser, currentAdvertisement }: any) => {
+const Comments = ({ currentUser, currentAdvertisement, isOwnerView }: any) => {
   const [fetchedComments, setFetchedComments] = useState<IFetchedComment[]>([]);
   const [activeComment, setActiveComment] = useState(null);
 
@@ -64,29 +64,48 @@ const Comments = ({ currentUser, currentAdvertisement }: any) => {
       });
   };
 
-  return (
-    fetchedComments && (
-      <div className="comments">
-        <Box marginY={2}></Box>
-        <CommentForm submitLabel="Write" handleSubmit={addComment} />
-        <div className="comments-container">
-          {fetchedComments.map((comment) => {
-            return (
-              <Comment
-                key={comment.id}
-                comment={comment}
-                currentUser={currentUser}
-                deleteComment={deleteComment}
-                activeComment={activeComment}
-                setActiveComment={setActiveComment}
-                updateComment={updateComment}
-              />
-            );
-          })}
+  return isOwnerView
+    ? fetchedComments && (
+        <div className="comments">
+          <Box marginY={2}></Box>
+          <CommentForm submitLabel="Write" handleSubmit={addComment} />
+          <div className="comments-container">
+            {fetchedComments.map((comment) => {
+              return (
+                <Comment
+                  key={comment.id}
+                  comment={comment}
+                  currentUser={currentUser}
+                  deleteComment={deleteComment}
+                  activeComment={activeComment}
+                  setActiveComment={setActiveComment}
+                  updateComment={updateComment}
+                />
+              );
+            })}
+          </div>
         </div>
-      </div>
-    )
-  );
+      )
+    : fetchedComments && (
+        <div className="comments">
+          <Box marginY={2}></Box>
+          <div className="comments-container">
+            {fetchedComments.map((comment) => {
+              return (
+                <Comment
+                  key={comment.id}
+                  comment={comment}
+                  currentUser={currentUser}
+                  deleteComment={deleteComment}
+                  activeComment={activeComment}
+                  setActiveComment={setActiveComment}
+                  updateComment={updateComment}
+                />
+              );
+            })}
+          </div>
+        </div>
+      );
 };
 
 export default Comments;

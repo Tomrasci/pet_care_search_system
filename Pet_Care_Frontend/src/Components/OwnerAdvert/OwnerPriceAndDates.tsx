@@ -2,7 +2,8 @@ import AdapterDateFns from "@mui/lab/AdapterDateFns";
 import DatePicker from "@mui/lab/DatePicker";
 import LocalizationProvider from "@mui/lab/LocalizationProvider";
 import {
-  Checkbox, FormControl,
+  Checkbox,
+  FormControl,
   FormControlLabel,
   InputLabel,
   MenuItem,
@@ -10,7 +11,7 @@ import {
   Select,
   SelectChangeEvent,
   Theme,
-  useTheme
+  useTheme,
 } from "@mui/material";
 import Grid from "@mui/material/Grid";
 import TextField from "@mui/material/TextField";
@@ -301,11 +302,11 @@ export default function OwnerPriceandDates({
           </Grid>
           {serviceTypes.map((service: IServiceType, index: number) => {
             const labelText =
-              service.name === "house_sitting" ? "house sitting" : service.name;
-            console.log(`service name is ${service.name}`);
-            service.name === "medication_giving"
-              ? "medication giving"
-              : service.name;
+              service.name === "house_sitting"
+                ? "house sitting"
+                : service.name === "medication_giving"
+                ? "medication giving"
+                : service.name;
 
             return (
               <Grid item xs={4}>

@@ -205,7 +205,25 @@ const getUserCaretakerAdvert = async (
     Number(req.params.userId)
   );
 
-  return res.status(ResponseCodes.OK).json(cAdvert);
+  const caretakerLanguages: INamesObject[] =
+    await languageService.getCaretakerLanguageNames(cAdvert.id);
+  const caretakerPets: INamesObject[] =
+    await petTypeService.getCaretakerPetNames(cAdvert.id);
+  const caretakerServices: INamesObject[] =
+    await serviceTypeService.getCaretakerServiceNames(cAdvert.id);
+
+  const languages = MapObjectNamesToStringArray(caretakerLanguages);
+  const pets = MapObjectNamesToStringArray(caretakerPets);
+  const services = MapObjectNamesToStringArray(caretakerServices);
+
+  const fullAdvert: ICaretakerAdvert = {
+    ...cAdvert,
+    languages: languages,
+    services: services,
+    pets: pets
+  };
+
+  return res.status(ResponseCodes.OK).json(fullAdvert);
 };
 
 const getCaretakerAvailability = async (

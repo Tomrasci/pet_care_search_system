@@ -38,7 +38,13 @@ const steps = [
   "Advertisement details",
 ];
 
-const theme = createTheme();
+const theme = createTheme({
+  palette: {
+    primary: {
+      main: "#793209",
+    },
+  },
+});
 
 export default function AdvertiseBase({ currentUser }: any) {
   const navigate = useNavigate();
@@ -366,9 +372,20 @@ export default function AdvertiseBase({ currentUser }: any) {
           <Container component="main" maxWidth="md" sx={{ mb: 4 }}>
             <Paper
               variant="outlined"
-              sx={{ my: { xs: 3, md: 6 }, p: { xs: 2, md: 3 } }}
+              sx={{
+                my: { xs: 3, md: 6 },
+                p: { xs: 2, md: 3 },
+                borderColor: "primary.main",
+                borderWidth: 2,
+              }}
             >
-              <Typography component="h1" variant="h4" align="center">
+              <Typography
+                component="h1"
+                variant="h4"
+                align="center"
+                color="#793209"
+                fontWeight={500}
+              >
                 Advertisement creation
               </Typography>
               <Stepper activeStep={activeStep} sx={{ pt: 6, pb: 5 }}>

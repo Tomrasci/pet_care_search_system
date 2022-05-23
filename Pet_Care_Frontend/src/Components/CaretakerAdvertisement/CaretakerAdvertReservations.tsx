@@ -6,7 +6,8 @@ import {
   ButtonGroup,
   Card,
   CardContent,
-  Typography
+  Grid,
+  Typography,
 } from "@mui/material";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import moment from "moment";
@@ -136,25 +137,26 @@ export default function ReservationsTable({
   ];
 
   return advertReservations && advertReservations.length ? (
-    <Box marginY={5} sx={{ width: 1 }}>
+    <Box marginY={5}>
       <Typography variant="h4" align="center">
         Reservations list
       </Typography>
       <Box marginY={2}></Box>
-      <Card elevation={1}>
-        <CardContent>
-          <Box sx={{ width: "100%" }}>
-            <DataGrid
-              rows={advertReservations}
-              columns={columns}
-              getRowId={(row) => row.id}
-              pageSize={50}
-              disableSelectionOnClick
-              autoHeight
-            />
-          </Box>
-        </CardContent>
-      </Card>
+
+      {/* <Box sx={{ width: "100%" }}> */}
+      <Grid container alignItems="center" justifyContent="center">
+        <Grid item md={10} xs={12}>
+          <DataGrid
+            rows={advertReservations}
+            columns={columns}
+            getRowId={(row) => row.id}
+            pageSize={50}
+            disableSelectionOnClick
+            autoHeight
+          />
+        </Grid>
+      </Grid>
+      {/* </Box> */}
     </Box>
   ) : (
     <Box marginY={15} alignItems="center" justifyContent="center">

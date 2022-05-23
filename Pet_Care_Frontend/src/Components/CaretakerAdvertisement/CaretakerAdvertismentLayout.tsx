@@ -330,7 +330,6 @@ const CaretakerAdvertisement = ({
               sx={{ borderBottomWidth: 3 }}
             />
             <Box marginY={2}></Box>
-            {/* <Box sx={{ maxWidth: 1000 }} > */}
             <Typography color="inherit" sx={{ fontSize: 20, fontWeight: 600 }}>
               Schedule/Time reservation
             </Typography>
@@ -384,6 +383,7 @@ const CaretakerAdvertisement = ({
               <Comments
                 currentUser={currentUser}
                 currentAdvertisement={advertDetails}
+                isOwnerView={true}
               />
             </Grid>
           </Grid>

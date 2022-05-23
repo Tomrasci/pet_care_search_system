@@ -2,7 +2,8 @@ import AdapterDateFns from "@mui/lab/AdapterDateFns";
 import DatePicker from "@mui/lab/DatePicker";
 import LocalizationProvider from "@mui/lab/LocalizationProvider";
 import {
-  Checkbox, FormControl,
+  Checkbox,
+  FormControl,
   FormControlLabel,
   InputLabel,
   MenuItem,
@@ -10,7 +11,7 @@ import {
   Select,
   SelectChangeEvent,
   Theme,
-  useTheme
+  useTheme,
 } from "@mui/material";
 import Grid from "@mui/material/Grid";
 import TextField from "@mui/material/TextField";
@@ -183,11 +184,6 @@ export default function PriceandDates({
       typeof value === "string" ? value.split(",") : value
     );
   };
-
-  console.log(`monday values are ${JSON.stringify(daysObject.mondayValue)}`);
-  console.log(
-    `saturday values are ${JSON.stringify(daysObject.saturdayValue)}`
-  );
 
   function handleServiceCheckbox(position: number) {
     const updatedCheckedState = checkedStateService.map(
@@ -518,7 +514,11 @@ export default function PriceandDates({
           </Grid>
           {serviceTypes.map((service: IServiceType, index: number) => {
             const labelText =
-              service.name === "house_sitting" ? "house sitting" : service.name;
+              service.name === "house_sitting"
+                ? "house sitting"
+                : service.name === "medication_giving"
+                ? "medication giving"
+                : service.name;
             return (
               <Grid item xs={4}>
                 <FormControlLabel
