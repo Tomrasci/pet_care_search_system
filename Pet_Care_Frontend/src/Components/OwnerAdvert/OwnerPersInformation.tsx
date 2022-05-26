@@ -13,6 +13,7 @@ import {
 } from "react-hook-form";
 import isEmpty from "../../Utils/Empty";
 import "../CaretakerAdvertisement/PersInformation.css";
+import { Box, Button } from "@mui/material";
 
 interface Props {
   sendError: (e: boolean) => void;
@@ -77,7 +78,7 @@ export default function OwnerPersInformation({
     checkedState &&
     !isEmpty(checkedState) && (
       <React.Fragment>
-        <Typography variant="h6" gutterBottom>
+        <Typography variant="h6" color="#793209" gutterBottom>
           Personal information
         </Typography>
         <Grid container spacing={3} maxWidth="md">
@@ -182,18 +183,26 @@ export default function OwnerPersInformation({
             />
           </Grid>
 
-          <Grid item xs={12} sx={{ mt: 3 }}>
-            <Typography>Choose your photo</Typography>
-          </Grid>
           <Grid item xs={12}>
-            <input type="file" onChange={onSelectFile} className="fileInput" />
+            <Button variant="contained" component="label">
+              Choose photo
+              <input
+                type="file"
+                hidden
+                onChange={onSelectFile}
+                className="fileInput"
+              />
+            </Button>
+            <Box marginX={1} marginY={1}></Box>
             {(selectedFile || isEdit) && (
               <img src={preview} width="250" height="150" />
             )}
           </Grid>
 
           <Grid item xs={12} sx={{ mt: 3 }}>
-            <Typography>Languages</Typography>
+            <Typography color="#793209" fontWeight={500}>
+              Languages *
+            </Typography>
           </Grid>
           {languages.map((language: ILanguageType, index: number) => {
             return (

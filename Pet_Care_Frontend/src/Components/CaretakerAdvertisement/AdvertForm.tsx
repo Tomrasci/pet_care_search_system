@@ -1,7 +1,7 @@
 import * as React from "react";
 import Typography from "@mui/material/Typography";
 import Grid from "@mui/material/Grid";
-import { TextField } from "@mui/material";
+import { Box, TextField } from "@mui/material";
 import { Controller, useFormContext } from "react-hook-form";
 
 export default function AdvertForm() {
@@ -11,10 +11,12 @@ export default function AdvertForm() {
   } = useFormContext();
   return (
     <React.Fragment>
-      <Typography variant="h6" gutterBottom>
+      <Typography variant="h6" color="#793209" gutterBottom>
         Advertisement details
       </Typography>
-      <Grid container spacing={7} maxWidth="sm">
+      <Box marginY={2}></Box>
+
+      <Grid container spacing={7} maxWidth="md">
         <Grid item xs={12}>
           <Controller
             name="title"
@@ -22,6 +24,7 @@ export default function AdvertForm() {
             render={({ field }) => (
               <TextField
                 {...field}
+                required
                 id="title"
                 name="title"
                 label="Title"
@@ -41,6 +44,7 @@ export default function AdvertForm() {
             render={({ field }) => (
               <TextField
                 {...field}
+                required
                 id="description"
                 name="description"
                 label="Description"

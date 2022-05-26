@@ -306,7 +306,6 @@ const OwnerAdvertisement = ({ currentUser }: { currentUser: ICurrentUser }) => {
               sx={{ borderBottomWidth: 3 }}
             />
             <Box marginY={2}></Box>
-            {/* <Box sx={{ maxWidth: 1000 }} > */}
 
             <Grid
               container

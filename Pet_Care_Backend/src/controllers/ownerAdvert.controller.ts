@@ -165,8 +165,28 @@ const getUserOwnerAdvert = async (
   const oAdvert = await ownerAdvertService.getUserOwnerAdvert(
     Number(req.params.userId)
   );
+  const newInterv: string[] = fixJSONType(oAdvert.time_intervals);
+  const ownerLanguages: INamesObject[] =
+    await languageService.getOwnerLanguageNames(oAdvert.id);
+  const ownerPets: INamesObject[] = await petTypeService.getOwnerPetNames(
+    oAdvert.id
+  );
+  const ownerServices: INamesObject[] =
+    await serviceTypeService.getOwnerServiceNames(oAdvert.id);
 
-  return res.status(ResponseCodes.OK).json(oAdvert);
+  const languages = MapObjectNamesToStringArray(ownerLanguages);
+  const pets = MapObjectNamesToStringArray(ownerPets);
+  const services = MapObjectNamesToStringArray(ownerServices);
+
+  const fullAdvert: IOwnerAdvertGot = {
+    ...oAdvert,
+    languages: languages,
+    services: services,
+    pets: pets,
+    time_intervals: newInterv
+  };
+
+  return res.status(ResponseCodes.OK).json(fullAdvert);
 };
 
 const updateOwnerAdvert = async (

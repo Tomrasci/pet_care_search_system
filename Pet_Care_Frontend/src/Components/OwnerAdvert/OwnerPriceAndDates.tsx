@@ -2,6 +2,7 @@ import AdapterDateFns from "@mui/lab/AdapterDateFns";
 import DatePicker from "@mui/lab/DatePicker";
 import LocalizationProvider from "@mui/lab/LocalizationProvider";
 import {
+  Box,
   Checkbox,
   FormControl,
   FormControlLabel,
@@ -151,9 +152,10 @@ export default function OwnerPriceandDates({
 
   return (
     <React.Fragment>
-      <Typography variant="h6" gutterBottom>
-        Schedule and price
+      <Typography variant="h6" color="#793209" gutterBottom>
+        Schedule, price and services
       </Typography>
+      <Box marginY={2}></Box>
       <LocalizationProvider dateAdapter={AdapterDateFns} locale={lt}>
         <Grid container spacing={3} maxWidth="md">
           <Grid item xs={12} md={6}>
@@ -263,12 +265,22 @@ export default function OwnerPriceandDates({
               )}
             />
           </Grid>
-          <Grid item xs={2} md={2}>
-            <Typography>Eur</Typography>
+          <Grid
+            container
+            item
+            xs={2}
+            md={1}
+            display="flex"
+            alignItems="flex-end"
+            justifyContent="center"
+          >
+            Eur
           </Grid>
           <Grid item xs={4} md={7}></Grid>
           <Grid item xs={12} sx={{ mt: 3 }}>
-            <Typography>Pets needing care</Typography>
+            <Typography color="#793209" fontWeight={500}>
+              Pets needing care
+            </Typography>
           </Grid>
           {petTypes.map((pet: IPetType, index: number) => {
             return (
@@ -298,7 +310,9 @@ export default function OwnerPriceandDates({
             </Grid>
           )}
           <Grid item xs={12} sx={{ mt: 3 }}>
-            <Typography>Services</Typography>
+            <Typography color="#793209" fontWeight={500}>
+              Services
+            </Typography>
           </Grid>
           {serviceTypes.map((service: IServiceType, index: number) => {
             const labelText =

@@ -1,21 +1,16 @@
-import * as React from "react";
-import Card from "@mui/material/Card";
-import CardActions from "@mui/material/CardActions";
-import CardContent from "@mui/material/CardContent";
-import Button from "@mui/material/Button";
+import DeleteIcon from "@mui/icons-material/Delete";
+import EditIcon from "@mui/icons-material/Edit";
+import { Box, Divider, Grid, IconButton } from "@mui/material";
 import Typography from "@mui/material/Typography";
-import { useState, useEffect } from "react";
+import * as React from "react";
+import { useEffect, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 import caretakerAdvertisementApi from "../../Api/caretakerAdvertisementApi";
 import { ICaretakerAdvert } from "../../Interfaces/Caretaker/ICaretakerAdvert";
-import { Box, Divider, Grid, IconButton, makeStyles } from "@mui/material";
-import { Link, useNavigate } from "react-router-dom";
-import isEmpty from "../../Utils/Empty";
-import "./MyCaretakerAdvertisement.css";
-import EditIcon from "@mui/icons-material/Edit";
-import DeleteIcon from "@mui/icons-material/Delete";
-import { toast } from "react-toastify";
-import Comments from "./Comments";
 import { GridBreak } from "./CaretakerAdvertismentLayout";
+import Comments from "./Comments";
+import "./MyCaretakerAdvertisement.css";
 
 const MyCaretakerAdvertisement = ({ currentUser }: any) => {
   const [caretakerAdvert, setCaretakerAdvert] = useState<ICaretakerAdvert>();
@@ -24,12 +19,10 @@ const MyCaretakerAdvertisement = ({ currentUser }: any) => {
 
   async function getAdvert() {
     if (currentUser) {
-      console.log(`getting`);
       const cAdvert =
         await caretakerAdvertisementApi.getUserCaretakerAdvertisement(
           currentUser.id
         );
-      console.log(`cAdvert`);
       setCaretakerAdvert(cAdvert);
     }
   }
@@ -49,19 +42,41 @@ const MyCaretakerAdvertisement = ({ currentUser }: any) => {
     getAdvert();
   }, [currentUser]);
 
-  console.log(`caretaker advert is ${caretakerAdvert}`);
-  {
-    caretakerAdvert
-      ? console.log(`caretaker adveert is ${JSON.stringify(caretakerAdvert)}`)
-      : console.log(`caretakre advert unde`);
-  }
   return (
     <Box marginY={5}>
       {caretakerAdvert ? (
         <Box alignItems="center" justifyContent="center">
-          <Typography align="center" color="inherit" sx={{ fontSize: 32 }}>
-            My advertisement
-          </Typography>
+          <Grid
+            container
+            display="flex"
+            alignItems="center"
+            justifyContent="center"
+          >
+            <Grid item xs={4}></Grid>
+            <Grid item xs={4}>
+              <Typography
+                align="center"
+                color="#793209"
+                fontWeight={500}
+                sx={{ fontSize: 40 }}
+              >
+                My advertisement
+              </Typography>
+            </Grid>
+            <Grid item xs={2}>
+              <Link to={`/caretakerUpdate/${caretakerAdvert.id}`}>
+                <IconButton>
+                  <EditIcon color="secondary" sx={{ fontSize: "50px" }} />
+                </IconButton>
+              </Link>
+              <IconButton
+                onClick={() => handleAdvertDelete(caretakerAdvert.id)}
+              >
+                <DeleteIcon color="error" sx={{ fontSize: "50px" }} />
+              </IconButton>
+            </Grid>
+            <Grid item xs={2}></Grid>
+          </Grid>
           <Box marginY={5}>
             <Box
               marginY={10}
@@ -372,8 +387,9 @@ const MyCaretakerAdvertisement = ({ currentUser }: any) => {
                   }}
                 >
                   <Typography
-                    color="inherit"
-                    sx={{ fontSize: 25, fontWeight: 600 }}
+                    color="#793209"
+                    fontWeight={600}
+                    sx={{ fontSize: 25 }}
                   >
                     Advertisement comments
                   </Typography>

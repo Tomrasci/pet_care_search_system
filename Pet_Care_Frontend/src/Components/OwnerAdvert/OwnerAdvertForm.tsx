@@ -1,7 +1,7 @@
 import * as React from "react";
 import Typography from "@mui/material/Typography";
 import Grid from "@mui/material/Grid";
-import { TextField } from "@mui/material";
+import { Box, TextField } from "@mui/material";
 import { Controller, useFormContext } from "react-hook-form";
 
 export default function OwnerAdvertForm() {
@@ -11,9 +11,11 @@ export default function OwnerAdvertForm() {
   } = useFormContext();
   return (
     <React.Fragment>
-      <Typography variant="h6" gutterBottom>
+      <Typography variant="h6" color="#793209" gutterBottom>
         Advertisement details
       </Typography>
+      <Box marginY={2}></Box>
+
       <Grid container spacing={7} maxWidth="sm">
         <Grid item xs={12}>
           <Controller

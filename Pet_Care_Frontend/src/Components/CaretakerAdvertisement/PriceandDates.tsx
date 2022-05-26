@@ -2,6 +2,7 @@ import AdapterDateFns from "@mui/lab/AdapterDateFns";
 import DatePicker from "@mui/lab/DatePicker";
 import LocalizationProvider from "@mui/lab/LocalizationProvider";
 import {
+  Box,
   Checkbox,
   FormControl,
   FormControlLabel,
@@ -23,6 +24,7 @@ import { Controller, useFormContext } from "react-hook-form";
 import { IDaysObject } from "../../Interfaces/Caretaker/IDaysObject";
 import { IPetType } from "../../Interfaces/Caretaker/IPetType";
 import { IServiceType } from "../../Interfaces/Caretaker/IServiceType";
+import { Container } from "../../Layout/FooterStyles";
 
 interface Props {
   sendErrorPet: (e: boolean) => void;
@@ -217,9 +219,10 @@ export default function PriceandDates({
 
   return (
     <React.Fragment>
-      <Typography variant="h6" gutterBottom>
-        Schedule and price
+      <Typography variant="h6" color="#793209" gutterBottom>
+        Schedule, price and services
       </Typography>
+      <Box marginY={2}></Box>
       <LocalizationProvider dateAdapter={AdapterDateFns} locale={lt}>
         <Grid container spacing={3} maxWidth="md">
           <Grid item xs={12} md={6}>
@@ -237,6 +240,7 @@ export default function PriceandDates({
                   renderInput={(params) => (
                     <TextField
                       name="startDate"
+                      required
                       fullWidth
                       {...params}
                       error={!!errors.startDate}
@@ -264,6 +268,7 @@ export default function PriceandDates({
                   renderInput={(params) => (
                     <TextField
                       name="endDate"
+                      required
                       fullWidth
                       {...params}
                       error={!!errors.endDate}
@@ -458,6 +463,7 @@ export default function PriceandDates({
               render={({ field }) => (
                 <TextField
                   {...field}
+                  required
                   id="hour_price"
                   name="hour_price"
                   label="Hour price"
@@ -475,12 +481,22 @@ export default function PriceandDates({
               )}
             />
           </Grid>
-          <Grid item xs={2} md={1}>
-            <p>Eur</p>
+          <Grid
+            container
+            item
+            xs={2}
+            md={1}
+            display="flex"
+            alignItems="flex-end"
+            justifyContent="center"
+          >
+            Eur
           </Grid>
           <Grid item xs={4} md={8}></Grid>
           <Grid item xs={12} sx={{ mt: 3 }}>
-            <Typography>Accepted pets</Typography>
+            <Typography color="#793209" fontWeight={500}>
+              Accepted pets *
+            </Typography>
           </Grid>
           {petTypes.map((pet: IPetType, index: number) => {
             return (
@@ -510,7 +526,9 @@ export default function PriceandDates({
             </Grid>
           )}
           <Grid item xs={12} sx={{ mt: 3 }}>
-            <Typography>Services</Typography>
+            <Typography color="#793209" fontWeight={500}>
+              Services *
+            </Typography>
           </Grid>
           {serviceTypes.map((service: IServiceType, index: number) => {
             const labelText =

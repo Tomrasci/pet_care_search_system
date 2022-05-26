@@ -1,3 +1,4 @@
+import { Box, Button } from "@mui/material";
 import Checkbox from "@mui/material/Checkbox";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Grid from "@mui/material/Grid";
@@ -5,10 +6,7 @@ import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
 import * as React from "react";
 import { useEffect } from "react";
-import {
-  Controller,
-  useFormContext
-} from "react-hook-form";
+import { Controller, useFormContext } from "react-hook-form";
 import { ILanguageType } from "../../Interfaces/Caretaker/ILanguageType";
 import isEmpty from "../../Utils/Empty";
 import "./PersInformation.css";
@@ -76,9 +74,11 @@ export default function PersInformation({
     checkedState &&
     !isEmpty(checkedState) && (
       <React.Fragment>
-        <Typography variant="h6" gutterBottom>
+        <Typography variant="h6" color="#793209" gutterBottom>
           Personal information
         </Typography>
+        <Box marginY={2}></Box>
+
         <Grid container spacing={3} maxWidth="md">
           <Grid item xs={12} sm={6}>
             <Controller
@@ -245,17 +245,26 @@ export default function PersInformation({
               )}
             />
           </Grid>
-          <Grid item xs={12} sx={{ mt: 3 }}>
-            <Typography>Choose your photo</Typography>
-          </Grid>
+
           <Grid item xs={12}>
-            <input type="file" onChange={onSelectFile} className="fileInput" />
+            <Button variant="contained" component="label">
+              Choose photo
+              <input
+                type="file"
+                hidden
+                onChange={onSelectFile}
+                className="fileInput"
+              />
+            </Button>
+            <Box marginX={1} marginY={1}></Box>
             {(selectedFile || isEdit) && (
               <img src={preview} width="250" height="150" />
             )}
           </Grid>
           <Grid item xs={12} sx={{ mt: 3 }}>
-            <Typography>Languages</Typography>
+            <Typography color="#793209" fontWeight={500}>
+              Languages *
+            </Typography>
           </Grid>
           {languages.map((language: ILanguageType, index: number) => {
             return (

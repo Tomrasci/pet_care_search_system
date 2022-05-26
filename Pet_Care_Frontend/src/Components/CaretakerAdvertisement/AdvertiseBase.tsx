@@ -34,7 +34,7 @@ import { IDaysObject } from "../../Interfaces/Caretaker/IDaysObject";
 
 const steps = [
   "Personal information",
-  "Schedule, price and services",
+  "Schedule and services",
   "Advertisement details",
 ];
 
