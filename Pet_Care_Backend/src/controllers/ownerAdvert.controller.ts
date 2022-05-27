@@ -152,9 +152,35 @@ const getOwnerAdverts = async (
   res: Response,
   next: NextFunction
 ) => {
-  const cAdverts = await ownerAdvertService.getOwnersAdverts();
+  const oAdverts = await ownerAdvertService.getOwnersAdverts();
 
-  return res.status(ResponseCodes.OK).json(cAdverts);
+  const newAdverts = [];
+
+  for (const oAdvert of oAdverts) {
+    const newInterv: string[] = fixJSONType(oAdvert.time_intervals);
+    const ownerLanguages: INamesObject[] =
+      await languageService.getOwnerLanguageNames(oAdvert.id);
+    const ownerPets: INamesObject[] = await petTypeService.getOwnerPetNames(
+      oAdvert.id
+    );
+    const ownerServices: INamesObject[] =
+      await serviceTypeService.getOwnerServiceNames(oAdvert.id);
+
+    const languages = MapObjectNamesToStringArray(ownerLanguages);
+    const pets = MapObjectNamesToStringArray(ownerPets);
+    const services = MapObjectNamesToStringArray(ownerServices);
+
+    const fullAdvert: IOwnerAdvertGot = {
+      ...oAdvert,
+      languages: languages,
+      services: services,
+      pets: pets,
+      time_intervals: newInterv
+    };
+    newAdverts.push(fullAdvert);
+  }
+
+  return res.status(ResponseCodes.OK).json(newAdverts);
 };
 
 const getUserOwnerAdvert = async (

@@ -192,8 +192,30 @@ const getCareTakerAdverts = async (
   next: NextFunction
 ) => {
   const cAdverts = await caretakerAdvertService.getCareTakersAdverts();
+  const newAdverts = [];
 
-  return res.status(ResponseCodes.OK).json(cAdverts);
+  for (const cAdvert of cAdverts) {
+    const caretakerLanguages: INamesObject[] =
+      await languageService.getCaretakerLanguageNames(cAdvert.id);
+    const caretakerPets: INamesObject[] =
+      await petTypeService.getCaretakerPetNames(cAdvert.id);
+    const caretakerServices: INamesObject[] =
+      await serviceTypeService.getCaretakerServiceNames(cAdvert.id);
+
+    const languages = MapObjectNamesToStringArray(caretakerLanguages);
+    const pets = MapObjectNamesToStringArray(caretakerPets);
+    const services = MapObjectNamesToStringArray(caretakerServices);
+
+    const fullAdvert: ICaretakerAdvert = {
+      ...cAdvert,
+      languages: languages,
+      services: services,
+      pets: pets
+    };
+    newAdverts.push(fullAdvert);
+  }
+
+  return res.status(ResponseCodes.OK).json(newAdverts);
 };
 
 const getUserCaretakerAdvert = async (

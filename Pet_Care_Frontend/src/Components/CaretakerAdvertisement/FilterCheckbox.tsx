@@ -1,10 +1,22 @@
 import { Checkbox, FormControlLabel } from "@mui/material";
 import React from "react";
 
-const FilterCheckbox = ({ changeChecked, type }: any) => {
+const FilterCheckbox = ({
+  changeChecked,
+  type,
+}: {
+  changeChecked: (id: number) => void;
+  type: any;
+}) => {
   const { checked, label, id } = type;
+  const labelText =
+    label === "House_sitting"
+      ? "House sitting"
+      : label === "Medication_giving"
+      ? "Medication giving"
+      : label;
   return (
-    <div>
+    <>
       <FormControlLabel
         control={
           <Checkbox
@@ -13,9 +25,9 @@ const FilterCheckbox = ({ changeChecked, type }: any) => {
             onChange={() => changeChecked(id)}
           />
         }
-        label={label}
+        label={labelText}
       />
-    </div>
+    </>
   );
 };
 

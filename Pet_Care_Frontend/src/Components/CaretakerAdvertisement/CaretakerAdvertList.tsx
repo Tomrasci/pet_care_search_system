@@ -12,17 +12,22 @@ import { CardMedia, createTheme, Grid, ThemeProvider } from "@mui/material";
 import { Link } from "react-router-dom";
 import "./CaretakerAdvertList.css";
 import isEmpty from "../../Utils/Empty";
+import FilterPanel from "./FilterPanel";
 
 const CaretakerAdvertList = ({ currentUser }: any) => {
   const [caretakerAdverts, setCaretakerAdverts] = useState<ICaretakerAdvert[]>(
     []
   );
+  const [filteredAdverts, setFilteredAdverts] = useState<ICaretakerAdvert[]>(
+    []
+  );
+  const [selectedPrice, setSelectedPrice] = useState([1, 100]);
   const [services, setServices] = useState([
     { id: 1, checked: false, label: "Walking" },
-    { id: 2, checked: false, label: "House sitting" },
+    { id: 2, checked: false, label: "House_sitting" },
     { id: 3, checked: false, label: "Nursing" },
     { id: 4, checked: false, label: "Boarding" },
-    { id: 5, checked: false, label: "Medication giving" },
+    { id: 5, checked: false, label: "Medication_giving" },
     { id: 6, checked: false, label: "Grooming" },
   ]);
   const [pets, setPets] = useState([
@@ -32,6 +37,15 @@ const CaretakerAdvertList = ({ currentUser }: any) => {
     { id: 4, checked: false, label: "Fish" },
     { id: 5, checked: false, label: "Turtle" },
     { id: 6, checked: false, label: "Other" },
+  ]);
+
+  const [languages, setLanguages] = useState([
+    { id: 1, checked: false, label: "Lithuanian" },
+    { id: 2, checked: false, label: "English" },
+    { id: 3, checked: false, label: "German" },
+    { id: 4, checked: false, label: "French" },
+    { id: 5, checked: false, label: "Russian" },
+    { id: 6, checked: false, label: "Spanish" },
   ]);
 
   const handleChangeCheckedServices = (id: number) => {
@@ -46,14 +60,20 @@ const CaretakerAdvertList = ({ currentUser }: any) => {
     const changeCheckedPets = petsList.map((item) =>
       item.id === id ? { ...item, checked: !item.checked } : item
     );
-    setServices(changeCheckedPets);
+    setPets(changeCheckedPets);
   };
 
-  // const changeServiceLabel=(advert : ICaretakerAdvert) => {
-  //  return  advert.service === "house_sitting" ? "house sitting" : service === "medication_giving"
-  //   ?  "medication giving" :  service
-  // }
+  const handleChangeCheckedLanguages = (id: number) => {
+    const languagesList = languages;
+    const changeCheckedLanguages = languagesList.map((item) =>
+      item.id === id ? { ...item, checked: !item.checked } : item
+    );
+    setLanguages(changeCheckedLanguages);
+  };
 
+  const handleChangePrice = (event: any, value: number[]) => {
+    setSelectedPrice(value);
+  };
   const applyFilters = () => {
     let updatedAdverts = caretakerAdverts;
     const servicesChecked = services
@@ -61,25 +81,41 @@ const CaretakerAdvertList = ({ currentUser }: any) => {
       .map((item) => item.label.toLowerCase());
 
     if (servicesChecked.length) {
-      let updatedAdvertList: ICaretakerAdvert[] = updatedAdverts.map(
-        (advert) => {
-          return {
-            ...advert,
-            services: advert.services.map((service) => {
-              return service === "house_sitting"
-                ? "house sitting"
-                : service === "medication_giving"
-                ? "medication giving"
-                : service;
-            }),
-          };
-        }
-      );
-      // updatedAdvertList = updatedAdvertList.filter((item) =>
-      //   item.services.every(service => services.includes())
-      // );
+      updatedAdverts = updatedAdverts.filter((advert) => {
+        return advert.services.some((s) => servicesChecked.includes(s));
+      });
     }
+    const petsChecked = pets
+      .filter((item) => item.checked)
+      .map((item) => item.label.toLowerCase());
+
+    if (petsChecked.length) {
+      updatedAdverts = updatedAdverts.filter((advert) => {
+        return advert.pets.some((p) => petsChecked.includes(p));
+      });
+    }
+    const languagesChecked = languages
+      .filter((item) => item.checked)
+      .map((item) => item.label);
+
+    if (languagesChecked.length) {
+      updatedAdverts = updatedAdverts.filter((advert) => {
+        return advert.languages.some((l) => languagesChecked.includes(l));
+      });
+    }
+    const minPrice = selectedPrice[0];
+    const maxPrice = selectedPrice[1];
+
+    updatedAdverts = updatedAdverts.filter((item) => {
+      return item.hour_price >= minPrice && item.hour_price <= maxPrice;
+    });
+
+    setFilteredAdverts(updatedAdverts);
   };
+  useEffect(() => {
+    applyFilters();
+  }, [services, pets, selectedPrice, languages]);
+
   const theme = createTheme({
     palette: {
       primary: {
@@ -94,6 +130,7 @@ const CaretakerAdvertList = ({ currentUser }: any) => {
         .getCaretakerAdvertisements()
         .then((adverts) => {
           setCaretakerAdverts(adverts);
+          setFilteredAdverts(adverts);
         });
     }
     getAdverts();
@@ -121,21 +158,33 @@ const CaretakerAdvertList = ({ currentUser }: any) => {
                   container
                   direction="column"
                   alignItems="center"
-                  spacing={4}
                   justifyContent="center"
                   alignContent="center"
-                  display="flex"
                 >
-                  <Typography
-                    component="h1"
-                    variant="h4"
-                    align="center"
-                    color="#793209"
-                    fontSize={25}
-                    fontWeight={500}
-                  >
-                    Filters
-                  </Typography>
+                  <Grid item xs={12}>
+                    <Typography
+                      component="h1"
+                      variant="h4"
+                      color="#793209"
+                      fontSize={32}
+                      fontWeight={500}
+                    >
+                      Filters
+                    </Typography>
+                  </Grid>
+                  <Box marginY={2}></Box>
+                  <Grid item xs={12}>
+                    <FilterPanel
+                      services={services}
+                      changeCheckedServices={handleChangeCheckedServices}
+                      pets={pets}
+                      changeCheckedPets={handleChangeCheckedPets}
+                      selectedPrice={selectedPrice}
+                      changePrice={handleChangePrice}
+                      languages={languages}
+                      changeCheckedLanguages={handleChangeCheckedLanguages}
+                    ></FilterPanel>
+                  </Grid>
                 </Grid>
               </Grid>
               <Grid item md={8} xs={12}>
@@ -148,7 +197,7 @@ const CaretakerAdvertList = ({ currentUser }: any) => {
                   alignContent="center"
                   display="flex"
                 >
-                  {caretakerAdverts.map((advert) => {
+                  {filteredAdverts.map((advert) => {
                     return (
                       <>
                         <Grid item xs={12} spacing={4}>

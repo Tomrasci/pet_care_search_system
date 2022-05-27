@@ -52,8 +52,8 @@ const MyCaretakerAdvertisement = ({ currentUser }: any) => {
             alignItems="center"
             justifyContent="center"
           >
-            <Grid item xs={4}></Grid>
-            <Grid item xs={4}>
+            <Grid item md={4} xs={12}></Grid>
+            <Grid item md={4} xs={12}>
               <Typography
                 align="center"
                 color="#793209"
@@ -63,7 +63,7 @@ const MyCaretakerAdvertisement = ({ currentUser }: any) => {
                 My advertisement
               </Typography>
             </Grid>
-            <Grid item xs={2}>
+            <Grid item md={2} xs={12}>
               <Link to={`/caretakerUpdate/${caretakerAdvert.id}`}>
                 <IconButton>
                   <EditIcon color="secondary" sx={{ fontSize: "50px" }} />
@@ -75,7 +75,7 @@ const MyCaretakerAdvertisement = ({ currentUser }: any) => {
                 <DeleteIcon color="error" sx={{ fontSize: "50px" }} />
               </IconButton>
             </Grid>
-            <Grid item xs={2}></Grid>
+            <Grid item md={2} xs={12}></Grid>
           </Grid>
           <Box marginY={5}>
             <Box
