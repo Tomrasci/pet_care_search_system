@@ -31,6 +31,7 @@ import { ILanguageType } from "../../Interfaces/Caretaker/ILanguageType";
 import isEmpty from "../../Utils/Empty";
 import interval from "./TimeIntervals";
 import { IDaysObject } from "../../Interfaces/Caretaker/IDaysObject";
+import userApi from "../../Api/userApi";
 
 const steps = [
   "Personal information",
@@ -46,7 +47,7 @@ const theme = createTheme({
   },
 });
 
-export default function AdvertiseBase({ currentUser }: any) {
+export default function AdvertiseBase({ currentUser, loadUsers }: any) {
   const navigate = useNavigate();
 
   if (isEmpty(currentUser)) {
@@ -278,6 +279,8 @@ export default function AdvertiseBase({ currentUser }: any) {
     if (result.status !== 201 || imageUpload !== 200) {
       toast.error("Advertisement creation failed");
     } else {
+      userApi.addUserAdvertisementCount();
+      await loadUsers();
       toast.success("Advertisement creation successful");
       navigate("/");
     }

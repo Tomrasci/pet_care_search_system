@@ -55,7 +55,9 @@ export default function App() {
       <Routes>
         <Route
           path={"/CaretakerAdvertCreate"}
-          element={<AdvertiseBase currentUser={currentUser} />}
+          element={
+            <AdvertiseBase currentUser={currentUser} loadUsers={loadUsers} />
+          }
         ></Route>
         <Route
           path={"/CarCaretakerAdvertisement/:id"}
@@ -71,11 +73,21 @@ export default function App() {
         ></Route>
         <Route
           path={"/MyCaretakerAdvert/:id"}
-          element={<MyCaretakerAdvertisement currentUser={currentUser} />}
+          element={
+            <MyCaretakerAdvertisement
+              currentUser={currentUser}
+              loadUsers={loadUsers}
+            />
+          }
         ></Route>
         <Route
           path={"/MyOwnerAdvert/:id"}
-          element={<MyOwnerAdvertisement currentUser={currentUser} />}
+          element={
+            <MyOwnerAdvertisement
+              currentUser={currentUser}
+              loadUsers={loadUsers}
+            />
+          }
         ></Route>
         <Route
           path={"/caretakerUpdate/:id"}
@@ -97,7 +109,12 @@ export default function App() {
         <Route path={"Login"} element={<Login loadUsers={loadUsers} />}></Route>
         <Route
           path={"/OwnerAdvertCreate"}
-          element={<OwnerAdvertiseBase currentUser={currentUser} />}
+          element={
+            <OwnerAdvertiseBase
+              currentUser={currentUser}
+              loadUsers={loadUsers}
+            />
+          }
         ></Route>
         <Route
           path={"/OwnerAdvertEdit/:id"}
@@ -134,7 +151,7 @@ export default function App() {
         <Route path={"/"} element={<Home />}></Route>
         ))
       </Routes>
-      <Footer></Footer>
+      {/* <Footer></Footer> */}
     </>
   );
 }

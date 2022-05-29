@@ -257,6 +257,8 @@ export default function PersInformation({
               />
             </Button>
             <Box marginX={1} marginY={1}></Box>
+            {console.log(`preview is ${preview}`)}
+
             {(selectedFile || isEdit) && (
               <img src={preview} width="250" height="150" />
             )}

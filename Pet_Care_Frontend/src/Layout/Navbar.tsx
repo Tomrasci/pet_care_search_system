@@ -41,12 +41,12 @@ const guestLinksArray = [
     id: 0,
   },
   {
-    name: "Caretaker Advertsisements",
+    name: "Caretaker Advertisements",
     route: "/CaretakerAdvertList",
     id: 1,
   },
   {
-    name: "Owner Advertsisements",
+    name: "Owner Advertisements",
     route: "/OwnerAdvertList",
     id: 2,
   },
@@ -163,6 +163,7 @@ const Navbar = ({
     setIsCaretaker(false);
     setIsOwner(false);
     userApi.logout();
+    handleCloseUserMenu();
     navigate("/");
     loadUsers();
   };
@@ -204,7 +205,17 @@ const Navbar = ({
                   <HomeIcon />
                 </Link>
               </Typography>
-              <DrawerComp links={guestLinksArray} />
+              <DrawerComp
+                guestLinks={guestLinksArray}
+                caretakerLeftLinks={caretakerLeftLinksArray}
+                ownerLeftLinks={ownerLeftLinksArray}
+                caretakerLinks={careTakerLinks}
+                ownerLinks={ownerLinks}
+                adminLinks={adminLinks}
+                currentUser={currentUser}
+                logOut={logOut}
+                hasAdvert={hasAdvert}
+              />
             </>
           ) : (
             <>
@@ -268,7 +279,7 @@ const Navbar = ({
                       </>
                     )}
 
-                    {!isEmpty(currentUser) && (isOwner || isAdmin) && (
+                    {!isEmpty(currentUser) && isOwner && (
                       <>
                         {!hasAdvert && (
                           <Link
@@ -276,6 +287,27 @@ const Navbar = ({
                             to={"/OwnerAdvertCreate"}
                           >
                             <Tab label="Create Advertisement" />
+                          </Link>
+                        )}
+                      </>
+                    )}
+
+                    {!isEmpty(currentUser) && isAdmin && (
+                      <>
+                        {!hasAdvert && (
+                          <Link
+                            style={{ textDecoration: "none", color: "white" }}
+                            to={"/OwnerAdvertCreate"}
+                          >
+                            <Tab label="Create Owner Advertisement" />
+                          </Link>
+                        )}
+                        {!hasAdvert && (
+                          <Link
+                            style={{ textDecoration: "none", color: "white" }}
+                            to={"/CaretakerAdvertCreate"}
+                          >
+                            <Tab label="Create Caretaker Advertisement" />
                           </Link>
                         )}
                       </>
@@ -296,7 +328,10 @@ const Navbar = ({
                             <Avatar
                               sx={{ width: 50, height: 50 }}
                               alt="User"
-                              src={userIcon}
+                              src={
+                                "http://localhost:3002/" +
+                                  currentUser.photo_link || userIcon
+                              }
                             />
                           </IconButton>
                         </Tooltip>
@@ -313,7 +348,7 @@ const Navbar = ({
                             vertical: "top",
                             horizontal: "right",
                           }}
-                          open={Boolean(anchorElUser)}
+                          open={Boolean(anchorElUser) || false}
                           onClose={handleCloseUserMenu}
                         >
                           {careTakerLinks.map((caretakerLink) => (
@@ -364,7 +399,10 @@ const Navbar = ({
                             <Avatar
                               sx={{ width: 50, height: 50 }}
                               alt="User"
-                              src={userIcon}
+                              src={
+                                "http://localhost:3002/" +
+                                  currentUser.photo_link || userIcon
+                              }
                             />
                           </IconButton>
                         </Tooltip>
@@ -432,7 +470,10 @@ const Navbar = ({
                             <Avatar
                               sx={{ width: 50, height: 50 }}
                               alt="User"
-                              src={userIcon}
+                              src={
+                                "http://localhost:3002/" +
+                                  currentUser.photo_link || userIcon
+                              }
                             />
                           </IconButton>
                         </Tooltip>

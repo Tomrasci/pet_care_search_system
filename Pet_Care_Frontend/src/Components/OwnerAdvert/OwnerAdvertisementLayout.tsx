@@ -95,9 +95,20 @@ const OwnerAdvertisement = ({ currentUser }: { currentUser: ICurrentUser }) => {
                   </Typography>
 
                   <Box marginY={3}></Box>
-                  <Typography color="inherit" sx={{ fontSize: 18 }}>
-                    {advertDetails.description}
-                  </Typography>
+                  <Grid
+                    item
+                    container
+                    style={{
+                      justifyContent: "center",
+                      alignItems: "center",
+                      display: "flex",
+                    }}
+                    xs={12}
+                  >
+                    <Typography color="inherit" sx={{ fontSize: 18 }}>
+                      {advertDetails.description}
+                    </Typography>
+                  </Grid>
                   {advertDetails.extra_information ? (
                     <>
                       <Box marginY={3}></Box>
@@ -146,12 +157,20 @@ const OwnerAdvertisement = ({ currentUser }: { currentUser: ICurrentUser }) => {
               </Grid>
               <Grid item xs={12} container>
                 {advertDetails.services.map((service) => {
+                  const labelText =
+                    service === "Owner_house_sitting"
+                      ? "Owner house sitting"
+                      : service === "Medication_giving"
+                      ? "Medication giving"
+                      : service === "Caretaker_house_sitting"
+                      ? "Caretaker house sitting"
+                      : service;
                   return (
                     <>
                       <Box marginY={2}></Box>
                       <Grid item xs={6}></Grid>
                       <Grid item xs={6}>
-                        <Typography>{service}</Typography>
+                        <Typography>{labelText}</Typography>
                       </Grid>
                     </>
                   );

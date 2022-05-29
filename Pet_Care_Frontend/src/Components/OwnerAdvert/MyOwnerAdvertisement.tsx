@@ -12,21 +12,25 @@ import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import ownerAdverisementApi from "../../Api/ownerAdverisementApi";
+import userApi from "../../Api/userApi";
 import { IOwnerAdvert } from "../../Interfaces/Owner/IOwnerAdvert";
 import isEmpty from "../../Utils/Empty";
 import "../CaretakerAdvertisement/MyCaretakerAdvertisement.css";
 import { GridBreak } from "./OwnerAdvertisementLayout";
 
-const MyOwnerAdvertisement = ({ currentUser }: any) => {
+const MyOwnerAdvertisement = ({ currentUser, loadUsers }: any) => {
   const [ownerAdvert, setOwnerAdvert] = useState<IOwnerAdvert>();
 
   const navigate = useNavigate();
 
   async function getAdvert() {
     if (currentUser) {
+      console.log(`current user is ${currentUser}`);
       const oAdvert = await ownerAdverisementApi.getUserOwnerAdvertisement(
         currentUser.id
       );
+      console.log(`owner advert is ${ownerAdvert}`);
+
       setOwnerAdvert(oAdvert);
     }
   }
@@ -34,15 +38,14 @@ const MyOwnerAdvertisement = ({ currentUser }: any) => {
   const handleAdvertDelete = async (id: number) => {
     if (window.confirm("Are you sure you want to delete this advertisement?")) {
       await ownerAdverisementApi.deleteOwnerAdvertisement(id);
+      userApi.removeUserAdvertisementCount();
+      loadUsers();
       toast.success("Advertisement deleted successfully!");
-      getAdvert();
+      navigate("/");
     }
   };
 
   useEffect(() => {
-    // if (isEmpty(currentUser)) {
-    //   navigate("/Login");
-    // }
     getAdvert();
   }, [currentUser]);
 
@@ -147,9 +150,20 @@ const MyOwnerAdvertisement = ({ currentUser }: any) => {
                       </Typography>
 
                       <Box marginY={3}></Box>
-                      <Typography color="inherit" sx={{ fontSize: 18 }}>
-                        {ownerAdvert.description}
-                      </Typography>
+                      <Grid
+                        item
+                        container
+                        style={{
+                          justifyContent: "center",
+                          alignItems: "center",
+                          display: "flex",
+                        }}
+                        xs={12}
+                      >
+                        <Typography color="inherit" sx={{ fontSize: 18 }}>
+                          {ownerAdvert.description}
+                        </Typography>
+                      </Grid>
                       {ownerAdvert.extra_information ? (
                         <>
                           <Box marginY={3}></Box>
@@ -201,10 +215,12 @@ const MyOwnerAdvertisement = ({ currentUser }: any) => {
                   <Grid item xs={12} container>
                     {ownerAdvert.services.map((service) => {
                       const labelText =
-                        service === "house_sitting"
-                          ? "house sitting"
-                          : service === "medication_giving"
-                          ? "medication giving"
+                        service === "Owner_house_sitting"
+                          ? "Owner house sitting"
+                          : service === "Medication_giving"
+                          ? "Medication giving"
+                          : service === "Caretaker_house_sitting"
+                          ? "Caretaker house sitting"
                           : service;
                       return (
                         <>

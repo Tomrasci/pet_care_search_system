@@ -1,3 +1,4 @@
+/* eslint-disable dot-notation */
 import { Request, Response, NextFunction } from 'express';
 import logger from '../../logger';
 import userService from '../services/user.service';
@@ -60,8 +61,29 @@ const register = async (req: Request, res: Response, next: NextFunction) => {
     advert_count: 0
   };
 
-  await userService.registerUser(user);
-  res.status(ResponseCodes.CREATED).send(req.body);
+  const insertedUser: IUser = await userService.registerUser(user);
+  res.status(ResponseCodes.CREATED).send(insertedUser);
+};
+
+const uploadUserPhoto = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  if (
+    req['file'] &&
+    !req['file'].originalname.match(/\.(jpg|JPG|jpeg|JPEG|png|PNG|gif|GIF)$/)
+  ) {
+    res.send({ msg: 'Only image files (jpg, jpeg, png) are allowed!' });
+  }
+  let image;
+  if (req['file']) {
+    image = req['file'].filename;
+  } else {
+    image = process.env.PICTURE_DIR + process.env.DEFAULT_PICTURE_NAME;
+  }
+  await userService.uploadUserImage(Number(req.params.id), image);
+  return res.status(ResponseCodes.OK).send('Success');
 };
 
 const login = async (req: Request, res: Response, next: NextFunction) => {
@@ -100,7 +122,8 @@ const login = async (req: Request, res: Response, next: NextFunction) => {
     id: user.id,
     role: user.role,
     advert_count: user.advert_count,
-    accessToken: token
+    accessToken: token,
+    photo_link: user.photo_link
   });
 };
 
@@ -326,5 +349,6 @@ export default {
   changePassword,
   getNonAdminUsers,
   updateUser,
-  deleteUser
+  deleteUser,
+  uploadUserPhoto
 };

@@ -3,7 +3,9 @@ import { IOwnerAdvertCreate } from "../Interfaces/Owner/IOwnerAdvertCreate";
 import authHeader from "../Authentication/authHeader";
 
 const createOwnerAdvertisement = async (ownerAdvert: IOwnerAdvertCreate) => {
-  return await http.post("/ownerAdverts", ownerAdvert);
+  return await http.post("/ownerAdverts", ownerAdvert, {
+    headers: authHeader(),
+  });
 };
 
 const getOwnerAdvertisements = async () => {

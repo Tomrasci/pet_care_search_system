@@ -87,6 +87,8 @@ const createOwnerAdvertisement = async (
     `Owner languages have been inserted  ${JSON.stringify(ownerLanguages)}`
   );
 
+  await ownerAdvertService.addAdvertisementCount(req.body.user_id);
+
   return res.status(ResponseCodes.CREATED).send(insertedOwnerAdvertisement);
 };
 
@@ -334,9 +336,12 @@ const deleteOwnerAdvert = async (
 
   await ownerAdvertService.deleteOwnerAdvert(Number(req.params.id));
 
+  await ownerAdvertService.removeAdvertisementCount(req.body.user.id);
+
   logger.info(
     `Owner advert ${neededOwnerAdvert} has successfully been deleted`
   );
+
   return res.status(ResponseCodes.OK).json('Owner advert deleted sucessfully');
 };
 

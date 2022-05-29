@@ -16,6 +16,28 @@ const Register = () => {
   );
   const { errors } = formState;
   const navigate = useNavigate();
+  const [selectedFile, setSelectedFile] = React.useState<File | undefined>();
+  const [preview, setPreview] = React.useState<string>();
+
+  React.useEffect(() => {
+    if (!selectedFile) {
+      setPreview(undefined);
+      return;
+    }
+    const objectUrl = URL.createObjectURL(selectedFile);
+    setPreview(objectUrl);
+
+    return () => URL.revokeObjectURL(objectUrl);
+  }, [selectedFile]);
+
+  const onSelectFile = (e: any) => {
+    if (!e.target.files || e.target.files.length === 0) {
+      setSelectedFile(undefined);
+      return;
+    }
+
+    setSelectedFile(e.target.files[0]);
+  };
 
   const [values, handleChange, resetValues] = useFormHook({
     username: "",
@@ -51,10 +73,19 @@ const Register = () => {
         role: Number(role),
         city: values.city,
       };
-      resetValues();
+      // resetValues();
       const result = await userApi.userRegister(userInfo);
-      toast.success("Registration successful!");
-      navigate("/login");
+      console.log(`result data is ${JSON.stringify(result.data)}`);
+      const imageUpload = await userApi.uploadUserImage(
+        result.data.id,
+        selectedFile
+      );
+      if (imageUpload !== 200) {
+        toast.error("User registration failed");
+      } else {
+        toast.success("Registration successful!");
+        navigate("/login");
+      }
     }
   };
 
@@ -94,6 +125,9 @@ const Register = () => {
           showRoleError={showRoleError}
           setShowRoleError={setShowRoleError}
           handleRoleChange={handleRoleChange}
+          selectedFile={selectedFile}
+          onSelectFile={onSelectFile}
+          preview={preview}
         />
       </form>
     </div>

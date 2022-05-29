@@ -28,6 +28,13 @@ const uploadOwnerImage = async (oid: number, imageLink: string) => {
   return await ownerAdvertModel.uploadOwnerAdvertImage(oid, imageLink);
 };
 
+const addAdvertisementCount = async (id: number) => {
+  return await ownerAdvertModel.addAdvertisementCount(id);
+};
+const removeAdvertisementCount = async (id: number) => {
+  return await ownerAdvertModel.removeAdvertisementCount(id);
+};
+
 export default {
   createOwnerAdvert,
   getOwnerAdvertById,
@@ -35,5 +42,7 @@ export default {
   updateOwnerAdvert,
   deleteOwnerAdvert,
   getUserOwnerAdvert,
-  uploadOwnerImage
+  uploadOwnerImage,
+  addAdvertisementCount,
+  removeAdvertisementCount
 };

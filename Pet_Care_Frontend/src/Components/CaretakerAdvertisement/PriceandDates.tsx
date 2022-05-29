@@ -532,10 +532,12 @@ export default function PriceandDates({
           </Grid>
           {serviceTypes.map((service: IServiceType, index: number) => {
             const labelText =
-              service.name === "house_sitting"
-                ? "house sitting"
-                : service.name === "medication_giving"
-                ? "medication giving"
+              service.name === "Owner_house_sitting"
+                ? "Owner house sitting"
+                : service.name === "Medication_giving"
+                ? "Medication giving"
+                : service.name === "Caretaker_house_sitting"
+                ? "Caretaker house sitting"
                 : service.name;
             return (
               <Grid item xs={4}>

@@ -5,4 +5,5 @@ export interface IComment {
   updated_at?: Date;
   user_id: number;
   advertisement_id: number;
+  user_photo_link?: string;
 }

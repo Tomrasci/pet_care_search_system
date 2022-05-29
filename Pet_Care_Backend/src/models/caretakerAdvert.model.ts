@@ -69,6 +69,17 @@ const updateCareTakerAdvert = async (
     });
 };
 
+const addAdvertisementCount = async (id: number) => {
+  return await database('user').where({ id }).update({
+    advert_count: 1
+  });
+};
+const removeAdvertisementCount = async (id: number) => {
+  return await database('user').where({ id }).update({
+    advert_count: 0
+  });
+};
+
 const deleteCareTakerAdvert = async (id: number): Promise<ICaretakerAdvert> => {
   return await database('caretaker_advertisement').where({ id }).del();
 };
@@ -89,5 +100,7 @@ export default {
   getCaretakerAvailability,
   insertCaretakerAvailability,
   deleteCaretakerAvailability,
-  uploadCaretakerAdvertImage
+  uploadCaretakerAdvertImage,
+  addAdvertisementCount,
+  removeAdvertisementCount
 };

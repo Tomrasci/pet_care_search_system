@@ -38,6 +38,17 @@ const updateOwnerAdvert = async (
     });
 };
 
+const addAdvertisementCount = async (id: number) => {
+  return await database('user').where({ id }).update({
+    advert_count: 1
+  });
+};
+const removeAdvertisementCount = async (id: number) => {
+  return await database('user').where({ id }).update({
+    advert_count: 0
+  });
+};
+
 const deleteOwnerAdvert = async (id: number): Promise<IOwnerAdvert> => {
   return await database('owner_advertisement').where({ id }).del();
 };
@@ -55,5 +66,7 @@ export default {
   updateOwnerAdvert,
   deleteOwnerAdvert,
   getUserOwnerAdvert,
-  uploadOwnerAdvertImage
+  uploadOwnerAdvertImage,
+  addAdvertisementCount,
+  removeAdvertisementCount
 };

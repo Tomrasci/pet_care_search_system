@@ -19,6 +19,7 @@ import languageApi from "../../Api/languageApi";
 import ownerAdverisementApi from "../../Api/ownerAdverisementApi";
 import petTypeApi from "../../Api/petTypeApi";
 import serviceTypeApi from "../../Api/serviceTypeApi";
+import userApi from "../../Api/userApi";
 import { ILanguageType } from "../../Interfaces/Caretaker/ILanguageType";
 import { IPetType } from "../../Interfaces/Caretaker/IPetType";
 import { IServiceType } from "../../Interfaces/Caretaker/IServiceType";
@@ -44,7 +45,7 @@ const theme = createTheme({
   },
 });
 
-export default function OwnerAdvertiseBase({ currentUser }: any) {
+export default function OwnerAdvertiseBase({ currentUser, loadUsers }: any) {
   const navigate = useNavigate();
 
   if (isEmpty(currentUser)) {
@@ -249,6 +250,8 @@ export default function OwnerAdvertiseBase({ currentUser }: any) {
     if (result.status !== 201 || imageUpload !== 200) {
       toast.error("Advertisement creation failed");
     } else {
+      userApi.addUserAdvertisementCount();
+      await loadUsers();
       toast.success("Advertisement creation successful");
       navigate("/");
     }

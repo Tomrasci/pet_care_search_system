@@ -7,12 +7,13 @@ import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import caretakerAdvertisementApi from "../../Api/caretakerAdvertisementApi";
+import userApi from "../../Api/userApi";
 import { ICaretakerAdvert } from "../../Interfaces/Caretaker/ICaretakerAdvert";
 import { GridBreak } from "./CaretakerAdvertismentLayout";
 import Comments from "./Comments";
 import "./MyCaretakerAdvertisement.css";
 
-const MyCaretakerAdvertisement = ({ currentUser }: any) => {
+const MyCaretakerAdvertisement = ({ currentUser, loadUsers }: any) => {
   const [caretakerAdvert, setCaretakerAdvert] = useState<ICaretakerAdvert>();
 
   const navigate = useNavigate();
@@ -30,17 +31,16 @@ const MyCaretakerAdvertisement = ({ currentUser }: any) => {
   const handleAdvertDelete = async (id: number) => {
     if (window.confirm("Are you sure you want to delete this advertisement?")) {
       await caretakerAdvertisementApi.deleteCaretakerAdvertisement(id);
+      userApi.removeUserAdvertisementCount();
+      loadUsers();
       toast.success("Advertisement deleted successfully!");
-      getAdvert();
+      navigate("/");
     }
   };
 
   useEffect(() => {
-    // if (isEmpty(currentUser)) {
-    //   navigate("/Login");
-    // }
     getAdvert();
-  }, [currentUser]);
+  }, []);
 
   return (
     <Box marginY={5}>
@@ -154,15 +154,30 @@ const MyCaretakerAdvertisement = ({ currentUser }: any) => {
                       </Typography>
 
                       <Box marginY={3}></Box>
-                      <Typography color="inherit" sx={{ fontSize: 18 }}>
-                        {caretakerAdvert.description}
-                      </Typography>
+                      <Grid
+                        item
+                        container
+                        style={{
+                          justifyContent: "center",
+                          alignItems: "center",
+                          display: "flex",
+                        }}
+                        xs={12}
+                      >
+                        {" "}
+                        <Typography color="inherit" sx={{ fontSize: 18 }}>
+                          {caretakerAdvert.description}
+                        </Typography>
+                      </Grid>
+
                       {caretakerAdvert.extra_information ? (
                         <>
                           <Box marginY={3}></Box>
-                          <Typography>
-                            {caretakerAdvert.extra_information}
-                          </Typography>
+                          <Grid item xs={12} md={6}>
+                            <Typography>
+                              {caretakerAdvert.extra_information}
+                            </Typography>
+                          </Grid>
                         </>
                       ) : (
                         ""
@@ -208,10 +223,12 @@ const MyCaretakerAdvertisement = ({ currentUser }: any) => {
                   <Grid item xs={12} container>
                     {caretakerAdvert.services.map((service) => {
                       const labelText =
-                        service === "house_sitting"
-                          ? "house sitting"
-                          : service === "medication_giving"
-                          ? "medication giving"
+                        service === "Owner_house_sitting"
+                          ? "Owner house sitting"
+                          : service === "Medication_giving"
+                          ? "Medication giving"
+                          : service === "Caretaker_house_sitting"
+                          ? "Caretaker house sitting"
                           : service;
                       return (
                         <>

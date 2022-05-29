@@ -24,11 +24,11 @@ const CaretakerAdvertList = ({ currentUser }: any) => {
   const [selectedPrice, setSelectedPrice] = useState([1, 100]);
   const [services, setServices] = useState([
     { id: 1, checked: false, label: "Walking" },
-    { id: 2, checked: false, label: "House_sitting" },
-    { id: 3, checked: false, label: "Nursing" },
+    { id: 2, checked: false, label: "Owner_house_sitting" },
+    { id: 3, checked: false, label: "Caretaker_house_sitting" },
     { id: 4, checked: false, label: "Boarding" },
     { id: 5, checked: false, label: "Medication_giving" },
-    { id: 6, checked: false, label: "Grooming" },
+    { id: 6, checked: false, label: "Nursing" },
   ]);
   const [pets, setPets] = useState([
     { id: 1, checked: false, label: "Cat" },
@@ -78,7 +78,7 @@ const CaretakerAdvertList = ({ currentUser }: any) => {
     let updatedAdverts = caretakerAdverts;
     const servicesChecked = services
       .filter((item) => item.checked)
-      .map((item) => item.label.toLowerCase());
+      .map((item) => item.label);
 
     if (servicesChecked.length) {
       updatedAdverts = updatedAdverts.filter((advert) => {
@@ -87,7 +87,7 @@ const CaretakerAdvertList = ({ currentUser }: any) => {
     }
     const petsChecked = pets
       .filter((item) => item.checked)
-      .map((item) => item.label.toLowerCase());
+      .map((item) => item.label);
 
     if (petsChecked.length) {
       updatedAdverts = updatedAdverts.filter((advert) => {
@@ -209,7 +209,6 @@ const CaretakerAdvertList = ({ currentUser }: any) => {
                                 sm: 550,
                                 xs: 350,
                               },
-                              border: "2px solid brown",
                             }}
                           >
                             <Grid

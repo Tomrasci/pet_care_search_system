@@ -3,9 +3,13 @@ import { IUser } from './interfaces/IUser';
 import { IUserGet } from './interfaces/IUserGet';
 
 const createUser = async (user: IUser): Promise<IUser> => {
-  return await database('user').insert({
-    ...user
-  });
+  return await database('user')
+    .insert({
+      ...user
+    })
+    .then((id) => {
+      return database('user').where({ id }).first().select();
+    });
 };
 
 const getUserById = async (id: number): Promise<IUser> => {
@@ -51,6 +55,12 @@ const deleteUser = async (id: number) => {
   return await database('user').where({ id }).del();
 };
 
+const uploadUserImage = async (id: number, imageLink: string) => {
+  return await database('user')
+    .where({ id })
+    .update('photo_link', `${imageLink}`);
+};
+
 export default {
   createUser,
   getUserByEmail,
@@ -60,5 +70,6 @@ export default {
   changePassword,
   getNonAdminUsers,
   updateUser,
-  deleteUser
+  deleteUser,
+  uploadUserImage
 };

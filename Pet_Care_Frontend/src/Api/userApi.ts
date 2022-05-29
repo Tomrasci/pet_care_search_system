@@ -3,9 +3,10 @@ import http from "../Utils/httpRequestBody";
 import { toast } from "react-toastify";
 import authHeader from "../Authentication/authHeader";
 import { IUserChange } from "../Interfaces/User/IUserChange";
+import { ICurrentUser } from "../Interfaces/User/ICurrentUser";
 
 const userRegister = async (user: IUser) => {
-  return http.post("/register", user);
+  return await http.post("/register", user);
 };
 
 const login = async (email: string, password: string) => {
@@ -36,6 +37,28 @@ const getCurrentUser = () => {
     return null;
   } else {
     return JSON.parse(user);
+  }
+};
+
+const addUserAdvertisementCount = () => {
+  const user = localStorage.getItem("user");
+  if (user !== null) {
+    const newUser: ICurrentUser = {
+      ...JSON.parse(user),
+      advert_count: 1,
+    };
+    localStorage.setItem("user", JSON.stringify(newUser));
+  }
+};
+
+const removeUserAdvertisementCount = () => {
+  const user = localStorage.getItem("user");
+  if (user !== null) {
+    const newUser: ICurrentUser = {
+      ...JSON.parse(user),
+      advert_count: 0,
+    };
+    localStorage.setItem("user", JSON.stringify(newUser));
   }
 };
 
@@ -77,6 +100,14 @@ const deleteUser = async (id: number) => {
   });
 };
 
+const uploadUserImage = async (id: number, file: any) => {
+  const formData = new FormData();
+  formData.append("file", file);
+  const { data, status } = await http.post(`/uploadUserImage/${id}`, formData);
+
+  return status;
+};
+
 export default {
   userRegister,
   login,
@@ -88,4 +119,7 @@ export default {
   getUserList,
   updateUser,
   deleteUser,
+  addUserAdvertisementCount,
+  removeUserAdvertisementCount,
+  uploadUserImage,
 };

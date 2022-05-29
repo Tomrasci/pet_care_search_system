@@ -23,16 +23,16 @@ const upload = multer({
 router.post(
   `/uploadCaretakerImage/:id`,
   upload.single(`file`),
-  caretakerAdvertController.uploadCaretakerPhoto,
   authJwt.verifyToken,
-  authJwt.isCaretakerOrAdmin
+  authJwt.isCaretakerOrAdmin,
+  caretakerAdvertController.uploadCaretakerPhoto
 );
 
 router.post(
   '/caretakerAdverts',
-  caretakerAdvertController.createCaretakerAdvertisement,
   authJwt.verifyToken,
-  authJwt.isCaretakerOrAdmin
+  authJwt.isCaretakerOrAdmin,
+  caretakerAdvertController.createCaretakerAdvertisement
 );
 
 router.get('/caretakerAdverts', caretakerAdvertController.getCareTakerAdverts);
@@ -52,16 +52,16 @@ router.get(
 
 router.put(
   '/caretakerAdverts/:id',
-  caretakerAdvertController.updateCareTakerAdvert,
   authJwt.verifyToken,
-  authJwt.isCaretakerOrAdmin
+  authJwt.isCaretakerOrAdmin,
+  caretakerAdvertController.updateCareTakerAdvert
 );
 
 router.delete(
   '/caretakerAdverts/:id',
-  caretakerAdvertController.deleteCareTakerAdvert,
   authJwt.verifyToken,
-  authJwt.isCaretakerOrAdmin
+  authJwt.isCaretakerOrAdmin,
+  caretakerAdvertController.deleteCareTakerAdvert
 );
 
 router.get(

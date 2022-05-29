@@ -10,10 +10,12 @@ const FilterCheckbox = ({
 }) => {
   const { checked, label, id } = type;
   const labelText =
-    label === "House_sitting"
-      ? "House sitting"
+    label === "Owner_house_sitting"
+      ? "Owner house sitting"
       : label === "Medication_giving"
       ? "Medication giving"
+      : label === "Caretaker_house_sitting"
+      ? "Caretaker house sitting"
       : label;
   return (
     <>

@@ -11,4 +11,5 @@ export interface IUser {
   city: string;
   updated_at?: Date;
   advert_count: number;
+  photo_link?: string;
 }

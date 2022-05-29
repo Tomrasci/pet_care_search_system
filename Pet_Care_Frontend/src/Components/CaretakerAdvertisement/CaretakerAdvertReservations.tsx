@@ -74,6 +74,22 @@ export default function ReservationsTable({
     getReservations();
   }, [advertDetails, refetch]);
 
+  const checkColumnHideConfirm = (id: any) => {
+    const reservation = advertReservations.find((r) => r.id === Number(id));
+    if (reservation && reservation.status === "confirmed") {
+      return true;
+    }
+    return false;
+  };
+
+  const checkColumnHideCancel = (id: any) => {
+    const reservation = advertReservations.find((r) => r.id === Number(id));
+    if (reservation && reservation.status === "cancelled") {
+      return true;
+    }
+    return false;
+  };
+
   const columns: GridColDef[] = [
     {
       field: "date",
@@ -119,6 +135,7 @@ export default function ReservationsTable({
               color="secondary"
               onClick={() => handleReservationConfirm(Number(`${params.id}`))}
               startIcon={<ThumbUpAltIcon />}
+              disabled={checkColumnHideConfirm(params.id)}
             >
               Confirm
             </Button>
@@ -127,6 +144,7 @@ export default function ReservationsTable({
               color="warning"
               startIcon={<CancelIcon />}
               onClick={() => handleReservationCancel(Number(`${params.id}`))}
+              disabled={checkColumnHideCancel(params.id)}
             >
               Cancel
             </Button>
@@ -143,7 +161,6 @@ export default function ReservationsTable({
       </Typography>
       <Box marginY={2}></Box>
 
-      {/* <Box sx={{ width: "100%" }}> */}
       <Grid container alignItems="center" justifyContent="center">
         <Grid item md={10} xs={12}>
           <DataGrid
@@ -156,7 +173,6 @@ export default function ReservationsTable({
           />
         </Grid>
       </Grid>
-      {/* </Box> */}
     </Box>
   ) : (
     <Box marginY={15} alignItems="center" justifyContent="center">

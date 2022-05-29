@@ -23,11 +23,11 @@ const OwnerAdvertList = ({ currentUser }: any) => {
   const [selectedPrice, setSelectedPrice] = useState([1, 100]);
   const [services, setServices] = useState([
     { id: 1, checked: false, label: "Walking" },
-    { id: 2, checked: false, label: "House_sitting" },
-    { id: 3, checked: false, label: "Nursing" },
+    { id: 2, checked: false, label: "Owner_house_sitting" },
+    { id: 3, checked: false, label: "Caretaker_house_sitting" },
     { id: 4, checked: false, label: "Boarding" },
     { id: 5, checked: false, label: "Medication_giving" },
-    { id: 6, checked: false, label: "Grooming" },
+    { id: 6, checked: false, label: "Nursing" },
   ]);
   const [pets, setPets] = useState([
     { id: 1, checked: false, label: "Cat" },
@@ -46,7 +46,6 @@ const OwnerAdvertList = ({ currentUser }: any) => {
     { id: 5, checked: false, label: "Russian" },
     { id: 6, checked: false, label: "Spanish" },
   ]);
-  console.log(`adverts are  ${JSON.stringify(ownerAdverts)}`);
 
   const handleChangeCheckedServices = (id: number) => {
     const servicesList = services;
@@ -78,7 +77,7 @@ const OwnerAdvertList = ({ currentUser }: any) => {
     let updatedAdverts = ownerAdverts;
     const servicesChecked = services
       .filter((item) => item.checked)
-      .map((item) => item.label.toLowerCase());
+      .map((item) => item.label);
 
     if (servicesChecked.length) {
       updatedAdverts = updatedAdverts.filter((advert) => {
@@ -87,7 +86,7 @@ const OwnerAdvertList = ({ currentUser }: any) => {
     }
     const petsChecked = pets
       .filter((item) => item.checked)
-      .map((item) => item.label.toLowerCase());
+      .map((item) => item.label);
 
     if (petsChecked.length) {
       updatedAdverts = updatedAdverts.filter((advert) => {
@@ -99,11 +98,6 @@ const OwnerAdvertList = ({ currentUser }: any) => {
       .map((item) => item.label);
 
     if (languagesChecked.length) {
-      console.log(`checked languages ${JSON.stringify(languagesChecked)}`);
-      console.log(
-        `advert languages ${JSON.stringify(ownerAdverts[0].languages)}`
-      );
-
       updatedAdverts = updatedAdverts.filter((advert) => {
         return advert.languages.some((l) => languagesChecked.includes(l));
       });
@@ -212,7 +206,6 @@ const OwnerAdvertList = ({ currentUser }: any) => {
                                 sm: 550,
                                 xs: 350,
                               },
-                              border: "2px solid brown",
                             }}
                           >
                             <Grid

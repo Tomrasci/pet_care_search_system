@@ -128,6 +128,8 @@ const createCaretakerAdvertisement = async (
     )}`
   );
 
+  await caretakerAdvertService.addAdvertisementCount(req.body.user_id);
+
   return res.status(ResponseCodes.CREATED).send(insertedCaretakerAdvertisement);
 };
 
@@ -245,7 +247,7 @@ const getUserCaretakerAdvert = async (
     pets: pets
   };
 
-  return res.status(ResponseCodes.OK).json(fullAdvert);
+  return res.status(ResponseCodes.OK).send(fullAdvert);
 };
 
 const getCaretakerAvailability = async (
@@ -432,6 +434,8 @@ const deleteCareTakerAdvert = async (
   );
 
   await caretakerAdvertService.deleteCareTakerAdvert(Number(req.params.id));
+
+  await caretakerAdvertService.removeAdvertisementCount(req.body.user.id);
 
   logger.info(
     `Caretaker advert ${neededCareTakerAdvert} has successfully been deleted`

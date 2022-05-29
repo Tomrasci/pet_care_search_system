@@ -10,4 +10,5 @@ export interface ICurrentUser {
   role: number;
   advert_count: number;
   accessToken: string;
+  photo_link?: string;
 }

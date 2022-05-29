@@ -9,4 +9,5 @@ export interface IUser {
   surname: string;
   role: number;
   city: string;
+  photo_link?: string;
 }

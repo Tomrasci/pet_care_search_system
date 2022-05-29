@@ -6,4 +6,5 @@ export interface ICommentWithUser {
   user_name: string;
   user_id: number;
   advertisement_id: number;
+  user_photo_link: string;
 }

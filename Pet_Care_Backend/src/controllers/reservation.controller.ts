@@ -1,4 +1,5 @@
 import { NextFunction, Request, Response } from 'express';
+import moment from 'moment';
 import ApiError from '../../error/ApiError';
 import logger from '../../logger';
 import { IReservation } from '../models/interfaces/IReservation';
@@ -29,7 +30,7 @@ const getConfirmedAdvertisementReservations = async (
   if (!reservations) {
     return next(
       ApiError.notFoundError(
-        `Reservation was not found with advertisement id  ${req.params.id}`
+        `Reservatiosn were not found with advertisement id  ${req.params.id}`
       )
     );
   }
@@ -71,8 +72,13 @@ const getAdvertisementReservationsWithUser = async (
     await reservationService.getAdvertisementReservationsWithUser(
       Number(req.params.id)
     );
+  const filteredReservations = advertReservations.filter((reservation) => {
+    return (
+      moment(reservation.date).format('L') >= moment(new Date()).format('L')
+    );
+  });
 
-  return res.status(ResponseCodes.OK).json(advertReservations);
+  return res.status(ResponseCodes.OK).json(filteredReservations);
 };
 
 const createReservations = async (

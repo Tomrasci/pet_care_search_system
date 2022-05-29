@@ -38,6 +38,10 @@ const deleteUser = async (id: number) => {
   return await userModel.deleteUser(id);
 };
 
+const uploadUserImage = async (cid: number, imageLink: string) => {
+  return await userModel.uploadUserImage(cid, imageLink);
+};
+
 export default {
   registerUser,
   getUserByUsername,
@@ -47,5 +51,6 @@ export default {
   changePassword,
   getNonAdminUsers,
   updateUser,
-  deleteUser
+  deleteUser,
+  uploadUserImage
 };

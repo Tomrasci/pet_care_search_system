@@ -3,6 +3,27 @@ import userController from '../controllers/user.controller';
 import authJwt from '../middleware/authJwt';
 const router = express.Router();
 
+const multer = require('multer');
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, './');
+  },
+  filename: function (req, file, cb) {
+    const ext = file.mimetype.split('/')[1];
+    cb(null, `uploads/${file.originalname}-${Date.now()}.${ext}`);
+  }
+});
+
+const upload = multer({
+  storage: storage
+});
+
+router.post(
+  `/uploadUserImage/:id`,
+  upload.single(`file`),
+  userController.uploadUserPhoto
+);
+
 router.post('/register', userController.register);
 
 router.post('/login', userController.login);

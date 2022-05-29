@@ -57,10 +57,14 @@ const deleteOwnerLanguages = async (id: number) => {
 };
 
 const getCaretakerLanguageNames = async (id: number) => {
-  return await database(`caretaker_languages`)
-    .where('advertisement_id', id)
-    .join(`language`, `caretaker_languages.language_id`, `language.id`)
-    .select('language.name');
+  try {
+    return await database(`caretaker_languages`)
+      .where('advertisement_id', id)
+      .join(`language`, `caretaker_languages.language_id`, `language.id`)
+      .select('language.name');
+  } catch (err) {
+    console.log(err.message);
+  }
 };
 
 const getCOwnerLanguageNames = async (id: number) => {
