@@ -180,29 +180,7 @@ export default function PersInformation({
               )}
             />
           </Grid>
-          <Grid item xs={12} sm={6}>
-            <Controller
-              name="age"
-              control={control}
-              render={({ field }) => (
-                <TextField
-                  {...field}
-                  required
-                  id="age"
-                  name="age"
-                  label="Age"
-                  type="number"
-                  fullWidth
-                  autoComplete="family-name"
-                  variant="standard"
-                  error={!!errors.age}
-                  helperText={
-                    errors.age ? "Age is required and must be a number" : ""
-                  }
-                />
-              )}
-            />
-          </Grid>
+
           <Grid item xs={12} sm={6}>
             <Controller
               name="activity"
@@ -223,7 +201,7 @@ export default function PersInformation({
               )}
             />
           </Grid>
-          <Grid item xs={12} sm={6}>
+          <Grid item xs={12}>
             <Controller
               name="experience"
               control={control}
@@ -257,7 +235,6 @@ export default function PersInformation({
               />
             </Button>
             <Box marginX={1} marginY={1}></Box>
-            {console.log(`preview is ${preview}`)}
 
             {(selectedFile || isEdit) && (
               <img src={preview} width="250" height="150" />

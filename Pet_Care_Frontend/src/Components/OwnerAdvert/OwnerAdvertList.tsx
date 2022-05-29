@@ -15,11 +15,28 @@ import { IOwnerAdvert } from "../../Interfaces/Owner/IOwnerAdvert";
 import ownerAdverisementApi from "../../Api/ownerAdverisementApi";
 import isEmpty from "../../Utils/Empty";
 import FilterPanel from "../CaretakerAdvertisement/FilterPanel";
+import Pagination from "../../Utils/Pagination";
 
 const OwnerAdvertList = ({ currentUser }: any) => {
   const [ownerAdverts, setOwnerAdverts] = useState<IOwnerAdvert[]>([]);
 
   const [filteredAdverts, setFilteredAdverts] = useState<IOwnerAdvert[]>([]);
+
+  const [currentPage, setCurrentPage] = useState(1);
+  const [advertisementsPerPage, setAdvertsimentsPerPage] = useState(5);
+
+  const indexOfLastAdvertisement = currentPage * advertisementsPerPage;
+  const indexOfFirstAdvertisement =
+    indexOfLastAdvertisement - advertisementsPerPage;
+  const currentAdvertisements = filteredAdverts.slice(
+    indexOfFirstAdvertisement,
+    indexOfLastAdvertisement
+  );
+
+  const paginate = (pageNumber: number) => {
+    setCurrentPage(pageNumber);
+  };
+
   const [selectedPrice, setSelectedPrice] = useState([1, 100]);
   const [services, setServices] = useState([
     { id: 1, checked: false, label: "Walking" },
@@ -194,7 +211,7 @@ const OwnerAdvertList = ({ currentUser }: any) => {
                   alignContent="center"
                   display="flex"
                 >
-                  {filteredAdverts.map((advert) => {
+                  {currentAdvertisements.map((advert) => {
                     return (
                       <>
                         <Grid item xs={12} spacing={4}>
@@ -293,6 +310,21 @@ const OwnerAdvertList = ({ currentUser }: any) => {
                       </>
                     );
                   })}
+                </Grid>
+                <Box marginY={5}></Box>
+                <Grid
+                  item
+                  container
+                  alignItems="center"
+                  justifyContent="center"
+                  display="flex"
+                  xs={12}
+                >
+                  <Pagination
+                    advertisementsPerPage={advertisementsPerPage}
+                    totalAdvertisements={filteredAdverts.length}
+                    paginate={paginate}
+                  ></Pagination>
                 </Grid>
               </Grid>
 

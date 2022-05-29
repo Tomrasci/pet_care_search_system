@@ -206,7 +206,7 @@ export default function OwnerPersInformation({
           </Grid>
           {languages.map((language: ILanguageType, index: number) => {
             return (
-              <Grid item xs={2}>
+              <Grid item xs={4} md={2}>
                 <FormControlLabel
                   control={
                     <Checkbox

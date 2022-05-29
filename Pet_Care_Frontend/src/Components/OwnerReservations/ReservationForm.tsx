@@ -84,6 +84,7 @@ const ReservationForm = ({ reservationObject, onSave }: Props) => {
                 value={reservationObject.dateValue}
                 onChange={(newValue) => {
                   reservationObject.handleDateValue(newValue);
+                  console.log(`date value is ${newValue}`);
                 }}
                 renderInput={(params) => (
                   <TextField

@@ -118,7 +118,12 @@ export default function App() {
         ></Route>
         <Route
           path={"/OwnerAdvertEdit/:id"}
-          element={<OwnerAdvertiseBaseEdit currentUser={currentUser} />}
+          element={
+            <OwnerAdvertiseBaseEdit
+              currentUser={currentUser}
+              loadUsers={loadUsers}
+            />
+          }
         ></Route>
         <Route
           path={"/CaretakerAdvertisement/:id"}
@@ -134,7 +139,9 @@ export default function App() {
         ></Route>
         <Route
           path={"/Myprofile"}
-          element={<MyProfile currentUser={currentUser} />}
+          element={
+            <MyProfile currentUser={currentUser} loadUsers={loadUsers} />
+          }
         ></Route>
         <Route
           path={"/Editprofile"}

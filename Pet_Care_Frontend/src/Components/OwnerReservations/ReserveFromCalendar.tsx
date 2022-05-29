@@ -1,11 +1,15 @@
 import BookOnlineIcon from "@mui/icons-material/BookOnline";
 import {
+  Box,
+  createTheme,
   Grid,
   SelectChangeEvent,
   Theme,
+  ThemeProvider,
   Typography,
   useTheme,
 } from "@mui/material";
+import moment from "moment";
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router";
 import { toast } from "react-toastify";
@@ -52,6 +56,13 @@ const ReserveFromCalendar = ({ currentUser }: any) => {
   >([]);
 
   const reserving = true;
+  const theme = createTheme({
+    palette: {
+      primary: {
+        main: "#793209",
+      },
+    },
+  });
 
   useEffect(() => {
     async function getCaretakerAvailability() {
@@ -89,7 +100,6 @@ const ReserveFromCalendar = ({ currentUser }: any) => {
     getCaretakerAvailability();
   }, []);
 
-  const theme = useTheme();
   const ITEM_HEIGHT = 48;
   const ITEM_PADDING_TOP = 8;
   const MenuProps = {
@@ -198,15 +208,21 @@ const ReserveFromCalendar = ({ currentUser }: any) => {
     setSelectInterval(typeof value === "string" ? value.split(",") : value);
   };
 
+  console.log(`value is ${value}`);
+  const datata = value ? moment(value).toDate() : new Date();
+  console.log(`'datata is ${datata}`);
+
   const handleReservation = async () => {
+    const reservationDate = value ? moment(value).toDate() : new Date();
     const reservation: IReservation = {
-      date: value || new Date(),
+      date: reservationDate,
       timeInterval: selectInterval.toString(),
       user_id: currentUser.id,
       advertisement_id: Number(id),
       status: "pending",
       description: reservationDescription,
     };
+    console.log(`reservation date is ${reservation.date}`);
 
     const result = await reservationApi.createReservations(reservation);
     if (result.status !== 201) {
@@ -234,15 +250,29 @@ const ReserveFromCalendar = ({ currentUser }: any) => {
 
   return (
     <>
-      <Grid
-        container
-        sx={{ mt: 5 }}
-        justifyContent="center"
-        display="flex"
-        alignItems="center"
-      >
-        <Grid item md={1} sm={0}></Grid>
-        <Grid item md={10} sm={12}>
+      <ThemeProvider theme={theme}>
+        <Grid
+          container
+          sx={{ mt: 5 }}
+          justifyContent="center"
+          display="flex"
+          alignItems="center"
+        >
+          <Grid item md={1} sm={0}></Grid>
+          <Grid item md={10} sm={12}>
+            <ButtonBase
+              title="Reservation creation"
+              buttonText="Make reservation"
+              buttonIcon={<BookOnlineIcon />}
+              content={
+                <ReservationForm reservationObject={reservationObject} />
+              }
+            />
+          </Grid>
+          <Grid item md={1} sm={0}></Grid>
+        </Grid>
+        <CaretakerCalendar reserving={reserving} currentUser={currentUser} />
+        <Grid container sx={{ mt: 10 }} justifyContent="center">
           <ButtonBase
             title="Reservation creation"
             buttonText="Make reservation"
@@ -250,17 +280,8 @@ const ReserveFromCalendar = ({ currentUser }: any) => {
             content={<ReservationForm reservationObject={reservationObject} />}
           />
         </Grid>
-        <Grid item md={1} sm={0}></Grid>
-      </Grid>
-      <CaretakerCalendar reserving={reserving} currentUser={currentUser} />
-      <Grid container sx={{ mt: 10 }} justifyContent="center">
-        <ButtonBase
-          title="Reservation creation"
-          buttonText="Make reservation"
-          buttonIcon={<BookOnlineIcon />}
-          content={<ReservationForm reservationObject={reservationObject} />}
-        />
-      </Grid>
+        <Box marginY={10}></Box>
+      </ThemeProvider>
     </>
   );
 };

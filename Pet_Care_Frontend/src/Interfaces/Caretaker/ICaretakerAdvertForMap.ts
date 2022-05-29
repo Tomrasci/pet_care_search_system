@@ -2,7 +2,6 @@ export interface ICaretakerAdvertForMap {
   id: number;
   name: string;
   surname: string;
-  age: number;
   phone: string;
   address: string;
   experience: string;

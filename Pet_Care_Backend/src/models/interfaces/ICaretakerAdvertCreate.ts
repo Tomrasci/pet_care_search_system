@@ -1,7 +1,6 @@
 export interface ICaretakerAdvertCreate {
   name: string;
   surname: string;
-  age: number;
   phone: string;
   address: string;
   experience: string;

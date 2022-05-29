@@ -12,6 +12,7 @@ import { ICaretakerAdvert } from "../../Interfaces/Caretaker/ICaretakerAdvert";
 import { GridBreak } from "./CaretakerAdvertismentLayout";
 import Comments from "./Comments";
 import "./MyCaretakerAdvertisement.css";
+import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 
 const MyCaretakerAdvertisement = ({ currentUser, loadUsers }: any) => {
   const [caretakerAdvert, setCaretakerAdvert] = useState<ICaretakerAdvert>();
@@ -63,7 +64,16 @@ const MyCaretakerAdvertisement = ({ currentUser, loadUsers }: any) => {
                 My advertisement
               </Typography>
             </Grid>
+
             <Grid item md={2} xs={12}>
+              <Link to={`/caretakerCalendar/${caretakerAdvert.id}`}>
+                <IconButton>
+                  <CalendarMonthIcon
+                    color="primary"
+                    sx={{ fontSize: "50px" }}
+                  />
+                </IconButton>
+              </Link>
               <Link to={`/caretakerUpdate/${caretakerAdvert.id}`}>
                 <IconButton>
                   <EditIcon color="secondary" sx={{ fontSize: "50px" }} />
@@ -143,11 +153,7 @@ const MyCaretakerAdvertisement = ({ currentUser, loadUsers }: any) => {
                       <GridBreak />
 
                       <Typography sx={{ fontSize: 14 }}>
-                        {caretakerAdvert.age +
-                          " " +
-                          " years old." +
-                          " " +
-                          caretakerAdvert.activity +
+                        {caretakerAdvert.activity +
                           ". " +
                           caretakerAdvert.hour_price +
                           " eur per hour"}
@@ -169,19 +175,6 @@ const MyCaretakerAdvertisement = ({ currentUser, loadUsers }: any) => {
                           {caretakerAdvert.description}
                         </Typography>
                       </Grid>
-
-                      {caretakerAdvert.extra_information ? (
-                        <>
-                          <Box marginY={3}></Box>
-                          <Grid item xs={12} md={6}>
-                            <Typography>
-                              {caretakerAdvert.extra_information}
-                            </Typography>
-                          </Grid>
-                        </>
-                      ) : (
-                        ""
-                      )}
                     </Grid>
                   </Grid>
                 </Box>
@@ -369,7 +362,7 @@ const MyCaretakerAdvertisement = ({ currentUser, loadUsers }: any) => {
                         color="inherit"
                         sx={{ fontSize: 20, fontWeight: 600 }}
                       >
-                        Personal information
+                        Other information
                       </Typography>
                     </Grid>
                     <Grid item xs={6}>
@@ -381,6 +374,18 @@ const MyCaretakerAdvertisement = ({ currentUser, loadUsers }: any) => {
                         <GridBreak />
                         <Box marginY={2}></Box>
                         Phone: {caretakerAdvert.phone}
+                        {caretakerAdvert.extra_information ? (
+                          <>
+                            <GridBreak />
+                            <Box marginY={2}></Box>
+                            <Grid item xs={12}>
+                              Extra information:
+                              {caretakerAdvert.extra_information}
+                            </Grid>
+                          </>
+                        ) : (
+                          ""
+                        )}
                       </Typography>
                     </Grid>
                   </Grid>

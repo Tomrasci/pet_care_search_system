@@ -164,16 +164,6 @@ const MyOwnerAdvertisement = ({ currentUser, loadUsers }: any) => {
                           {ownerAdvert.description}
                         </Typography>
                       </Grid>
-                      {ownerAdvert.extra_information ? (
-                        <>
-                          <Box marginY={3}></Box>
-                          <Typography>
-                            {ownerAdvert.extra_information}
-                          </Typography>
-                        </>
-                      ) : (
-                        ""
-                      )}
                     </Grid>
                   </Grid>
                 </Box>
@@ -361,16 +351,23 @@ const MyOwnerAdvertisement = ({ currentUser, loadUsers }: any) => {
                         color="inherit"
                         sx={{ fontSize: 20, fontWeight: 600 }}
                       >
-                        Personal information
+                        Other information
                       </Typography>
                     </Grid>
                     <Grid item xs={6}>
                       <Typography sx={{ fontSize: 16, fontWeight: 600 }}>
                         Email: {currentUser.email}
                         <GridBreak />
-                        <GridBreak />
                         <Box marginY={2}></Box>
                         Phone: {ownerAdvert.phone}
+                        {ownerAdvert.extra_information ? (
+                          <>
+                            <Box marginY={2}></Box>
+                            Extra information: {ownerAdvert.extra_information}
+                          </>
+                        ) : (
+                          ""
+                        )}
                       </Typography>
                     </Grid>
                   </Grid>

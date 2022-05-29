@@ -1,4 +1,13 @@
-import { Box, Button, Grid, Paper, TextField, Typography } from "@mui/material";
+import {
+  Box,
+  Button,
+  createTheme,
+  Grid,
+  Paper,
+  TextField,
+  ThemeProvider,
+  Typography,
+} from "@mui/material";
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router";
@@ -10,9 +19,11 @@ import ProfileValidation from "../Profile/ProfileValidaton";
 type Props = {
   onSave(): void;
   userForEdit?: IUserChange;
+  refetch: boolean;
+  refetchUsers: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
-const UserEdit = ({ onSave, userForEdit }: Props) => {
+const UserEdit = ({ onSave, userForEdit, refetch, refetchUsers }: Props) => {
   const [username, setUsername] = useState(userForEdit?.username || "");
   const [email, setEmail] = useState(userForEdit?.email || "");
   const [phone, setPhone] = useState(userForEdit?.phone || "");
@@ -26,6 +37,13 @@ const UserEdit = ({ onSave, userForEdit }: Props) => {
   );
   const { errors } = formState;
   const navigate = useNavigate();
+  const theme = createTheme({
+    palette: {
+      primary: {
+        main: "#793209",
+      },
+    },
+  });
 
   const submitEditedUser = async () => {
     const user = {
@@ -42,6 +60,7 @@ const UserEdit = ({ onSave, userForEdit }: Props) => {
     if (result.status !== 200) {
       toast.error("User edit failed");
     } else {
+      refetchUsers(!refetch);
       toast.success("User updated successful");
     }
     onSave();
@@ -49,10 +68,10 @@ const UserEdit = ({ onSave, userForEdit }: Props) => {
 
   return (
     <>
-      <Box marginY={5}>
-        <form onSubmit={handleSubmit(submitEditedUser)}>
-          <Grid container alignItems="center" justifyContent="center">
-            <Paper elevation={5} sx={{ maxWidth: 900 }}>
+      <ThemeProvider theme={theme}>
+        <Box marginY={5}>
+          <form onSubmit={handleSubmit(submitEditedUser)}>
+            <Grid container alignItems="center" justifyContent="center">
               <Box marginY={2}>
                 <Typography
                   align="center"
@@ -72,7 +91,7 @@ const UserEdit = ({ onSave, userForEdit }: Props) => {
                 alignItems="center"
                 justifyContent="center"
               >
-                <Grid item xs={6}>
+                <Grid item xs={12} md={6}>
                   <Box marginX={2} marginY={2}>
                     <TextField
                       {...register("username")}
@@ -90,7 +109,7 @@ const UserEdit = ({ onSave, userForEdit }: Props) => {
                   </Box>
                 </Grid>
 
-                <Grid item xs={6}>
+                <Grid item xs={12} md={6}>
                   <Box marginX={2} marginY={2}>
                     <TextField
                       {...register("email")}
@@ -107,7 +126,7 @@ const UserEdit = ({ onSave, userForEdit }: Props) => {
                   </Box>
                 </Grid>
 
-                <Grid item xs={6}>
+                <Grid item xs={12} md={6}>
                   <Box marginX={2} marginY={2}>
                     <TextField
                       {...register("name")}
@@ -122,7 +141,7 @@ const UserEdit = ({ onSave, userForEdit }: Props) => {
                     <Typography color="red">{errors.name?.message}</Typography>
                   </Box>
                 </Grid>
-                <Grid item xs={6}>
+                <Grid item xs={12} md={6}>
                   <Box marginX={2} marginY={2}>
                     <TextField
                       {...register("surname")}
@@ -139,7 +158,7 @@ const UserEdit = ({ onSave, userForEdit }: Props) => {
                     </Typography>
                   </Box>
                 </Grid>
-                <Grid item xs={6}>
+                <Grid item xs={12} md={6}>
                   <Box marginX={2} marginY={2}>
                     <TextField
                       {...register("phone")}
@@ -154,7 +173,7 @@ const UserEdit = ({ onSave, userForEdit }: Props) => {
                     <Typography color="red">{errors.phone?.message}</Typography>
                   </Box>
                 </Grid>
-                <Grid item xs={6}>
+                <Grid item xs={12} md={6}>
                   <Box marginX={2} marginY={2}>
                     <TextField
                       {...register("city")}
@@ -170,7 +189,7 @@ const UserEdit = ({ onSave, userForEdit }: Props) => {
                   </Box>
                 </Grid>
 
-                <Grid item xs={6}>
+                <Grid item xs={12} md={6}>
                   <Box marginX={2} marginY={2}>
                     <TextField
                       {...register("address")}
@@ -188,8 +207,14 @@ const UserEdit = ({ onSave, userForEdit }: Props) => {
                   </Box>
                 </Grid>
                 <Grid item xs={6}></Grid>
-                <Grid item xs={0} sm={4}></Grid>
-                <Grid item xs={6} sm={2}>
+                <Grid
+                  item
+                  container
+                  display="flex"
+                  alignItems="center"
+                  justifyContent="center"
+                  xs={12}
+                >
                   <Box marginY={5}>
                     <Button type="submit" variant="contained">
                       Edit
@@ -198,10 +223,10 @@ const UserEdit = ({ onSave, userForEdit }: Props) => {
                 </Grid>
                 <Grid item xs={0} sm={2}></Grid>
               </Grid>
-            </Paper>
-          </Grid>
-        </form>
-      </Box>
+            </Grid>
+          </form>
+        </Box>
+      </ThemeProvider>
     </>
   );
 };

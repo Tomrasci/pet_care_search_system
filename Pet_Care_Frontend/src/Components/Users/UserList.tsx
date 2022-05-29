@@ -145,6 +145,8 @@ export default function UserList({
           <UserEdit
             userForEdit={transferUserInterface(userList, editingUser)}
             onSave={() => setEditingUser("")}
+            refetch={refetch}
+            refetchUsers={setRefetch}
           ></UserEdit>
         }
       />

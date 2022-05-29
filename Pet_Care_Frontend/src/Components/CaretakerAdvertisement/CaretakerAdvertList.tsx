@@ -13,6 +13,7 @@ import { Link } from "react-router-dom";
 import "./CaretakerAdvertList.css";
 import isEmpty from "../../Utils/Empty";
 import FilterPanel from "./FilterPanel";
+import Pagination from "../../Utils/Pagination";
 
 const CaretakerAdvertList = ({ currentUser }: any) => {
   const [caretakerAdverts, setCaretakerAdverts] = useState<ICaretakerAdvert[]>(
@@ -21,7 +22,24 @@ const CaretakerAdvertList = ({ currentUser }: any) => {
   const [filteredAdverts, setFilteredAdverts] = useState<ICaretakerAdvert[]>(
     []
   );
+
+  const [currentPage, setCurrentPage] = useState(1);
+  const [advertisementsPerPage, setAdvertsimentsPerPage] = useState(5);
+
+  const indexOfLastAdvertisement = currentPage * advertisementsPerPage;
+  const indexOfFirstAdvertisement =
+    indexOfLastAdvertisement - advertisementsPerPage;
+  const currentAdvertisements = filteredAdverts.slice(
+    indexOfFirstAdvertisement,
+    indexOfLastAdvertisement
+  );
+
+  const paginate = (pageNumber: number) => {
+    setCurrentPage(pageNumber);
+  };
+
   const [selectedPrice, setSelectedPrice] = useState([1, 100]);
+
   const [services, setServices] = useState([
     { id: 1, checked: false, label: "Walking" },
     { id: 2, checked: false, label: "Owner_house_sitting" },
@@ -197,7 +215,7 @@ const CaretakerAdvertList = ({ currentUser }: any) => {
                   alignContent="center"
                   display="flex"
                 >
-                  {filteredAdverts.map((advert) => {
+                  {currentAdvertisements.map((advert) => {
                     return (
                       <>
                         <Grid item xs={12} spacing={4}>
@@ -252,9 +270,6 @@ const CaretakerAdvertList = ({ currentUser }: any) => {
                                       {advert.name +
                                         "." +
                                         " " +
-                                        advert.age +
-                                        " years old." +
-                                        " " +
                                         advert.experience +
                                         "."}
                                     </Typography>
@@ -298,6 +313,21 @@ const CaretakerAdvertList = ({ currentUser }: any) => {
                       </>
                     );
                   })}
+                </Grid>
+                <Box marginY={5}></Box>
+                <Grid
+                  item
+                  container
+                  alignItems="center"
+                  justifyContent="center"
+                  display="flex"
+                  xs={12}
+                >
+                  <Pagination
+                    advertisementsPerPage={advertisementsPerPage}
+                    totalAdvertisements={filteredAdverts.length}
+                    paginate={paginate}
+                  ></Pagination>
                 </Grid>
               </Grid>
 

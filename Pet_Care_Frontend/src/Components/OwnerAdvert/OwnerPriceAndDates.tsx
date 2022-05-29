@@ -212,7 +212,16 @@ export default function OwnerPriceandDates({
           </Grid>
 
           <Grid item xs={12}>
-            <FormControl sx={{ minWidth: 802.03 }}>
+            <FormControl
+              sx={{
+                width: {
+                  sx: 1.0,
+                  md: 700,
+                  sm: 550,
+                  xs: 300,
+                },
+              }}
+            >
               <InputLabel id="monday_select">Required time(s)</InputLabel>
               <Select
                 labelId="monday_select"
@@ -284,7 +293,7 @@ export default function OwnerPriceandDates({
           </Grid>
           {petTypes.map((pet: IPetType, index: number) => {
             return (
-              <Grid item xs={2}>
+              <Grid item xs={4} md={2}>
                 <FormControlLabel
                   control={
                     <Checkbox

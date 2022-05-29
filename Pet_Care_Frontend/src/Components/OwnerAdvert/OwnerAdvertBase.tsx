@@ -25,6 +25,7 @@ import { IPetType } from "../../Interfaces/Caretaker/IPetType";
 import { IServiceType } from "../../Interfaces/Caretaker/IServiceType";
 import { IOwnerAdvertCreate } from "../../Interfaces/Owner/IOwnerAdvertCreate";
 import { ITimeIntervalsObject } from "../../Interfaces/Owner/ITimeIntervalsObject";
+import { Roles } from "../../Interfaces/Roles";
 import isEmpty from "../../Utils/Empty";
 import interval from "../CaretakerAdvertisement/TimeIntervals";
 import OwnerAdvertForm from "./OwnerAdvertForm";
@@ -48,8 +49,11 @@ const theme = createTheme({
 export default function OwnerAdvertiseBase({ currentUser, loadUsers }: any) {
   const navigate = useNavigate();
 
-  if (isEmpty(currentUser)) {
-    navigate("/Login");
+  const user = userApi.getCurrentUser();
+  if (user !== null) {
+    currentUser = user;
+  } else {
+    navigate("/");
   }
 
   moment.locale("lt");

@@ -28,7 +28,7 @@ const getAllSelectedDays = (startDate: Date, endDate: Date, day: number) => {
 
   var arr = [];
   let tmp = start.clone().day(day);
-  if (tmp.isAfter(start, "d")) {
+  if (tmp.isSameOrAfter(start, "d")) {
     arr.push(tmp.format("YYYY-MM-DD"));
   }
   while (tmp.isBefore(end)) {

@@ -23,7 +23,6 @@ const validateCaretakerAdvert = (caretakerAdvert: ICaretakerAdvertCreate) => {
   const schema = Joi.object().keys({
     name: Joi.string().required(),
     surname: Joi.string().required(),
-    age: Joi.number().required(),
     phone: Joi.string().required(),
     address: Joi.string().required(),
     city: Joi.string().required(),

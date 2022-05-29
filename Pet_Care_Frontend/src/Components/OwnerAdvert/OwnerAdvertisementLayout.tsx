@@ -109,14 +109,6 @@ const OwnerAdvertisement = ({ currentUser }: { currentUser: ICurrentUser }) => {
                       {advertDetails.description}
                     </Typography>
                   </Grid>
-                  {advertDetails.extra_information ? (
-                    <>
-                      <Box marginY={3}></Box>
-                      <Typography>{advertDetails.extra_information}</Typography>
-                    </>
-                  ) : (
-                    ""
-                  )}
                 </Grid>
               </Grid>
             </Box>
@@ -304,16 +296,21 @@ const OwnerAdvertisement = ({ currentUser }: { currentUser: ICurrentUser }) => {
                     color="inherit"
                     sx={{ fontSize: 20, fontWeight: 600 }}
                   >
-                    Personal information
+                    Other information
                   </Typography>
                 </Grid>
                 <Grid item xs={6}>
                   <Typography sx={{ fontSize: 16, fontWeight: 600 }}>
-                    Email: {currentUser.email}
-                    <GridBreak />
-                    <GridBreak />
-                    <Box marginY={2}></Box>
                     Phone: {advertDetails.phone}
+                    {advertDetails.extra_information ? (
+                      <>
+                        <GridBreak />
+                        <Box marginY={2}></Box>
+                        Extra information: {advertDetails.extra_information}
+                      </>
+                    ) : (
+                      ""
+                    )}
                   </Typography>
                 </Grid>
               </Grid>

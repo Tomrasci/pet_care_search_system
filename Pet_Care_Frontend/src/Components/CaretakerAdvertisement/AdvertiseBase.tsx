@@ -32,6 +32,8 @@ import isEmpty from "../../Utils/Empty";
 import interval from "./TimeIntervals";
 import { IDaysObject } from "../../Interfaces/Caretaker/IDaysObject";
 import userApi from "../../Api/userApi";
+import { ICurrentUser } from "../../Interfaces/User/ICurrentUser";
+import { Roles } from "../../Interfaces/Roles";
 
 const steps = [
   "Personal information",
@@ -47,11 +49,19 @@ const theme = createTheme({
   },
 });
 
-export default function AdvertiseBase({ currentUser, loadUsers }: any) {
+export default function AdvertiseBase({
+  currentUser,
+  loadUsers,
+}: {
+  currentUser: ICurrentUser;
+  loadUsers: any;
+}) {
   const navigate = useNavigate();
-
-  if (isEmpty(currentUser)) {
-    navigate("/Login");
+  const user = userApi.getCurrentUser();
+  if (user !== null) {
+    currentUser = user;
+  } else {
+    navigate("/");
   }
 
   moment.locale("lt");
@@ -68,7 +78,6 @@ export default function AdvertiseBase({ currentUser, loadUsers }: any) {
     surname: currentUser.surname || "",
     address: currentUser.address || "",
     phone: currentUser.phone || "",
-    age: "",
     activity: "",
     experience: "",
     startDate: "",
@@ -174,7 +183,6 @@ export default function AdvertiseBase({ currentUser, loadUsers }: any) {
       surname: yup.string().required("Last name is required"),
       address: yup.string().required("Address is required"),
       phone: yup.string().required("Phone is required"),
-      age: yup.number().required("Age is required"),
       activity: yup.string().required("Work or activity is required"),
       experience: yup.string().required("Experience field is required"),
       city: yup.string().required("City is required"),
@@ -248,7 +256,6 @@ export default function AdvertiseBase({ currentUser, loadUsers }: any) {
       address: getValues("address"),
       city: getValues("city"),
       phone: getValues("phone"),
-      age: Number(getValues("age")),
       activity: getValues("activity"),
       experience: getValues("experience"),
       title: getValues("title"),

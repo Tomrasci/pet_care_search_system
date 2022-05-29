@@ -104,7 +104,17 @@ const RegistrationBody = ({
       <ThemeProvider theme={theme}>
         <Box marginY={5}>
           <Grid container alignItems="center" justifyContent="center">
-            <Paper elevation={5} sx={{ maxWidth: 900 }}>
+            <Paper
+              elevation={5}
+              sx={{
+                width: {
+                  sx: 1.0,
+                  md: 700,
+                  sm: 550,
+                  xs: 350,
+                },
+              }}
+            >
               <Box marginY={2}>
                 <Typography
                   align="center"
@@ -124,35 +134,7 @@ const RegistrationBody = ({
                 alignItems="center"
                 justifyContent="center"
               >
-                <Grid item xs={6}>
-                  <Box marginY={2}>
-                    <Typography
-                      align="center"
-                      component="h1"
-                      variant="h6"
-                      color="inherit"
-                      noWrap
-                      sx={{ flexGrow: 1 }}
-                    >
-                      User information
-                    </Typography>
-                  </Box>
-                </Grid>
-                <Grid item xs={6}>
-                  <Box marginY={2}>
-                    <Typography
-                      align="center"
-                      component="h1"
-                      variant="h6"
-                      color="inherit"
-                      noWrap
-                      sx={{ flexGrow: 1 }}
-                    >
-                      Personal information
-                    </Typography>
-                  </Box>
-                </Grid>
-                <Grid item xs={6}>
+                <Grid item xs={12} md={6}>
                   <Box marginX={2} marginY={2}>
                     <TextField
                       {...registerUsername}
@@ -171,7 +153,7 @@ const RegistrationBody = ({
                     </Typography>
                   </Box>
                 </Grid>
-                <Grid item xs={6}>
+                <Grid item xs={12} md={6}>
                   <Box marginX={2} marginY={2}>
                     <TextField
                       {...registerName}
@@ -188,7 +170,7 @@ const RegistrationBody = ({
                     <Typography color="red">{nameError?.message}</Typography>
                   </Box>
                 </Grid>
-                <Grid item xs={6}>
+                <Grid item xs={12} md={6}>
                   <Box marginX={2} marginY={2}>
                     <TextField
                       {...registerEmail}
@@ -206,7 +188,7 @@ const RegistrationBody = ({
                     <Typography color="red">{emailError?.message}</Typography>
                   </Box>
                 </Grid>
-                <Grid item xs={6}>
+                <Grid item xs={12} md={6}>
                   <Box marginX={2} marginY={2}>
                     <TextField
                       {...registerSurname}
@@ -223,7 +205,7 @@ const RegistrationBody = ({
                     <Typography color="red">{surnameError?.message}</Typography>
                   </Box>
                 </Grid>
-                <Grid item xs={6}>
+                <Grid item xs={12} md={6}>
                   <Box marginX={2} marginY={2}>
                     <TextField
                       {...registerPassword}
@@ -244,7 +226,7 @@ const RegistrationBody = ({
                     </Typography>
                   </Box>
                 </Grid>
-                <Grid item xs={6}>
+                <Grid item xs={12} md={6}>
                   <Box marginX={2} marginY={2}>
                     <TextField
                       {...registerPhone}
@@ -262,7 +244,7 @@ const RegistrationBody = ({
                     <Typography color="red">{phoneError?.message}</Typography>
                   </Box>
                 </Grid>
-                <Grid item xs={6}>
+                <Grid item xs={12} md={6}>
                   <Box marginX={2} marginY={2}>
                     <TextField
                       {...registerConfirmPassword}
@@ -284,7 +266,7 @@ const RegistrationBody = ({
                   </Box>
                 </Grid>
 
-                <Grid item xs={6}>
+                <Grid item xs={12} md={6}>
                   <Box marginX={2} marginY={2}>
                     <TextField
                       {...registerCity}
@@ -301,7 +283,7 @@ const RegistrationBody = ({
                     <Typography color="red">{cityError?.message}</Typography>
                   </Box>
                 </Grid>
-                <Grid item xs={6}>
+                <Grid item xs={12} md={6}>
                   <Box marginX={2} marginY={2}>
                     <Button variant="contained" component="label">
                       Choose photo
@@ -319,7 +301,7 @@ const RegistrationBody = ({
                   </Box>
                 </Grid>
 
-                <Grid item xs={6}>
+                <Grid item xs={12} md={6}>
                   <Box marginX={2} marginY={2}>
                     <TextField
                       {...registerAddress}
@@ -337,7 +319,7 @@ const RegistrationBody = ({
                   </Box>
                 </Grid>
                 <Grid item xs={3}></Grid>
-                <Grid item xs={6}>
+                <Grid item xs={12} md={6}>
                   <FormControl fullWidth>
                     <InputLabel id="demo-simple-select-label">
                       Register as
@@ -360,7 +342,7 @@ const RegistrationBody = ({
 
                 <Grid item xs={3}></Grid>
 
-                <Grid item xs={6}>
+                <Grid item xs={12} md={6}>
                   <Box marginY={3} textAlign="center">
                     <Button type="submit" variant="contained">
                       Register

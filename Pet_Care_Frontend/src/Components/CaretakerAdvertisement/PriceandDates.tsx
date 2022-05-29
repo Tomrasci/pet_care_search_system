@@ -281,7 +281,16 @@ export default function PriceandDates({
           </Grid>
 
           <Grid item xs={12}>
-            <FormControl sx={{ minWidth: 802.03 }}>
+            <FormControl
+              sx={{
+                width: {
+                  sx: 1.0,
+                  md: 700,
+                  sm: 550,
+                  xs: 300,
+                },
+              }}
+            >
               <InputLabel id="monday_select">Monday times</InputLabel>
               <Select
                 labelId="monday_select"
@@ -307,7 +316,16 @@ export default function PriceandDates({
           </Grid>
 
           <Grid item xs={12}>
-            <FormControl sx={{ minWidth: 802.03 }}>
+            <FormControl
+              sx={{
+                width: {
+                  sx: 1.0,
+                  md: 700,
+                  sm: 550,
+                  xs: 300,
+                },
+              }}
+            >
               <InputLabel id="tuesday_select">Tuesday times</InputLabel>
               <Select
                 labelId="tuesday_select"
@@ -332,7 +350,16 @@ export default function PriceandDates({
             </FormControl>
           </Grid>
           <Grid item xs={12}>
-            <FormControl sx={{ minWidth: 802.03 }}>
+            <FormControl
+              sx={{
+                width: {
+                  sx: 1.0,
+                  md: 700,
+                  sm: 550,
+                  xs: 300,
+                },
+              }}
+            >
               <InputLabel id="wednesday_select">Wednesday times</InputLabel>
               <Select
                 labelId="wednesday_select"
@@ -357,7 +384,16 @@ export default function PriceandDates({
             </FormControl>
           </Grid>
           <Grid item xs={12}>
-            <FormControl sx={{ minWidth: 802.03 }}>
+            <FormControl
+              sx={{
+                width: {
+                  sx: 1.0,
+                  md: 700,
+                  sm: 550,
+                  xs: 300,
+                },
+              }}
+            >
               <InputLabel id="thursday_select">Thursday times</InputLabel>
               <Select
                 labelId="thursday_select"
@@ -382,7 +418,16 @@ export default function PriceandDates({
             </FormControl>
           </Grid>
           <Grid item xs={12}>
-            <FormControl sx={{ minWidth: 802.03 }}>
+            <FormControl
+              sx={{
+                width: {
+                  sx: 1.0,
+                  md: 700,
+                  sm: 550,
+                  xs: 300,
+                },
+              }}
+            >
               <InputLabel id="friday_select">Friday times</InputLabel>
               <Select
                 labelId="friday_select"
@@ -407,7 +452,16 @@ export default function PriceandDates({
             </FormControl>
           </Grid>
           <Grid item xs={12}>
-            <FormControl sx={{ minWidth: 802.03 }}>
+            <FormControl
+              sx={{
+                width: {
+                  sx: 1.0,
+                  md: 700,
+                  sm: 550,
+                  xs: 300,
+                },
+              }}
+            >
               <InputLabel id="saturday_select">Saturday times</InputLabel>
               <Select
                 labelId="saturday_select"
@@ -432,7 +486,16 @@ export default function PriceandDates({
             </FormControl>
           </Grid>
           <Grid item xs={12}>
-            <FormControl sx={{ minWidth: 802.03 }}>
+            <FormControl
+              sx={{
+                width: {
+                  sx: 1.0,
+                  md: 700,
+                  sm: 550,
+                  xs: 300,
+                },
+              }}
+            >
               <InputLabel id="sunday_select">Sunday times</InputLabel>
               <Select
                 labelId="sunday_select"
@@ -500,7 +563,7 @@ export default function PriceandDates({
           </Grid>
           {petTypes.map((pet: IPetType, index: number) => {
             return (
-              <Grid item xs={2}>
+              <Grid item md={2} xs={4}>
                 <FormControlLabel
                   control={
                     <Checkbox

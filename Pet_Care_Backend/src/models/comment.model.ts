@@ -45,7 +45,8 @@ const insertComment = async (comment: IComment) => {
           'comment.updated_at',
           'comment.user_id',
           'comment.advertisement_id',
-          'user.name as user_name'
+          'user.name as user_name',
+          'user.photo_link as user_photo_link'
         );
     });
 };

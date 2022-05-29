@@ -1,8 +1,4 @@
-import {
-  Box, Card,
-  CardContent,
-  Typography
-} from "@mui/material";
+import { Box, Card, CardContent, Grid, Typography } from "@mui/material";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import moment from "moment";
 import React, { useEffect, useState } from "react";
@@ -68,20 +64,19 @@ export default function OwnerReservations({
         Reservations list
       </Typography>
       <Box marginY={2}></Box>
-      <Card elevation={1}>
-        <CardContent>
-          <Box sx={{ width: "100%" }}>
-            <DataGrid
-              rows={ownerReservations}
-              columns={columns}
-              getRowId={(row) => row.id}
-              pageSize={50}
-              disableSelectionOnClick
-              autoHeight
-            />
-          </Box>
-        </CardContent>
-      </Card>
+
+      <Grid container alignItems="center" justifyContent="center">
+        <Grid item md={10} xs={12}>
+          <DataGrid
+            rows={ownerReservations}
+            columns={columns}
+            getRowId={(row) => row.id}
+            pageSize={50}
+            disableSelectionOnClick
+            autoHeight
+          />
+        </Grid>
+      </Grid>
     </Box>
   ) : (
     <Box marginY={15} alignItems="center" justifyContent="center">

@@ -19,6 +19,7 @@ import languageApi from "../../Api/languageApi";
 import ownerAdverisementApi from "../../Api/ownerAdverisementApi";
 import petTypeApi from "../../Api/petTypeApi";
 import serviceTypeApi from "../../Api/serviceTypeApi";
+import userApi from "../../Api/userApi";
 import { ILanguage } from "../../Interfaces/Caretaker/ILanguage";
 import { ILanguageCheck } from "../../Interfaces/Caretaker/ILanguageCheck";
 import { ILanguageType } from "../../Interfaces/Caretaker/ILanguageType";
@@ -31,6 +32,9 @@ import { IServiceType } from "../../Interfaces/Caretaker/IServiceType";
 import { IOwnerAdvert } from "../../Interfaces/Owner/IOwnerAdvert";
 import { IOwnerAdvertCreate } from "../../Interfaces/Owner/IOwnerAdvertCreate";
 import { ITimeIntervalsObject } from "../../Interfaces/Owner/ITimeIntervalsObject";
+import { Roles } from "../../Interfaces/Roles";
+import { ICurrentUser } from "../../Interfaces/User/ICurrentUser";
+import isEmpty from "../../Utils/Empty";
 import interval from "../CaretakerAdvertisement/TimeIntervals";
 import OwnerAdvertForm from "./OwnerAdvertForm";
 import OwnerPersInformation from "./OwnerPersInformation";
@@ -50,11 +54,20 @@ const theme = createTheme({
   },
 });
 
-export default function OwnerAdvertiseBaseEdit({ currentUser }: any) {
+export default function OwnerAdvertiseBaseEdit({
+  currentUser,
+  loadUsers,
+}: {
+  currentUser: ICurrentUser;
+  loadUsers: any;
+}) {
   const navigate = useNavigate();
 
-  if (!currentUser) {
-    navigate("/Login");
+  const user = userApi.getCurrentUser();
+  if (user !== null) {
+    currentUser = user;
+  } else {
+    navigate("/");
   }
 
   const { id } = useParams();
