@@ -27,14 +27,14 @@ export default function OwnerReservations({
       setOwnerReservations(ownerReservs);
     }
     getReservations();
-  }, [refetch]);
+  }, [refetch, currentUser]);
 
   const columns: GridColDef[] = [
     {
       field: "date",
       headerName: "Date",
       flex: 1,
-
+      minWidth: 100,
       type: "date",
       valueFormatter: (value) => moment(value.value).format("YYYY-MM-DD"),
     },
@@ -42,11 +42,13 @@ export default function OwnerReservations({
       field: "time_intervals",
       headerName: "Time",
       flex: 2,
+      minWidth: 200,
     },
     {
       field: "created_at",
-      headerName: "Date created",
+      headerName: "Date and time created",
       flex: 1,
+      minWidth: 200,
       type: "dateTime",
       valueFormatter: (value) =>
         moment(value.value).format("YYYY-MM-DD HH:mm:ss"),
@@ -55,23 +57,29 @@ export default function OwnerReservations({
       field: "status",
       headerName: "Reservation status",
       flex: 1,
+      minWidth: 100,
     },
   ];
 
   return ownerReservations && ownerReservations.length ? (
     <Box marginY={5} sx={{ width: 1 }}>
-      <Typography variant="h4" align="center">
+      <Typography variant="h4" fontWeight={500} color="#793209" align="center">
         Reservations list
       </Typography>
       <Box marginY={2}></Box>
 
       <Grid container alignItems="center" justifyContent="center">
-        <Grid item md={10} xs={12}>
+        <Grid item xs={10}>
           <DataGrid
+            sx={{
+              borderColor: "#793209",
+              borderWidth: 2,
+              borderBottomColor: "#793209",
+              overflow: "visible",
+            }}
             rows={ownerReservations}
             columns={columns}
             getRowId={(row) => row.id}
-            pageSize={50}
             disableSelectionOnClick
             autoHeight
           />

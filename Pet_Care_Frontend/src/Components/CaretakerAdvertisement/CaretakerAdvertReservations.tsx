@@ -6,7 +6,9 @@ import {
   ButtonGroup,
   Card,
   CardContent,
+  createTheme,
   Grid,
+  ThemeProvider,
   Typography,
 } from "@mui/material";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
@@ -94,7 +96,7 @@ export default function ReservationsTable({
     {
       field: "date",
       headerName: "Date",
-
+      minWidth: 100,
       type: "date",
       valueFormatter: (value) => moment(value.value).format("YYYY-MM-DD"),
     },
@@ -102,17 +104,20 @@ export default function ReservationsTable({
       field: "time_intervals",
       headerName: "Reserved times",
       flex: 2,
+      minWidth: 200,
     },
     {
       field: "user_email",
       headerName: "User",
       flex: 1,
+      minWidth: 200,
     },
 
     {
       field: "created_at",
-      headerName: "Date created",
+      headerName: "Date and time created",
       flex: 1,
+      minWidth: 200,
       type: "dateTime",
       valueFormatter: (value) =>
         moment(value.value).format("YYYY-MM-DD HH:mm:ss"),
@@ -121,10 +126,12 @@ export default function ReservationsTable({
       field: "status",
       headerName: "Reservation status",
       flex: 1,
+      minWidth: 100,
     },
 
     {
       field: "id",
+      minWidth: 250,
       flex: 1,
       headerName: "Actions",
       renderCell: (params) => {
@@ -155,21 +162,25 @@ export default function ReservationsTable({
   ];
 
   return advertReservations && advertReservations.length ? (
-    <Box marginY={5}>
-      <Typography variant="h4" align="center">
-        Reservations list
+    <Box marginY={5} sx={{ width: 1 }}>
+      <Typography variant="h4" fontWeight={500} color="#793209" align="center">
+        Reservation list
       </Typography>
       <Box marginY={2}></Box>
 
       <Grid container alignItems="center" justifyContent="center">
-        <Grid item md={10} xs={12}>
+        <Grid item xs={10}>
           <DataGrid
+            sx={{
+              borderColor: "#793209",
+              borderWidth: 2,
+              borderBottomColor: "#793209",
+              overflow: "visible",
+            }}
             rows={advertReservations}
             columns={columns}
             getRowId={(row) => row.id}
-            pageSize={50}
             disableSelectionOnClick
-            autoHeight
           />
         </Grid>
       </Grid>

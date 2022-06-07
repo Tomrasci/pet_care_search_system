@@ -61,7 +61,7 @@ const UserEdit = ({ onSave, userForEdit, refetch, refetchUsers }: Props) => {
       toast.error("User edit failed");
     } else {
       refetchUsers(!refetch);
-      toast.success("User updated successful");
+      toast.success("User updated successfully");
     }
     onSave();
   };

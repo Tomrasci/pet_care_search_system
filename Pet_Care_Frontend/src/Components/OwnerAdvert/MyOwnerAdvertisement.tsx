@@ -25,11 +25,9 @@ const MyOwnerAdvertisement = ({ currentUser, loadUsers }: any) => {
 
   async function getAdvert() {
     if (currentUser) {
-      console.log(`current user is ${currentUser}`);
       const oAdvert = await ownerAdverisementApi.getUserOwnerAdvertisement(
         currentUser.id
       );
-      console.log(`owner advert is ${ownerAdvert}`);
 
       setOwnerAdvert(oAdvert);
     }

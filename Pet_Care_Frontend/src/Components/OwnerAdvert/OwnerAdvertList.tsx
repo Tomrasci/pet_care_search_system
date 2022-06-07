@@ -216,6 +216,7 @@ const OwnerAdvertList = ({ currentUser }: any) => {
                       <>
                         <Grid item xs={12} spacing={4}>
                           <Card
+                            elevation={10}
                             sx={{
                               width: {
                                 sx: 1.0,

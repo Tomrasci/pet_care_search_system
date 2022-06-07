@@ -16,6 +16,7 @@ import CalendarFunctions from "../../Utils/CalendarFunctions";
 import "./CaretakerCalendar.css";
 import { Box, Grid } from "@mui/material";
 import moment from "moment";
+import DialogBase from "../../Utils/DialogBase";
 
 const CaretakerCalendar = ({
   currentUser,
@@ -27,6 +28,7 @@ const CaretakerCalendar = ({
   const [availability, setAvailability] = useState<ICaretakerAvailability[]>(
     []
   );
+  const [open, setOpen] = useState(false);
   const [caretakerAdvertisement, setCaretakerAdvertisement] =
     useState<ICaretakerAdvert>();
 
@@ -207,6 +209,7 @@ const CaretakerCalendar = ({
 
     const fixedReservations =
       CalendarFunctions.fixReservationTimes(advertReservations);
+
     let eventReservations = null;
     if (reserving) {
       eventReservations =

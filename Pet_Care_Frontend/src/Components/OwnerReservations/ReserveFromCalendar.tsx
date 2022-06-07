@@ -208,9 +208,7 @@ const ReserveFromCalendar = ({ currentUser }: any) => {
     setSelectInterval(typeof value === "string" ? value.split(",") : value);
   };
 
-  console.log(`value is ${value}`);
   const datata = value ? moment(value).toDate() : new Date();
-  console.log(`'datata is ${datata}`);
 
   const handleReservation = async () => {
     const reservationDate = value ? moment(value).toDate() : new Date();
@@ -222,12 +220,16 @@ const ReserveFromCalendar = ({ currentUser }: any) => {
       status: "pending",
       description: reservationDescription,
     };
-    console.log(`reservation date is ${reservation.date}`);
 
     const result = await reservationApi.createReservations(reservation);
     if (result.status !== 201) {
       toast.error("Reservation creation failed");
     } else {
+      setValue(null);
+      setReservationDescription("");
+      setSelectInterval([]);
+      setCurrentInterval([]);
+
       toast.success(
         "Reservation creation successful! Wait for caretaker to approve"
       );

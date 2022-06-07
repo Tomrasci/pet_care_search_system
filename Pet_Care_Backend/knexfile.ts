@@ -7,7 +7,14 @@ const config: { [key: string]: Knex.Config } = {
     connection: {
       database: process.env.db_NAME,
       user: process.env.db_USER,
-      password: process.env.db_PASSWORD
+      password: process.env.db_PASSWORD,
+      timezone: 'utc',
+      typeCast: function (field, next) {
+        if (field.type === 'JSON') {
+          return JSON.parse(field.string());
+        }
+        return next();
+      }
     },
     pool: {
       min: 2,
@@ -18,11 +25,3 @@ const config: { [key: string]: Knex.Config } = {
 };
 
 export default config;
-
-// timezone: 'utc',
-// typeCast: function (field, next) {
-//   if (field.type === 'JSON') {
-//     return JSON.parse(field.string());
-//   }
-//   return next();
-// }

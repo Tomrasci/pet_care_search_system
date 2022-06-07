@@ -223,7 +223,7 @@ export default function PriceandDates({
         Schedule, price and services
       </Typography>
       <Box marginY={2}></Box>
-      <LocalizationProvider dateAdapter={AdapterDateFns} locale={lt}>
+      <LocalizationProvider dateAdapter={AdapterDateFns}>
         <Grid container spacing={3} maxWidth="md">
           <Grid item xs={12} md={6}>
             <Controller

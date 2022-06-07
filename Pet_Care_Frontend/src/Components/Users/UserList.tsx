@@ -6,6 +6,7 @@ import {
   ButtonGroup,
   Card,
   CardContent,
+  Grid,
   Typography,
 } from "@mui/material";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
@@ -68,17 +69,23 @@ export default function UserList({
     {
       field: "username",
       headerName: "Username",
+      minWidth: 100,
+
       flex: 1,
     },
     {
       field: "email",
       headerName: "Email",
+      minWidth: 200,
+
       flex: 1,
     },
     {
       field: "created_at",
-      headerName: "Date created",
+      headerName: "Date and time  created",
       flex: 1,
+      minWidth: 200,
+
       type: "dateTime",
       valueFormatter: (value) =>
         moment(value.value).format("YYYY-MM-DD HH:mm:ss"),
@@ -86,8 +93,9 @@ export default function UserList({
 
     {
       field: "updated_at",
-      headerName: "Date updated",
+      headerName: "Date and time updated",
       flex: 1,
+      minWidth: 200,
       type: "dateTime",
       valueFormatter: (value) =>
         moment(value.value).format("YYYY-MM-DD HH:mm:ss"),
@@ -95,6 +103,7 @@ export default function UserList({
 
     {
       field: "id",
+      minWidth: 200,
       headerName: "Actions",
       renderCell: (params) => {
         return (
@@ -118,39 +127,52 @@ export default function UserList({
   ];
 
   return userList && userList.length ? (
-    <Box marginY={5} sx={{ width: 1 }}>
-      <Typography variant="h4" align="center">
-        Users list
-      </Typography>
-      <Box marginY={2}></Box>
-      <Card elevation={1}>
-        <CardContent>
-          <Box sx={{ width: "100%" }}>
+    <>
+      <Box marginY={5} sx={{ width: 1 }}>
+        <Typography
+          variant="h4"
+          fontWeight={500}
+          color="#793209"
+          align="center"
+        >
+          Users list
+        </Typography>
+        <Box marginY={2}></Box>
+
+        <Grid container alignItems="center" justifyContent="center">
+          <Grid item xs={10}>
             <DataGrid
+              sx={{
+                borderColor: "#793209",
+                borderWidth: 2,
+                borderBottomColor: "#793209",
+                overflow: "visible",
+              }}
               rows={userList}
               columns={columns}
               getRowId={(row) => row.id}
-              pageSize={50}
               disableSelectionOnClick
               autoHeight
             />
-          </Box>
-        </CardContent>
-      </Card>
-      <DialogBase
-        onClose={() => setEditingUser("")}
-        open={Boolean(editingUser)}
-        title="User edit"
-        content={
-          <UserEdit
-            userForEdit={transferUserInterface(userList, editingUser)}
-            onSave={() => setEditingUser("")}
-            refetch={refetch}
-            refetchUsers={setRefetch}
-          ></UserEdit>
-        }
-      />
-    </Box>
+          </Grid>
+        </Grid>
+
+        <DialogBase
+          onClose={() => setEditingUser("")}
+          open={Boolean(editingUser)}
+          title="User edit"
+          content={
+            <UserEdit
+              userForEdit={transferUserInterface(userList, editingUser)}
+              onSave={() => setEditingUser("")}
+              refetch={refetch}
+              refetchUsers={setRefetch}
+            ></UserEdit>
+          }
+        />
+      </Box>
+      <Box marginY={5}></Box>
+    </>
   ) : (
     <Box marginY={15} alignItems="center" justifyContent="center">
       <Typography align="center" color="inherit" sx={{ fontSize: 32 }}>

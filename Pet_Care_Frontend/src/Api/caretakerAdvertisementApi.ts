@@ -34,9 +34,13 @@ const editCaretakerAdvertisement = async (
   id: number,
   caretakerAdvert: ICaretakerAdvertCreate
 ) => {
-  return await http.put(`/caretakerAdverts/${id}`, caretakerAdvert, {
-    headers: authHeader(),
-  });
+  try {
+    return await http.put(`/caretakerAdverts/${id}`, caretakerAdvert, {
+      headers: authHeader(),
+    });
+  } catch (error: any) {
+    return error.response;
+  }
 };
 
 const deleteCaretakerAdvertisement = async (id: number) => {

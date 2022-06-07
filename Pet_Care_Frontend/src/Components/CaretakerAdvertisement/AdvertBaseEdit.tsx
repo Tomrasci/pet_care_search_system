@@ -358,11 +358,16 @@ export default function AdvertiseBaseEdit({ currentUser }: any) {
         selectedFile
       );
     }
+
     if (result.status !== 200 || (imageUpload && imageUpload !== 200)) {
-      toast.error("Advertisement update failed");
+      if (result.status === 400) {
+        toast.error(result.data);
+      } else {
+        toast.error("Advertisement update failed");
+      }
     } else {
-      toast.success("Advertisement updated successful");
-      navigate("/");
+      toast.success("Advertisement updated successfully");
+      navigate("/MyCaretakerAdvert" + `/${currentUser.id}`);
     }
   };
 

@@ -302,6 +302,17 @@ const updateCareTakerAdvert = async (
       )
     );
   }
+  const overlap = await caretakerAdvertService.checkDatesAndTimesWhenUpdating(
+    editedCaretakerAdvert,
+    cAdvertId
+  );
+  if (overlap) {
+    return next(
+      ApiError.badRequestError(
+        `There are reservations in previous dates or times`
+      )
+    );
+  }
 
   await caretakerAdvertService.updateCareTakerAdvert(
     editedCaretakerAdvert,

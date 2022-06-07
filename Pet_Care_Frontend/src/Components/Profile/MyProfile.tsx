@@ -75,7 +75,8 @@ const MyProfile = ({
                   align="center"
                   component="h1"
                   variant="h5"
-                  color="inherit"
+                  fontWeight={500}
+                  color="#793209"
                   noWrap
                   sx={{ flexGrow: 1 }}
                 >

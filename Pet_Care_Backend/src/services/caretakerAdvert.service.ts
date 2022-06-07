@@ -2,6 +2,9 @@ import caretakerAdvertModel from '../models/caretakerAdvert.model';
 import { ICaretakerAdvertCreate } from '../models/interfaces/ICaretakerAdvertCreate';
 import { ICaretakerAdvert } from '../models/interfaces/ICaretakerAdvert';
 import { ICaretakerAvailability } from '../models/interfaces/ICaretakerAvailability';
+import reservationModel from '../models/reservationModel';
+import moment from 'moment';
+import { IReservation } from '../models/interfaces/IReservation';
 
 const createCaretakerAdvert = async (cAdvert: ICaretakerAdvertCreate) => {
   return await caretakerAdvertModel.createCaretakerAdvert(cAdvert);
@@ -24,6 +27,33 @@ const updateCareTakerAdvert = async (
   id: number
 ) => {
   return await caretakerAdvertModel.updateCareTakerAdvert(cAdvert, id);
+};
+const checkDatesAndTimesWhenUpdating = async (
+  cAdvert: ICaretakerAdvertCreate,
+  id: number
+) => {
+  let overlap = false;
+  const advertisementReservations =
+    await reservationModel.getConfirmedAdvertisementReservations(id);
+  const filteredReservations = advertisementReservations.filter(
+    (reservation) => {
+      return (
+        moment(reservation.date).format('L') >= moment(new Date()).format('L')
+      );
+    }
+  );
+  const start = cAdvert.startDate;
+  const end = cAdvert.endDate;
+  const areThereReservationsInThoseDates = (reservation: IReservation) => {
+    return (
+      moment(reservation.date).format('L') < moment(start).format('L') ||
+      moment(reservation.date).format('L') > moment(end).format('L')
+    );
+  };
+  if (filteredReservations.some(areThereReservationsInThoseDates)) {
+    overlap = true;
+  }
+  return overlap;
 };
 const deleteCareTakerAdvert = async (id: number): Promise<ICaretakerAdvert> => {
   return await caretakerAdvertModel.deleteCareTakerAdvert(id);
@@ -67,5 +97,6 @@ export default {
   deleteCaretakerAvailability,
   uploadCaretakerImage,
   addAdvertisementCount,
-  removeAdvertisementCount
+  removeAdvertisementCount,
+  checkDatesAndTimesWhenUpdating
 };
